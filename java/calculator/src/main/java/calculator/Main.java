@@ -1,19 +1,42 @@
 package calculator;
 
-import java.util.ArrayList;
-import java.util.List;
+import calculator.level02.CalculatorApp;
+
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) {
+        // 값 입력을 위한 Scanner 객체 생성
+        Scanner sc = new Scanner(System.in);
 
-        Scanner sc = new Scanner(System.in);    // 값 입력을 위한 Scanner 객체 생성
-
-        // 계산기 입력 방식을 사용자에게 알리는 메시지
-        System.out.println("연산 입력시 [피연산자 > 연산기호 > 피연산자] 순으로 입력해주세요!");
-
+        // 사용 가능한 계산기 목록을 사용자에게 알리는 메시지
+        String calculatorNum;
+        boolean useOrNot = true;
+        System.out.println("사용 가능한 계산기 : 1 - level01, 2 - level02, 3 - level03(수정중)");
         while (true) {
+            calculatorNum = sc.nextLine();
+            if (checkExit(calculatorNum)) {
+                useOrNot = false;
+                break;  // "exit" 입력시 반복탈출, 계산기 종료
+            }
+            if (!checkCalculatorNum(calculatorNum)) break; // 항목에 포함된 번호가 아니면 계산기 선택 반복
+        }
+
+        // 계산기 입력 방식을 사용자에게 알리는 메시지, 계산기 실행시에만 출력됨
+        if (useOrNot) {
+            System.out.println("연산 입력시 [피연산자 > 연산기호 > 피연산자] 순으로 입력해주세요!");
+        }
+
+        // Level 02 계산기
+        if (calculatorNum.equals("2")) {
+            CalculatorApp calApp = new CalculatorApp();
+            calApp.start(sc);
+            calApp.currentResults();
+        }
+
+        // Level 01 계산기
+        while (calculatorNum.equals("1")) {
 
             // 연산에 필요한 값 입력 및 변수 저장 및 사용자의 계산기 수행 의사확인 과정
             // 입력 값 저장 후 바로 저장 값이 "exit"(종료 명령어)인지 확인하는 메서드 호출
@@ -28,8 +51,8 @@ public class Main {
             if (!validInputCheck(firstInput, operator, secondInput)) continue;
 
             // 나누기 연산을 염두해 입력받은 정수들을 실수형으로 변환, operator 는 그대로 사용
-            double firstNum = Integer.parseInt(firstInput);
-            double secondNum = Integer.parseInt(secondInput);
+            double firstNum = Double.parseDouble(firstInput);
+            double secondNum = Double.parseDouble(secondInput);
 
             // 사칙연산 수행, 입력받은 연산기호에 맞춰 연산 메서드를 수행후 결과 출력
             switch (operator) {
@@ -51,8 +74,20 @@ public class Main {
 
         }
 
+        sc.close();     // 입력 종료
         System.out.println("계산기를 종료합니다.");
         System.exit(0); // main 메서드 실행 (정상)종료 지정
+    }
+
+    // 입력한 계산기 번호의 유효성을 검사하는 메서드
+    // 유효성 통과시 false, 통과 실패시 true 반환
+    public static boolean checkCalculatorNum(String num) {
+        final String CALCULATOR_NUM = "^[1-2]$";    // 원래라면 1,2,3 중 하나를 고를수 있어야하지만 아직 3은 구현하지 않아 임시로 작성, 추후 수정해야함
+        if (!Pattern.matches(CALCULATOR_NUM, num)) {
+            System.out.println("계산기 선택오류 : 선택가능한 계산기는 1 - level01, 2 - level02, 3 - level03(수정중)");
+            return true;
+        }
+        return false;
     }
 
     // 연산결과를 출력하는 메서드
@@ -109,30 +144,4 @@ public class Main {
         final String exitStr = "exit";
         return input.equals(exitStr);
     }
-
-    // 입력받은 문자열이 사용 가능한 기호인지 확인하는 메서드
-    // 해당 메서드는 사망하였습니다.
-//    public static boolean checkOperator(String input) {
-//        final String OPERATOR = "[+\\-*/]";
-//        if (!Pattern.matches(OPERATOR, input)) {
-//            System.out.println("입력 가능한 값은 기호 '+', '-', '*', '/' 뿐입니다.");
-//            System.out.println("처음부터 다시 입력 부탁드립니다.");
-//            System.out.println("===========================");
-//            return true;
-//        }
-//        return false;
-//    }
-
-    // 입력받은 문자열이 숫자로만 이루어졌는지 확인하는 메서드
-    // 덩달아 같이 사망한 메서드
-//    public static boolean checkNum(String input) {
-//        final String NUMBER = "^[0-9]+$";   // 숫자가 반드시 있어야 하므로 해당 정규식을 사용했음
-//        if (!Pattern.matches(NUMBER, input)) {
-//            System.out.println("입력 가능한 값은 '0~9' 의 숫자들 뿐입니다.");
-//            System.out.println("처음부터 다시 입력 부탁드립니다.");
-//            System.out.println("===========================");
-//            return true;
-//        }
-//        return false;
-//    }
 }
