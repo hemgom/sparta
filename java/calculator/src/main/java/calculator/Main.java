@@ -1,5 +1,7 @@
 package calculator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -13,14 +15,14 @@ public class Main {
 
         while (true) {
 
-            // 연산에 필요한 값 입력 및 변수 저장
+            // 연산에 필요한 값 입력 및 변수 저장 및 사용자의 계산기 수행 의사확인 과정
+            // 입력 값 저장 후 바로 저장 값이 "exit"(종료 명령어)인지 확인하는 메서드 호출
             String firstInput = sc.nextLine();
-            if (checkExit(firstInput)) {            // 첫 번째 입력 값을 통해 사용자가 계산을 계속할지 중단할지 판단
-                System.out.println("계산기를 종료합니다.");
-                break;
-            }
+            if (checkExit(firstInput)) break;
             String operator = sc.nextLine();
+            if (checkExit(operator)) break;
             String secondInput = sc.nextLine();
+            if (checkExit(secondInput)) break;
 
             // 입력 값 유효성 검사, 유효하지 않은 값이 있다면 반복문 처음으로
             if (!validInputCheck(firstInput, operator, secondInput)) continue;
@@ -49,25 +51,25 @@ public class Main {
 
         }
 
+        System.out.println("계산기를 종료합니다.");
         System.exit(0); // main 메서드 실행 (정상)종료 지정
     }
 
+    // 연산결과를 출력하는 메서드
     public static void printResult(double result) {
         System.out.println("연산 결과 : " + result);
     }
 
+    // 사칙연산 중 하나를 수행하는 메서드
     public static void addOperation(double firstNum, double secondNum) {
         printResult(firstNum + secondNum);
     }
-
     public static void subOperation(double firstNum, double secondNum) {
         printResult(firstNum - secondNum);
     }
-
     public static void mulOperation(double firstNum, double secondNum) {
         printResult(firstNum * secondNum);
     }
-
     public static void divOperation(double firstNum, double secondNum) {
         printResult(firstNum / secondNum);
     }
@@ -92,16 +94,19 @@ public class Main {
             result = false;
         }
         if (!result) {
-            System.out.println("처음부터 다시 입력 부탁드립니다.");
-            System.out.println("===========================");
+            System.out.println(
+                    "처음부터 다시 입력 부탁드립니다.\n" +
+                    "==========================="
+            );
         }
 
         return result;
     }
 
-    // 입력받은 문자열이 계산기를 종료하는 문자열(exitStr)인지 확인하는 메서드
+    // 입력받은 값이 계산기 종료 값과 같은지 확인하는 메서드
+    // 계산기 종료 명령어와 같다면 'true', 다르다면 'false' 반환
     public static boolean checkExit(String input) {
-        String exitStr = "exit";
+        final String exitStr = "exit";
         return input.equals(exitStr);
     }
 
