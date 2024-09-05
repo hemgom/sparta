@@ -3,7 +3,7 @@
 
 ## Package
 ```
-src / main / java / calculator / useDependency
+src / main / java / calculator / level02
 ```
 - 이번 구현할 과제는 2가지가 있는데, `추가 클래스 없이 구현`, `추가 클래스 주입하여 구현` 이다.
 - `추가 클래스 없이 구현` 의 경우 `src/main/java/calculator` 의 `Main` 클래스에 구현
@@ -29,15 +29,16 @@ src / main / java / calculator / useDependency
   - `"exit"` 입력시 실행 종료(정상) 될 것
 
 ### 추가 클래스를 주입하여 구현
-- [ ] 사칙연산 수행후 결과 값 반환 메서드 구현
-- [ ] 연산 결과를 저장하는 `Collection` 타입 필드를 가진 `Calculator` 클래스 생성
-- [ ] 양의 정수 2개와 연산 기호를 파라미터로 받아 사칙연산을 수행
-- [ ] 연산 수행 역할은 `Calculator` 클래스가 담당
+- [x] 사칙연산 수행후 결과 값 반환 메서드 구현
+- [x] 연산 결과를 저장하는 `Collection` 타입 필드를 가진 `Calculator` 클래스 생성
+- [x] 양의 정수 2개와 연산 기호를 파라미터로 받아 사칙연산을 수행
+- [x] 연산 수행 역할은 `Calculator` 클래스가 담당
   - 연산결과는 `Calculator` 필드에 존재하는 `Collection` 타입의 객체에 저장
-- [ ] 소스 코드 수정 후에도 수정전 기능들이 반드시 똑같이 동작해야 함
-- [ ] `main` 메서드에서 `Calculator` 객체의 `Collection` 필드에 직접 접근하지 못하도록 할 것
+- [x] 소스 코드 수정 후에도 수정전 기능들이 반드시 똑같이 동작해야 함
+- [x] `main` 메서드에서 `Calculator` 객체의 `Collection` 필드에 직접 접근하지 못하도록 할 것
   - 메서드를 통한 접근을 구현할 것
-- [ ] `Calculator` 객체 저장된 연산 결과들 중 가장 먼저 저장된 데이터를 삭제하는 기능을 가진 메서드를 구현
+- [x] `Calculator` 객체에 저장된 연산 결과들 중 가장 먼저 저장된 데이터를 삭제하는 기능을 가진 메서드를 구현
+  - 해당 메서드가 `Main` 클래스의 `main` 메서드에 활용할 수 있도록 할 것
 <br/><br/>
 
 ## 도전 기능
