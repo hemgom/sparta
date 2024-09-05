@@ -44,5 +44,6 @@ src / main / java / calculator / useDependency
 해당 부분은 일단 `필수 기능` 을 완료하고 정리한 다음, 추가 작성 예정
 <br/><br/><br/>
 
-# 관련 포스팅
-- [추가 클래스 없이 계산기 구현 - 24.09.04](https://development-diary-for-me.tistory.com/116)
+# 코드수정 포스팅
+- [계산기 - 단일 클래스(1)](https://development-diary-for-me.tistory.com/116)
+- [계산기 - 단일 클래스(2)](https://development-diary-for-me.tistory.com/118)
