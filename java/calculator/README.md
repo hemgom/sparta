@@ -3,20 +3,27 @@
 
 ## Package
 ```
-src / main / java / calculator / level02
+src/main/java/calculator ┬─ Main.java
+                         └─ /level02 ┬─ CalculatortApp.java 
+                                     ├─ /calculate
+                                     └─ /validation
+                         └─ /level03 ── Level03.java
 ```
-- 이번 구현할 과제는 2가지가 있는데, `추가 클래스 없이 구현`, `추가 클래스 주입하여 구현` 이다.
-- `추가 클래스 없이 구현` 의 경우 `src/main/java/calculator` 의 `Main` 클래스에 구현
-- `추가 클래스 주입하여 구현` 의 경우 `src/main/java/calculator/useDependency` 에 구현할 생각이다.
-- 최종적으로 구현한 내용을 모두 정상 작동하도록 유지하고 싶어 입력시 `어떤 계산기를 선택할지 묻는 지문` 을 넣어볼 생각이다.
-<br/><br/><br/>
+- `Main.java` : 'level01' 계산기 구현 코드와 계산기 선택 및 선택 계산기 호출 코드를 작성
+- `/level02` : 'level02' 계산기에 대한 구현은 해당 패키지 안에서 진행
+  - `CalculatorApp.java` : 'level02' 계산기에 대한 실행 흐름의 구현 코드를 작성
+  - `/calculate` : 연산 관련 기능을 수행하는 클래스 및 인터페이스(구현클래스 포함)가 위치하는 패키지
+  - `/validation` : 실행에 사용되는 데이터의 유효성을 판단하는 클래스가 위치하는 패키지
+- `/level03` : 'level03' 계산기에 대한 구현을 해당 패키기 안에서 진행
+  - `Level03.java` : 'level03' 계산기에 대한 실행 흐름을 구현의 구현 코드를 작성
+    <br/><br/><br/>
 
 # 요구사항
 기본적으로 `추가 클래스 주입` 의 여부로 2가지 방식의 개발을 진행해야 하는 것을 잊지말자!<br/>
 구현한 기능은 해당 문서에 `체크`해서 혼동할 일이 없도록 할 것!
 
 ## 필수 기능
-### 추가 클래스 없이 구현
+### level.01 - 단일 클래스(Main class) 구현
 - [x] `양의 정수` 및 `0` 입력
   - 입력 값으로 양의 정수 `2개` 를 입력 받아야 하며, 각 정수는 따로 전달 받는다.
   - 전달된 정수는 필요에 따른 타입을 갖는 변수에 저장한다.
@@ -28,7 +35,7 @@ src / main / java / calculator / level02
   - 사용자가 `"exit"` 를 입력하지 않는한 계속해서 계산기 기능 수행
   - `"exit"` 입력시 실행 종료(정상) 될 것
 
-### 추가 클래스를 주입하여 구현
+### level.02 - 여러 클래스의 객체를 활용한 구현
 - [x] 사칙연산 수행후 결과 값 반환 메서드 구현
 - [x] 연산 결과를 저장하는 `Collection` 타입 필드를 가진 `Calculator` 클래스 생성
 - [x] 양의 정수 2개와 연산 기호를 파라미터로 받아 사칙연산을 수행
@@ -42,9 +49,16 @@ src / main / java / calculator / level02
 <br/><br/>
 
 ## 도전 기능
-해당 부분은 일단 `필수 기능` 을 완료하고 정리한 다음, 추가 작성 예정
+### level.03 - Enum, Generics, Lambda, Stream 을 활용한 구현
+- [ ] `Enum` 을 활용해 연산자 타입(+, -, *, /)을 관리하고 계산기에 적용
+- [ ] `Generics` 를 황용해 실수 값을 전달 받아도 연산이 가능하도록 수정
+  - 단순하게 타입을 변환하는 것은 안 됨!
+- [ ] 저장한 연산 결과를 담은 `Collection` 객체에서 입력 받은 연산의 결과보다 큰 결과 값들을 출력하는 기능 추가
+  - 해당 기능을 수행하는 메서드 구현시 `Lambda` 와 `Stream` 을 활용해 구현할 것
 <br/><br/><br/>
 
-# 코드수정 포스팅
-- [계산기 - 단일 클래스(1)](https://development-diary-for-me.tistory.com/116)
-- [계산기 - 단일 클래스(2)](https://development-diary-for-me.tistory.com/118)
+# 구현 과정 및 트러블 슈팅 관련 포스팅
+- [계산기 - level.01(1)](https://development-diary-for-me.tistory.com/116)
+- [계산기 - level.01(2)](https://development-diary-for-me.tistory.com/118)
+- [계산기 - level.02(1)](https://development-diary-for-me.tistory.com/119)
+- [계산기 - level.02(2)](https://development-diary-for-me.tistory.com/121)
