@@ -6,9 +6,6 @@ import java.util.regex.Pattern;
 
 // 입력 받은 값들의 유효성을 검사하는 클래스
 public class ValidInputData {
-
-    private static final String NUMBER = "^[0-9.]+$";
-    private static final String OPERATOR = "[+\\-*/]";
     private static final String EXIT = "exit";
 
     /**
@@ -27,10 +24,4 @@ public class ValidInputData {
         return Pattern.matches(EXIT, input);
     }
 
-    public void retryMessage() {
-        System.out.println(
-                "처음부터 다시 입력 부탁드립니다.\n" +
-                        "==========================="
-        );
-    }
 }

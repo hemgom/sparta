@@ -1,9 +1,13 @@
 package calculator;
 
-import calculator.level02.CalculatorApp;
+import calculator.level02.Level02;
+import calculator.level03.Level03;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import static calculator.level03.enums.SystemMessage.*;
+import static calculator.level03.enums.ValidCriteria.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,7 +17,7 @@ public class Main {
         // 사용 가능한 계산기 목록을 사용자에게 알리는 메시지
         String calculatorNum;
         boolean useOrNot = true;
-        System.out.println("사용 가능한 계산기 : 1 - level01, 2 - level02, 3 - level03(수정중)");
+        System.out.println(SELECT_CALCULATOR.getMessage()); // level03 계산기에도 사용되는 로직이기에 enum 클래스를 사용
         while (true) {
             calculatorNum = sc.nextLine();
             if (checkExit(calculatorNum)) {
@@ -25,18 +29,26 @@ public class Main {
 
         // 계산기 입력 방식을 사용자에게 알리는 메시지, 계산기 실행시에만 출력됨
         if (useOrNot) {
-            System.out.println("연산 입력시 [피연산자 > 연산기호 > 피연산자] 순으로 입력해주세요!");
+            System.out.println(INPUT_GUIDE.getMessage());   // level03 계산기에도 사용되는 로직이기에 enum 클래스를 사용
+        }
+
+        // Level 03 계산기
+        if (calculatorNum.equals(LEVEL_THREE.getCriteria())) {
+            Level03 lv3Calculator = new Level03();
+            while (true) {
+                if (!lv3Calculator.start(sc)) break;
+            }
         }
 
         // Level 02 계산기
-        if (calculatorNum.equals("2")) {
-            CalculatorApp calApp = new CalculatorApp();
-            calApp.start(sc);
-            calApp.currentResults();
+        if (calculatorNum.equals(LEVEL_TWO.getCriteria())) {
+            Level02 lv2Calculator = new Level02();
+            lv2Calculator.start(sc);
+            lv2Calculator.currentResults();
         }
 
         // Level 01 계산기
-        while (calculatorNum.equals("1")) {
+        while (calculatorNum.equals(LEVEL_ONE.getCriteria())) {
 
             // 연산에 필요한 값 입력 및 변수 저장 및 사용자의 계산기 수행 의사확인 과정
             // 입력 값 저장 후 바로 저장 값이 "exit"(종료 명령어)인지 확인하는 메서드 호출
@@ -75,16 +87,18 @@ public class Main {
         }
 
         sc.close();     // 입력 종료
-        System.out.println("계산기를 종료합니다.");
+        System.out.println(CALCULATOR_EXIT.getMessage());
         System.exit(0); // main 메서드 실행 (정상)종료 지정
     }
 
     // 입력한 계산기 번호의 유효성을 검사하는 메서드
     // 유효성 통과시 false, 통과 실패시 true 반환
     public static boolean checkCalculatorNum(String num) {
-        final String CALCULATOR_NUM = "^[1-2]$";    // 원래라면 1,2,3 중 하나를 고를수 있어야하지만 아직 3은 구현하지 않아 임시로 작성, 추후 수정해야함
-        if (!Pattern.matches(CALCULATOR_NUM, num)) {
-            System.out.println("계산기 선택오류 : 선택가능한 계산기는 1 - level01, 2 - level02, 3 - level03(수정중)");
+        if (!Pattern.matches(CALCULATOR_NUMBER.getCriteria(), num)) {  // level03 계산기에도 사용되는 로직이기에 enum 클래스를 사용
+            System.out.println(
+                    ERROR_SELECT_CALCULATOR.getMessage() + "\n" +
+                    RESULT_WINDOW_DIVIDER.getMessage()
+            );
             return true;
         }
         return false;
@@ -116,12 +130,12 @@ public class Main {
      * 결과적으로 유효하다면 true, 유효하지 않다면 false 반환
      */
     public static boolean validInputCheck(String firstNum, String operator, String secondNum) {
-        final String NUMBER = "^[0-9]+$";
+        final String NUMBER = "^[0-9]$";
         final String OPERATOR = "[+\\-*/]";
 
         boolean result = true;
         if (!Pattern.matches(NUMBER, firstNum) || !Pattern.matches(NUMBER, secondNum)) {
-            System.out.println("피연산자 입력오류 : 입력 가능한 피연사자는 자연수입니다.");
+            System.out.println("피연산자 입력오류 : 입력 가능한 피연산자는 '0'과 자연수입니다.");
             result = false;
         }
         if (!Pattern.matches(OPERATOR, operator)) {

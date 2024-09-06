@@ -6,7 +6,7 @@ import calculator.level02.validation.ValidInputData;
 import java.util.Scanner;
 
 // 의존관계주입을 사용해 구현한 계산기 수행 동작을 구현한 클래스
-public class CalculatorApp {
+public class Level02 {
     private final ValidInputData valid = new ValidInputData();
     private final Calculator cal = new Calculator();
 
