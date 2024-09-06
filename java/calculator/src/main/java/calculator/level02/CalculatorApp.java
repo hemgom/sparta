@@ -3,7 +3,6 @@ package calculator.level02;
 import calculator.level02.calculate.Calculator;
 import calculator.level02.validation.ValidInputData;
 
-import java.util.Queue;
 import java.util.Scanner;
 
 // 의존관계주입을 사용해 구현한 계산기 수행 동작을 구현한 클래스
@@ -25,7 +24,7 @@ public class CalculatorApp {
             if (valid.validExit(secondInput)) break;
 
             // 입력 값 유효성 검사, 유효하지 않은 값이 있다면 반복문 처음으로
-            if (valid.validInputData(firstInput, operator, secondInput)) continue;
+            if (!valid.validInputData(firstInput, operator, secondInput)) continue;
 
             // 입력 값을 Calculator 객체에 저장
             cal.setFirstNum(firstInput);
