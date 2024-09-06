@@ -4,18 +4,24 @@
 ## Package
 ```
 src/main/java/calculator ┬─ Main.java
-                         └─ /level02 ┬─ CalculatortApp.java 
-                                     ├─ /calculate
-                                     └─ /validation
-                         └─ /level03 ── Level03.java
+                         │
+                         ├─ /level02 ┬─ Level02.java 
+                         │           ├─ /calculate
+                         │           └─ /validation
+                         │
+                         └─ /level03 ┬─ Level03.java
+                                     ├─ /validation
+                                     └─ /enums
 ```
 - `Main.java` : 'level01' 계산기 구현 코드와 계산기 선택 및 선택 계산기 호출 코드를 작성
 - `/level02` : 'level02' 계산기에 대한 구현은 해당 패키지 안에서 진행
   - `CalculatorApp.java` : 'level02' 계산기에 대한 실행 흐름의 구현 코드를 작성
   - `/calculate` : 연산 관련 기능을 수행하는 클래스 및 인터페이스(구현클래스 포함)가 위치하는 패키지
-  - `/validation` : 실행에 사용되는 데이터의 유효성을 판단하는 클래스가 위치하는 패키지
+  - `/validation` : 연산에 사용되는 입력 값들의 유효성을 판단하는 클래스가 위치하는 패키지
 - `/level03` : 'level03' 계산기에 대한 구현을 해당 패키기 안에서 진행
   - `Level03.java` : 'level03' 계산기에 대한 실행 흐름을 구현의 구현 코드를 작성
+  - `/validation` : 'level02' 의 `/validation` 과 같은 역할을 하지만 enum 클래스를 활용
+  - `/enums` : 'level03' 계산기 수행중 필요한 시스템 메시지, 유효성 검사 기준들이 위치
     <br/><br/><br/>
 
 # 요구사항
@@ -50,15 +56,16 @@ src/main/java/calculator ┬─ Main.java
 
 ## 도전 기능
 ### level.03 - Enum, Generics, Lambda, Stream 을 활용한 구현
-- [ ] `Enum` 을 활용해 연산자 타입(+, -, *, /)을 관리하고 계산기에 적용
+- [x] `Enum` 을 활용해 연산자 타입(+, -, *, /)을 관리하고 계산기에 적용
 - [ ] `Generics` 를 황용해 실수 값을 전달 받아도 연산이 가능하도록 수정
   - 단순하게 타입을 변환하는 것은 안 됨!
 - [ ] 저장한 연산 결과를 담은 `Collection` 객체에서 입력 받은 연산의 결과보다 큰 결과 값들을 출력하는 기능 추가
   - 해당 기능을 수행하는 메서드 구현시 `Lambda` 와 `Stream` 을 활용해 구현할 것
 <br/><br/><br/>
 
-# 구현 과정 및 트러블 슈팅 관련 포스팅
+# 구현 및 트러블 슈팅 관련 포스팅
 - [계산기 - level.01(1)](https://development-diary-for-me.tistory.com/116)
 - [계산기 - level.01(2)](https://development-diary-for-me.tistory.com/118)
 - [계산기 - level.02(1)](https://development-diary-for-me.tistory.com/119)
 - [계산기 - level.02(2)](https://development-diary-for-me.tistory.com/121)
+- [계산기 - level.03(1)](https://development-diary-for-me.tistory.com/122)
