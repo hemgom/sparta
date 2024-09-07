@@ -130,7 +130,7 @@ public class Main {
      * 결과적으로 유효하다면 true, 유효하지 않다면 false 반환
      */
     public static boolean validInputCheck(String firstNum, String operator, String secondNum) {
-        final String NUMBER = "^[0-9]$";
+        final String NUMBER = "^(0|[1-9][0-9]*)$";
         final String OPERATOR = "[+\\-*/]";
 
         boolean result = true;
