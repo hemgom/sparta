@@ -11,7 +11,8 @@ src/main/java/calculator ┬─ Main.java
                          │
                          └─ /level03 ┬─ Level03.java
                                      ├─ /validation
-                                     └─ /enums
+                                     ├─ /enums
+                                     └─ /calculate
 ```
 - `Main.java` : 'level01' 계산기 구현 코드와 계산기 선택 및 선택 계산기 호출 코드를 작성
 - `/level02` : 'level02' 계산기에 대한 구현은 해당 패키지 안에서 진행
@@ -22,6 +23,7 @@ src/main/java/calculator ┬─ Main.java
   - `Level03.java` : 'level03' 계산기에 대한 실행 흐름을 구현의 구현 코드를 작성
   - `/validation` : 'level02' 의 `/validation` 과 같은 역할을 하지만 enum 클래스를 활용
   - `/enums` : 'level03' 계산기 수행중 필요한 시스템 메시지, 유효성 검사 기준들이 위치
+  - `/calculate` : 'level02' 의 `/calculate` 와 같은 역할을 하지만 Generics 를 활용
     <br/><br/><br/>
 
 # 요구사항
@@ -57,7 +59,7 @@ src/main/java/calculator ┬─ Main.java
 ## 도전 기능
 ### level.03 - Enum, Generics, Lambda, Stream 을 활용한 구현
 - [x] `Enum` 을 활용해 연산자 타입(+, -, *, /)을 관리하고 계산기에 적용
-- [ ] `Generics` 를 황용해 실수 값을 전달 받아도 연산이 가능하도록 수정
+- [x] `Generics` 를 황용해 실수 값을 전달 받아도 연산이 가능하도록 수정
   - 단순하게 타입을 변환하는 것은 안 됨!
 - [ ] 저장한 연산 결과를 담은 `Collection` 객체에서 입력 받은 연산의 결과보다 큰 결과 값들을 출력하는 기능 추가
   - 해당 기능을 수행하는 메서드 구현시 `Lambda` 와 `Stream` 을 활용해 구현할 것
@@ -69,3 +71,4 @@ src/main/java/calculator ┬─ Main.java
 - [계산기 - level.02(1)](https://development-diary-for-me.tistory.com/119)
 - [계산기 - level.02(2)](https://development-diary-for-me.tistory.com/121)
 - [계산기 - level.03(1)](https://development-diary-for-me.tistory.com/122)
+- [계산기 - level.03(2)](https://development-diary-for-me.tistory.com/124)
