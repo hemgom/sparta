@@ -17,6 +17,7 @@ public enum SystemMessage {
     CALCULATE_RESULT("연산 결과 : "),
     INPUT_RETRY_PLEASE("처음부터 다시 입력해주세요."),
     RECENTLY_RESULTS("최근 계산 결과 : "),
+    BIGGER_RESULTS("현재 연산결과보다 큰 결과들 : "),
     RESULT_WINDOW_DIVIDER("==========================="),
     CALCULATOR_EXIT("계산기를 종료합니다."),
     ;

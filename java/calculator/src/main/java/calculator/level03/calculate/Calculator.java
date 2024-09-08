@@ -1,6 +1,7 @@
 package calculator.level03.calculate;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import static calculator.level03.enums.Operator.*;
@@ -53,6 +54,12 @@ public class Calculator<T extends Number> {
 
     public Queue<Double> getCalculateResults() {
         return calculateResults;
+    }
+
+    public List<Double> getBiggerResults(double result) {
+        return calculateResults.stream()
+                .filter((a) -> result < a)
+                .toList();
     }
 
     public T getFirstNum() { return firstNum; }

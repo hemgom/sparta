@@ -3,6 +3,7 @@ package calculator.level03;
 import calculator.level03.calculate.Calculator;
 import calculator.level03.validation.ValidInputData;
 
+import java.util.List;
 import java.util.Scanner;
 
 import static calculator.level03.enums.SystemMessage.*;
@@ -36,12 +37,15 @@ public class Level03 {
         double result = cal.calculate();
         System.out.println(CALCULATE_RESULT.getMessage() + result);
 
-        // 연산결과 추가 및 최근 연산결과 출력
-        cal.saveResult(result);
+        // 최근 연산결과 출력 및 이전 연산결과 조회
         System.out.println(
-                RECENTLY_RESULTS.getMessage() + cal.getCalculateResults() + "\n" +
+                RECENTLY_RESULTS.getMessage() + cal.getCalculateResults()
+        );
+        System.out.println(
+                BIGGER_RESULTS.getMessage() + cal.getBiggerResults(result) + "\n" +
                 RESULT_WINDOW_DIVIDER.getMessage()
         );
+        cal.saveResult(result);
 
         return true;
     }
