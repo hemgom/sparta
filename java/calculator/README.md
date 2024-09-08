@@ -61,7 +61,7 @@ src/main/java/calculator ┬─ Main.java
 - [x] `Enum` 을 활용해 연산자 타입(+, -, *, /)을 관리하고 계산기에 적용
 - [x] `Generics` 를 황용해 실수 값을 전달 받아도 연산이 가능하도록 수정
   - 단순하게 타입을 변환하는 것은 안 됨!
-- [ ] 저장한 연산 결과를 담은 `Collection` 객체에서 입력 받은 연산의 결과보다 큰 결과 값들을 출력하는 기능 추가
+- [x] 저장한 연산 결과를 담은 `Collection` 객체에서 입력 받은 연산의 결과보다 큰 결과 값들을 출력하는 기능 추가
   - 해당 기능을 수행하는 메서드 구현시 `Lambda` 와 `Stream` 을 활용해 구현할 것
 <br/><br/><br/>
 
@@ -72,3 +72,4 @@ src/main/java/calculator ┬─ Main.java
 - [계산기 - level.02(2)](https://development-diary-for-me.tistory.com/121)
 - [계산기 - level.03(1)](https://development-diary-for-me.tistory.com/122)
 - [계산기 - level.03(2)](https://development-diary-for-me.tistory.com/124)
+- [계산기 - level.03(3)](https://development-diary-for-me.tistory.com/125)
