@@ -1,18 +1,17 @@
 package calculator.level03;
 
 import calculator.level03.calculate.Calculator;
-import calculator.level03.validation.ValidInputData;
+import calculator.level03.validation.ValidInput;
 
-import java.util.List;
 import java.util.Scanner;
 
 import static calculator.level03.enums.SystemMessage.*;
 
-// '도전기능(Lv.3)' 의 요구사항을 적용해 구현한 계산기의 수행 흐름을 구현한 클래스
+// Level03 계산기의 수행 흐름 로직을 작성한 클래스
 public class Level03 {
     // 실수 값을 받을 수 있어야 하므로 Double 타입의 Calculator 객체 생성
     private final Calculator<Double> cal = new Calculator<>();
-    private final ValidInputData valid = new ValidInputData();  // level03 패키지경로의 enum 을 활용한 ValidInputData 클래스
+    private final ValidInput valid = new ValidInput();
 
     // 연산을 계속 수행할 경우 true 반환, 종료할 경우 false 반환
     public boolean start(Scanner sc) {
@@ -37,14 +36,16 @@ public class Level03 {
         double result = cal.calculate();
         System.out.println(CALCULATE_RESULT.getMessage() + result);
 
-        // 최근 연산결과 출력 및 이전 연산결과 조회
+        // 최근 연산결과(현재 입력 결과 포함X) 출력
         System.out.println(
                 RECENTLY_RESULTS.getMessage() + cal.getCalculateResults()
         );
+        // 최근 연산결과 중 현재 입력 결과보다 큰 결과들만 출력
         System.out.println(
                 BIGGER_RESULTS.getMessage() + cal.getBiggerResults(result) + "\n" +
                 RESULT_WINDOW_DIVIDER.getMessage()
         );
+        // 현재 입력 결과, Calculator 객체 필드의 Collection 객체에 저장
         cal.saveResult(result);
 
         return true;

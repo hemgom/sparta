@@ -6,11 +6,11 @@ import java.util.Queue;
 
 import static calculator.level03.enums.Operator.*;
 
-// 요구사항은 정수(Integer) 입력에서 실수(Double) 입력으로 바뀌었으므로 Generics 에 제한을 두었다.
+// 요구사항은 정수(Integer) 입력에서 실수(Double) 입력으로 바뀌어, 타입을 선택할 수 있는 Generic 클래스 생성
 public class Calculator<T extends Number> {
     private T firstNum;
     private T secondNum;
-    private Operation<T> operation;    // 연산을 수행하는 Operation 인터페이스의 구현 클래스들은 재사용함
+    private Operation<T> operation;
     private final Queue<Double> calculateResults = new LinkedList<>();
 
     /**
@@ -47,20 +47,22 @@ public class Calculator<T extends Number> {
         return operation.calculate(firstNum, secondNum);
     }
 
+    // 연산 결과를 Collection 에 저장하는 메서드
+    // 최근 연산 결과는 5개까지 저장되도록 구현
     public void saveResult(double result) {
         if (calculateResults.size() > 4) calculateResults.poll();
         calculateResults.offer(result);
     }
 
+    // 최근 연산 결과를 저장해둔 Collection 을 반환한 메서드
     public Queue<Double> getCalculateResults() {
         return calculateResults;
     }
 
+    // 연산 결과를 저장해둔 Collection 객체에서 현재 연산 결과보다 큰 요소들을 List 로 반환하는 메서드
     public List<Double> getBiggerResults(double result) {
         return calculateResults.stream()
                 .filter((a) -> result < a)
                 .toList();
     }
-
-    public T getFirstNum() { return firstNum; }
 }

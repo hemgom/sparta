@@ -2,10 +2,10 @@ package calculator.level03.enums;
 
 // 사용 연산자 값을 설정하는 Enum 클래스
 public enum Operator {
-    ADD("+"),
-    SUB("-"),
-    MUL("*"),
-    DIV("/"),
+    ADD("+"),   // 더하기 연산자
+    SUB("-"),   // 빼기 연산자
+    MUL("*"),   // 곱하기 연산자
+    DIV("/"),   // 나누기 연산자
     ;
 
     private final String operator;

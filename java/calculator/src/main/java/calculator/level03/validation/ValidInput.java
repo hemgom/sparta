@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 import static calculator.level03.enums.SystemMessage.*;
 import static calculator.level03.enums.ValidCriteria.*;
 
-// 입력값의 유효성을 확인하는 클래스, enum 클래스인 RegexSet 을 주입받아 유효성 검사 수행
-public class ValidInputData {
+// 입력 값의 유효성을 확인하는 클래스, Enum 클래스의 열거 상수를 사용함
+public class ValidInput {
 
     /**
      * 계산기 종료 명령어(입력값)에 대한 유효성을 확인하는 메서드

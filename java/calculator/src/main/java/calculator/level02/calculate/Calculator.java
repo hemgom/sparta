@@ -47,7 +47,7 @@ public class Calculator {
         calculateResults.offer(result);
     }
 
-    // 최근 연산한 결과들을 가진 Queue 객체를 반환하는 메서드
+    // 최근 연산한 결과들을 저장한 Collection 객체를 반환하는 메서드
     public Queue<Double> getCalculateResults() {
         return calculateResults;
     }

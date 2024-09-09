@@ -1,13 +1,13 @@
 package calculator.level02;
 
 import calculator.level02.calculate.Calculator;
-import calculator.level02.validation.ValidInputData;
+import calculator.level02.validation.ValidInput;
 
 import java.util.Scanner;
 
-// 의존관계주입을 사용해 구현한 계산기 수행 동작을 구현한 클래스
+// Level02 계산기의 수행 흐름 로직을 작성한 클래스
 public class Level02 {
-    private final ValidInputData valid = new ValidInputData();
+    private final ValidInput valid = new ValidInput();
     private final Calculator cal = new Calculator();
 
     public void start(Scanner sc) {
@@ -24,7 +24,7 @@ public class Level02 {
             if (valid.validExit(secondInput)) break;
 
             // 입력 값 유효성 검사, 유효하지 않은 값이 있다면 반복문 처음으로
-            if (!valid.validInputData(firstInput, operator, secondInput)) continue;
+            if (!valid.validInput(firstInput, operator, secondInput)) continue;
 
             // 입력 값을 Calculator 객체에 저장
             cal.setFirstNum(firstInput);
