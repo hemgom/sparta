@@ -10,6 +10,7 @@
    - [Level01](#level01)
    - [Level02](#level02)
    - [Level03](#level03)
+   - [Level04](#level04)
 4. [구현 및 트러블 슈팅](#구현-및-트러블-슈팅)
 <br/><br/><br/>
 
@@ -25,16 +26,23 @@
 ```
 src/main/java/calculator ┬─ Main.java
                          │
+                         ├─ /enums
+                         │
                          ├─ /level02 ┬─ Level02.java 
                          │           ├─ /calculate
                          │           └─ /validation
                          │
-                         └─ /level03 ┬─ Level03.java
-                                     ├─ /calculate
-                                     ├─ /validation
-                                     └─ /enums
+                         ├─ /level03 ┬─ Level03.java
+                         │           ├─ /calculate
+                         │           ├─ /validation
+                         │
+                         └─ /level04 ┬─ Level04.java
+                                     ├─ /exception
+                                     └─ /validation
 ```
 - `Main.java` : `단일 클래스(Main)` 로 구현한 `level01 계산기` 로직과 `계산기 선택` 로직 작성
+<br/><br/>
+- `/enums` : 모든 레벨의 계산기에서 활용가능한 `enum 클래스` 들이 위치
 <br/><br/>
 - `/level02` : `클래스를 활용` 해 구현한 `level02 계산기` 의 `구성 패키지 및 클래스` 위치
   - `Level02.java` : `level02 계산기` 의 작업 수행 흐름을 구현한 클래스
@@ -44,8 +52,11 @@ src/main/java/calculator ┬─ Main.java
 - `/level03` : 도전 기능의 요구사항을 적용한 `level03 계산기` 의 `구성 패키지 및 클래스` 위치
   - `Level03.java` : `level03 계산기` 의 작업 수행 흐름을 구현한 클래스
   - `/calculate` : `연산 역할` 의 인터페이스 및 클래스 위치
-  - `/validation` : 입력 값의 `유효성` 을 검사하는 `ValidInput` 클래스 위치
-  - `/enums` : `level03 계산기` 에서 사용되는 `문자열 관리` 클래스 위치
+  - `/validation` : 입력 값의 `유효성` 을 검사하는 `ValidInput(Enum 활용)` 클래스 위치
+<br/><br/>
+- `/level04` : 개인적으로 필요하다 판단한 내용을 반영한 `level04 계산기` 의 `구성 패키지 및 클래스` 위치
+  - `/exception` : `level04 계산기` 에서 다루는 `CustomException` 클래스가 위치
+  - `/validation` : 입력 값의 `유효성` 을 검사하는 `ValidInput(Exception 활용)` 클래스 위치 
 <br/><br/><br/>
 
 # 요구사항
@@ -89,8 +100,8 @@ src/main/java/calculator ┬─ Main.java
 
 ## 추가 기능
 ### Level.04 - Exception 활용 및 메서드 기능 최소화 등
-- [ ] 현재 `한 연산(사칙연산)` 의 입력을 `세 번` 으로 나누어 받는데 이를 `한 번` 으로 줄일 것
-- [ ] 2개 이상의 기능을 수행하는 메서드가 되도록 `하나의 기능` 을 수행하도록 `리팩토링(refactoring)` 할 것
+- [x] 현재 `한 연산(사칙연산)` 의 입력을 `세 번` 으로 나누어 받는데 이를 `한 번` 으로 줄일 것
+- [x] 2개 이상의 기능을 수행하는 메서드가 되도록 `하나의 기능` 을 수행하도록 `리팩토링(refactoring)` 할 것
   - 이 때 `Exception` 을 적극 활용해 보자.
   - `Exception` 을 활용할 필요 없는 메서드도 되도록 기능을 최소화
 <br/><br/><br/>
@@ -117,6 +128,11 @@ src/main/java/calculator ┬─ Main.java
 `Level03 계산기` 의 수행 시작부터 연산결과를 얻기까지의 흐름과 각 흐름에 따라 어떤 값을 반환하는지를 나타낸 아키텍처
 <br/><br/>
 ![level03-Calculator-architecture](images/level03-Calculator-architecture.png)
+
+### Level.04
+`Level04 계산기` 의 수행 시작부터 연산결과를 얻기까지의 흐름과 각 흐름에 따라 어떤 값을 반환하는지를 나타낸 아키텍처
+<br/><br/>
+![level04-Calculator-architecture](images/level04-Calculator-architecture.png)
 <br/><br/><br/>
 
 # 구현 및 트러블 슈팅
@@ -129,3 +145,4 @@ src/main/java/calculator ┬─ Main.java
 - [Level03 계산기 - Generic 활용 및 Enum 클래스 추가](https://development-diary-for-me.tistory.com/124)
 - [Level03 계산기 - Lambda&Stream 활용 메서드 추가](https://development-diary-for-me.tistory.com/125)
 - [All Level 계산기- 리팩토링(refactoring)](https://development-diary-for-me.tistory.com/126)
+- [Level04 계산기 - Exception 활용 & 리팩토링(refactoring)](https://development-diary-for-me.tistory.com/128)
