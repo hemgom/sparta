@@ -2,12 +2,13 @@ package calculator;
 
 import calculator.level02.Level02;
 import calculator.level03.Level03;
+import calculator.level04.Level04;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import static calculator.level03.enums.SystemMessage.*;
-import static calculator.level03.enums.ValidCriteria.*;
+import static calculator.enums.SystemMessage.*;
+import static calculator.enums.ValidCriteria.*;
 
 /**
  * 계산기(프로그램) 시작 클래스(= main 메서드)
@@ -37,7 +38,19 @@ public class Main {
 
         // 계산기를 사용할 경우 사용자에게 입력 방식 안내
         if (useOrNot) {
-            System.out.println(INPUT_GUIDE.getMessage());
+            if (calNum.equals(LEVEL_FOUR.getCriteria())) {
+                System.out.println(ONE_INPUT_GUIDE.getMessage());
+            } else {
+                System.out.println(THREE_INPUT_GUIDE.getMessage());
+            }
+        }
+
+        // Level04 계산기 동작
+        if (calNum.equals(LEVEL_FOUR.getCriteria())) {
+            Level04 level04 = new Level04();
+            while (true) {
+                if (!level04.start(sc)) break;
+            }
         }
 
         // Level03 계산기 동작

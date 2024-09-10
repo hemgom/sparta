@@ -2,8 +2,8 @@ package calculator.level03.validation;
 
 import java.util.regex.Pattern;
 
-import static calculator.level03.enums.SystemMessage.*;
-import static calculator.level03.enums.ValidCriteria.*;
+import static calculator.enums.SystemMessage.*;
+import static calculator.enums.ValidCriteria.*;
 
 // 입력 값의 유효성을 확인하는 클래스, Enum 클래스의 열거 상수를 사용함
 public class ValidInput {

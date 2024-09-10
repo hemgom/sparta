@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import static calculator.level03.enums.Operator.*;
+import static calculator.enums.Operator.*;
 
 // 요구사항은 정수(Integer) 입력에서 실수(Double) 입력으로 바뀌어, 타입을 선택할 수 있는 Generic 클래스 생성
 public class Calculator<T extends Number> {

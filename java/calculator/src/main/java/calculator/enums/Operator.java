@@ -1,4 +1,4 @@
-package calculator.level03.enums;
+package calculator.enums;
 
 // 사용 연산자 값을 설정하는 Enum 클래스
 public enum Operator {

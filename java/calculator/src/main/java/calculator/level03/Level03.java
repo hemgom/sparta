@@ -5,7 +5,7 @@ import calculator.level03.validation.ValidInput;
 
 import java.util.Scanner;
 
-import static calculator.level03.enums.SystemMessage.*;
+import static calculator.enums.SystemMessage.*;
 
 // Level03 계산기의 수행 흐름 로직을 작성한 클래스
 public class Level03 {
