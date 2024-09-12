@@ -47,7 +47,6 @@ public class Level04 {
         return true;
     }
 
-    //
     private void bigRecentlyResults(double result) {
         System.out.println(
                 BIGGER_RESULTS.getMessage() + cal.getBiggerResults(result) + "\n"
