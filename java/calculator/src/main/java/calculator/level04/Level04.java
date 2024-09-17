@@ -1,7 +1,7 @@
 package calculator.level04;
 
 import calculator.level03.calculate.Calculator;
-import calculator.level04.validation.ValidInput;
+import calculator.level04.validation.InputValidator;
 
 import java.util.Scanner;
 
@@ -14,7 +14,7 @@ public class Level04 {
     private final Calculator<Double> cal = new Calculator<>();
 
     // Exception 을 활용해 추가한 level04/validation/ValidInput 객체 사용
-    private final ValidInput valid = new ValidInput();
+    private final InputValidator valid = new InputValidator();
 
     // Scanner 객체를 파라미터로 전달 받아 계산기 동작을 수행하는 메서드
     // 기본적으로 수행을 반복하도록 true 를 반환, 수행 종료시 false 반환
@@ -23,12 +23,12 @@ public class Level04 {
         String input = sc.nextLine();
 
         // 입력 값과 종료 명령어가 같다면 false 반환, 계산기 반복 호출을 멈춤
-        if (valid.validExit(input)) return false;
+        if (valid.isExitCommand(input)) return false;
 
         // 입력 값의 유효성을 검증해 유효하지 않다면 예외가 발생, 발생한 예외를 처리
         // 예외처리 후 true 를 반환해 계산기 처음으로 돌아가 다시 입력부터 시작
         try {
-            valid.validCalculation(input);
+            valid.checkValidCalculation(input);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return true;

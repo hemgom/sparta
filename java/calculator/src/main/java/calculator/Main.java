@@ -33,7 +33,7 @@ public class Main {
                 useOrNot = false;
                 break;   // "exit" 입력시 반복 탈출, 계산기 종료
             }
-            if (checkCalNum(calNum)) break;   // 오입력 시 과정 반복, 정상입력 시 반복 탈출
+            if (isValidCalculatorNumber(calNum)) break;   // 오입력 시 과정 반복, 정상입력 시 반복 탈출
         }
 
         // 계산기를 사용할 경우 사용자에게 입력 방식 안내
@@ -74,14 +74,14 @@ public class Main {
             // 연산에 필요한 값 입력 및 변수 저장 및 사용자의 계산기 수행 의사확인 과정
             // 입력 값 저장 후 바로 저장 값이 "exit"(종료 명령어)인지 확인하는 메서드 호출
             String firstInput = sc.nextLine();
-            if (checkExit(firstInput)) break;
+            if (isExitCommand(firstInput)) break;
             String operator = sc.nextLine();
-            if (checkExit(operator)) break;
+            if (isExitCommand(operator)) break;
             String secondInput = sc.nextLine();
-            if (checkExit(secondInput)) break;
+            if (isExitCommand(secondInput)) break;
 
             // 입력 값 유효성 검사, 유효하지 않은 값이 있다면 반복문 처음으로
-            if (!checkInput(firstInput, operator, secondInput)) continue;
+            if (!isValidCalculation(firstInput, operator, secondInput)) continue;
 
             // 나누기 연산을 염두해 입력받은 정수들을 실수형으로 변환, operator 는 그대로 사용
             double firstNum = Double.parseDouble(firstInput);
@@ -118,14 +118,14 @@ public class Main {
      */
     // 입력받은 값이 계산기 종료 명령어와 같은지 확인하는 메서드
     // 계산기 종료 명령어와 같다면 'true', 다르다면 'false' 반환
-    public static boolean checkExit(String input) {
+    public static boolean isExitCommand(String input) {
         final String exitCommand = "exit";   // 종료 명령어 지정
         return input.equals(exitCommand);
     }
 
     // 입력한 계산기 번호의 유효성을 검사하는 메서드
     // 통과시 true, 통과 실패시 false 반환
-    public static boolean checkCalNum(String num) {
+    public static boolean isValidCalculatorNumber(String num) {
         if (!Pattern.matches(CALCULATOR_NUMBER.getCriteria(), num)) {
             System.out.println(
                     ERROR_SELECT_CALCULATOR.getMessage() + "\n" +
@@ -161,7 +161,7 @@ public class Main {
      * 반환 값(result)이 false 라면 처음부터 다시 입력해달라는 요청 메시지까지 출력
      * 결과적으로 유효하다면 true, 유효하지 않다면 false 반환
      */
-    public static boolean checkInput(String firstNum, String operator, String secondNum) {
+    public static boolean isValidCalculation(String firstNum, String operator, String secondNum) {
         final String NUMBER = "^(0|[1-9][0-9]*)$";   // 피연산자를 확인하는 정규식, level01 과 level02 계산기는 피연산자로 자연수와 '0' 만 입력 가능
         final String OPERATOR = "[+\\-*/]";   // 연산자를 확인하는 정규식
 
