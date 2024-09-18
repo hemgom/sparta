@@ -1,7 +1,7 @@
 package calculator.level02;
 
+import calculator.Main;
 import calculator.level02.calculation.Calculator;
-import calculator.level02.calculation.Operation;
 import calculator.level02.calculation.OperationMapper;
 import calculator.level02.validation.InputValidator;
 
@@ -37,6 +37,13 @@ public class Level02 {
             operationMapper.addOperation(operator);
 
             double result = cal.calculate(operationMapper.getOperation(operator));    // 연산 수행
+            if (!Main.isValidCalculationResult(result)) {       // 연산 결과 유효성 검증
+                System.out.println(
+                        "0 으로 나눌 수 없습니다.\n" +
+                        "==========================="
+                );
+                continue;
+            }
             cal.saveResult(result);             // 연산 결과 저장
             System.out.println("연산 결과 : " + result + "\n===========================");
 

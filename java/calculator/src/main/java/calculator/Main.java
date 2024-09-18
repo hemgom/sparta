@@ -88,20 +88,33 @@ public class Main {
             double secondNum = Double.parseDouble(secondInput);
 
             // 사칙연산 수행, 입력받은 연산기호에 맞춰 연산 메서드를 수행후 결과 출력
+            double result;
             switch (operator) {
                 case "+":
-                    addOperation(firstNum, secondNum);
+                    result = addOperation(firstNum, secondNum);
                     break;
                 case "-":
-                    subOperation(firstNum, secondNum);
+                    result = subOperation(firstNum, secondNum);
                     break;
                 case "*":
-                    mulOperation(firstNum, secondNum);
+                    result = mulOperation(firstNum, secondNum);
                     break;
                 case "/":
-                    divOperation(firstNum, secondNum);
+                    result = divOperation(firstNum, secondNum);
                     break;
+                default:
+                    continue;
             }
+
+            // 연산결과 검증 후 출력
+            if (!isValidCalculationResult(result)) {
+                System.out.println(
+                        "0 으로 나눌 수 없습니다.\n" +
+                        "==========================="
+                );
+                continue;
+            }
+            printResult(result);
 
             System.out.println("===========================");  // 실행창 수행연산 구분선
 
@@ -116,6 +129,11 @@ public class Main {
      * 아래는 Level01 계산기 구성에 필요한 메서드들
      * Level01 계산기는 'static main()` 에 구현했으므로 아래의 메서드들도 static 메서드로 구현
      */
+    // 연산 결과가 'Infinity' 또는 'NaN' 일 경우(= '0' 으로 나누는 연산을 수행한 경우) 연산 결과가 아닌 시스템 메시지를 출력하는 메서드
+    public static boolean isValidCalculationResult(double result) {
+        return !Double.isInfinite(result) && !Double.isNaN(result);
+    }
+
     // 입력받은 값이 계산기 종료 명령어와 같은지 확인하는 메서드
     // 계산기 종료 명령어와 같다면 'true', 다르다면 'false' 반환
     public static boolean isExitCommand(String input) {
@@ -142,17 +160,17 @@ public class Main {
     }
 
     // 사칙연산 중 하나를 수행하는 메서드들
-    public static void addOperation(double firstNum, double secondNum) {
-        printResult(firstNum + secondNum);
+    public static double addOperation(double firstNum, double secondNum) {
+        return firstNum + secondNum;
     }
-    public static void subOperation(double firstNum, double secondNum) {
-        printResult(firstNum - secondNum);
+    public static double subOperation(double firstNum, double secondNum) {
+        return firstNum - secondNum;
     }
-    public static void mulOperation(double firstNum, double secondNum) {
-        printResult(firstNum * secondNum);
+    public static double mulOperation(double firstNum, double secondNum) {
+        return firstNum * secondNum;
     }
-    public static void divOperation(double firstNum, double secondNum) {
-        printResult(firstNum / secondNum);
+    public static double divOperation(double firstNum, double secondNum) {
+        return firstNum / secondNum;
     }
 
     /**

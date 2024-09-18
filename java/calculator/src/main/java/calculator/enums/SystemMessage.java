@@ -21,6 +21,7 @@ public enum SystemMessage {
     BIGGER_RESULTS("현재 연산결과보다 큰 결과들 : "),
     RESULT_WINDOW_DIVIDER("==========================="),
     CALCULATOR_EXIT("계산기를 종료합니다."),
+    CANNOT_DIVIDE_BY_ZERO("0 으로 나눌 수 없습니다."),
     ;
 
     private final String message;

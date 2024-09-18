@@ -2,6 +2,7 @@ package calculator.level03;
 
 import calculator.level03.calculation.Calculator;
 import calculator.level03.calculation.OperationMapper;
+import calculator.level03.validation.CalculationResultValidator;
 import calculator.level03.validation.InputValidator;
 
 import java.util.Scanner;
@@ -14,6 +15,7 @@ public class Level03 {
     private final Calculator<Double> cal = new Calculator<>();
     private final InputValidator valid = new InputValidator();
     private final OperationMapper<Double> operationMapper = new OperationMapper<>();
+    private final CalculationResultValidator calculationResultValidator = new CalculationResultValidator();
 
     // 연산을 계속 수행할 경우 true 반환, 종료할 경우 false 반환
     public boolean start(Scanner sc) {
@@ -38,6 +40,7 @@ public class Level03 {
 
         // 연산 수행 및 연산결과 추가
         double result = cal.calculate(operationMapper.getOperation(secondInput));
+        if (!calculationResultValidator.isValidCalculationResult(result)) return true;  // 연산 결과 유효성 검증
         System.out.println(CALCULATE_RESULT.getMessage() + result);
 
         // 최근 연산결과(현재 입력 결과 포함X) 출력
