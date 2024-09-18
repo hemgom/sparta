@@ -1,6 +1,8 @@
 package calculator.level02;
 
-import calculator.level02.calculate.Calculator;
+import calculator.level02.calculation.Calculator;
+import calculator.level02.calculation.Operation;
+import calculator.level02.calculation.OperationMapper;
 import calculator.level02.validation.InputValidator;
 
 import java.util.Scanner;
@@ -9,6 +11,7 @@ import java.util.Scanner;
 public class Level02 {
     private final InputValidator valid = new InputValidator();
     private final Calculator cal = new Calculator();
+    private final OperationMapper operationMapper = new OperationMapper();
 
     public void start(Scanner sc) {
 
@@ -29,9 +32,11 @@ public class Level02 {
             // 입력 값을 Calculator 객체에 저장
             cal.setFirstNum(firstInput);
             cal.setSecondNum(secondInput);
-            cal.setOperation(operator);
 
-            double result = cal.calculate();    // 연산 수행
+            // 연산기호에 해당하는 연산객체 생성
+            operationMapper.addOperation(operator);
+
+            double result = cal.calculate(operationMapper.getOperation(operator));    // 연산 수행
             cal.saveResult(result);             // 연산 결과 저장
             System.out.println("연산 결과 : " + result + "\n===========================");
 

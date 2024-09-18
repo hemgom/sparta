@@ -1,4 +1,4 @@
-package calculator.level02.calculate;
+package calculator.level02.calculation;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -7,7 +7,6 @@ import java.util.Queue;
 public class Calculator {
     private double firstNum;
     private double secondNum;
-    private Operation operation;
     private final Queue<Double> calculateResults = new LinkedList<>();
 
     public void setFirstNum(String num) {
@@ -17,26 +16,9 @@ public class Calculator {
     public void setSecondNum(String num) {
         secondNum = Double.parseDouble(num);
     }
-    
-    public void setOperation(String operator) {
-        switch (operator) {
-            case "+":
-                operation = new AddOperation();
-                break;
-            case "-":
-                operation = new SubOperation();
-                break;
-            case "*":
-                operation = new MulOperation();
-                break;
-            case "/":
-                operation = new DivOperation();
-                break;
-        }
-    }
 
     // 연산 객체의 연산 메서드(calculate)를 호출하는 메서드
-    public double calculate() {
+    public double calculate(Operation operation) {
         return operation.calculate(firstNum, secondNum);
     }
 
