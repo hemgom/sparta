@@ -1,6 +1,7 @@
 package calculator.level03;
 
-import calculator.level03.calculate.Calculator;
+import calculator.level03.calculation.Calculator;
+import calculator.level03.calculation.OperationMapper;
 import calculator.level03.validation.InputValidator;
 
 import java.util.Scanner;
@@ -12,6 +13,7 @@ public class Level03 {
     // 실수 값을 받을 수 있어야 하므로 Double 타입의 Calculator 객체 생성
     private final Calculator<Double> cal = new Calculator<>();
     private final InputValidator valid = new InputValidator();
+    private final OperationMapper<Double> operationMapper = new OperationMapper<>();
 
     // 연산을 계속 수행할 경우 true 반환, 종료할 경우 false 반환
     public boolean start(Scanner sc) {
@@ -29,11 +31,13 @@ public class Level03 {
 
         // 모든 유효성 검사가 끝난 입력 값들을 Calculator 객체에 저장
         cal.setFirstNum(Double.parseDouble(firstInput));
-        cal.setOperation(secondInput);
         cal.setSecondNum(Double.parseDouble(thirdInput));
 
+        // OperationMapper 객체의 Collection 필드에 연산자 및 연산객체 저장
+        operationMapper.addOperation(secondInput);
+
         // 연산 수행 및 연산결과 추가
-        double result = cal.calculate();
+        double result = cal.calculate(operationMapper.getOperation(secondInput));
         System.out.println(CALCULATE_RESULT.getMessage() + result);
 
         // 최근 연산결과(현재 입력 결과 포함X) 출력

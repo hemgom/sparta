@@ -1,10 +1,12 @@
 package calculator.level04;
 
-import calculator.level03.calculate.Calculator;
+import calculator.enums.Operator;
+import calculator.level03.calculation.Calculator;
 import calculator.level04.validation.InputValidator;
 
 import java.util.Scanner;
 
+import static calculator.enums.Operator.*;
 import static calculator.enums.SystemMessage.*;
 
 // 모든 Level 의 요구사항에는 없지만 개인적으로 필요하다 생각한 부분을 반영한 Level04 계산기 클래스
@@ -34,11 +36,21 @@ public class Level04 {
             return true;
         }
 
-        // 연산자, 피연산자 Calculator 객체 필드에 저장
-        setCalculation(input);
+        // 입력 값의 연산자, 피연산자를 문자열 배열 operation 에 저장
+        String[] operation = input.split(" ");
+
+        // 피연산자 Calculator 객체 필드에 저장
+        setOperand(operation[0], operation[2]);
 
         // 연산 수행 -> 최근 연산 결과(최대 5개) 출력 -> 현재 연산결과 보다 큰 최근 연산결과 출력
-        double result = cal.calculate();   // 연산 수행
+        // Operator.findByOperator() 메서드에서 예외를 던질 수 있어 try-catch 문을 사용
+        double result;
+        try {
+            result = cal.calculate(findByOperator(operation[1]));   // 연산 수행
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return true;
+        }
         printResult(result);        // 연산 결과 출력
         recentlyResults();          // 최근 연산 결과(최대 5개, 최근 순)
         bigRecentlyResults(result);    // 현재 연산 결과보다 큰 최근 연산 결과들 출력
@@ -64,11 +76,9 @@ public class Level04 {
         System.out.println(CALCULATE_RESULT.getMessage() + result);
     }
 
-    private void setCalculation(String input) {
-        String[] operation = input.split(" ");
-        cal.setFirstNum(Double.parseDouble(operation[0]));
-        cal.setOperation(operation[1]);
-        cal.setSecondNum(Double.parseDouble(operation[2]));
+    private void setOperand(String operand1, String operand2) {
+        cal.setFirstNum(Double.parseDouble(operand1));
+        cal.setSecondNum(Double.parseDouble(operand2));
     }
 
 }

@@ -1,16 +1,13 @@
-package calculator.level03.calculate;
+package calculator.level03.calculation;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import static calculator.enums.Operator.*;
-
 // 요구사항은 정수(Integer) 입력에서 실수(Double) 입력으로 바뀌어, 타입을 선택할 수 있는 Generic 클래스 생성
 public class Calculator<T extends Number> {
     private T firstNum;
     private T secondNum;
-    private Operation<T> operation;
     private final Queue<Double> calculateResults = new LinkedList<>();
 
     /**
@@ -24,26 +21,7 @@ public class Calculator<T extends Number> {
         this.secondNum = num;
     }
 
-    /**
-     * Enum 클래스의 열거 상수를 활용한 메서드
-     * 지정한 연산 기호와 입력 값을 비교해 해당하는 연산 클래스 객체를 생성
-     * Operation 타입의 변수에 객체를 저장해 연산에 해당하는 연산 클래스 객체를 사용가능
-     */
-    public void setOperation(String operator) {
-        if (operator.equals(ADD.getOperator()))
-            operation = new AddOperation<>();
-
-        if (operator.equals(SUB.getOperator()))
-            operation = new SubOperation<>();
-
-        if (operator.equals(MUL.getOperator()))
-            operation = new MulOperation<>();
-
-        if (operator.equals(DIV.getOperator()))
-            operation = new DivOperation<>();
-    }
-
-    public double calculate() {
+    public double calculate(Operation<T> operation) {
         return operation.calculate(firstNum, secondNum);
     }
 
