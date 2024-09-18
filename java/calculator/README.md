@@ -148,3 +148,4 @@ src/main/java/calculator ┬─ Main.java
 - [Level04 계산기 - Exception 활용 & 리팩토링(refactoring)](https://development-diary-for-me.tistory.com/128)
 - [피드백 반영 - 클래스&메서드 네이밍](https://development-diary-for-me.tistory.com/140)
 - [피드백 반영 - 불필요한 연산객체 생성 & 역할 분리](https://development-diary-for-me.tistory.com/141)
+- [피드백 반영 - 명확한 예외 처리 & '0' 으로 나누는 연산 예외 처리](https://development-diary-for-me.tistory.com/142)
