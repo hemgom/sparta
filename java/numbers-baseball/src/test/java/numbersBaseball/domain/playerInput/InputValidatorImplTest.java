@@ -1,8 +1,9 @@
 package numbersBaseball.domain.playerInput;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ThreeDigitValidatorTest {
 
@@ -18,7 +19,7 @@ class ThreeDigitValidatorTest {
         boolean result = validator.isValid(input);
 
         //then
-        Assertions.assertThat(result).isFalse();
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -31,7 +32,7 @@ class ThreeDigitValidatorTest {
         boolean result = validator.isValid(input);
 
         //then
-        Assertions.assertThat(result).isFalse();
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -44,7 +45,7 @@ class ThreeDigitValidatorTest {
         boolean result = validator.isValid(input);
 
         //then
-        Assertions.assertThat(result).isFalse();
+        assertThat(result).isFalse();
     }
 
     @Test
@@ -57,6 +58,6 @@ class ThreeDigitValidatorTest {
         boolean result = validator.isValid(input);
 
         //then
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 }
