@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ThreeDigitValidatorTest {
+class InputValidatorImplTest {
 
-    InputValidator validator = new ThreeDigitValidator();
+    InputValidator validator = new InputValidatorImpl();
 
     @Test
     @DisplayName("세 자리 수이지만 각 숫자가 중복인 경우")
@@ -16,7 +16,7 @@ class ThreeDigitValidatorTest {
         String input = "252";
 
         //when
-        boolean result = validator.isValid(input);
+        boolean result = validator.isValidInput(input);
 
         //then
         assertThat(result).isFalse();
@@ -29,7 +29,7 @@ class ThreeDigitValidatorTest {
         String input = "A12";
 
         //when
-        boolean result = validator.isValid(input);
+        boolean result = validator.isValidInput(input);
 
         //then
         assertThat(result).isFalse();
@@ -42,7 +42,7 @@ class ThreeDigitValidatorTest {
         String input = "1234";
 
         //when
-        boolean result = validator.isValid(input);
+        boolean result = validator.isValidInput(input);
 
         //then
         assertThat(result).isFalse();
@@ -55,7 +55,7 @@ class ThreeDigitValidatorTest {
         String input = "349";
 
         //when
-        boolean result = validator.isValid(input);
+        boolean result = validator.isValidInput(input);
 
         //then
         assertThat(result).isTrue();

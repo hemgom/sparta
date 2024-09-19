@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-class ThreeDigitNumberTest {
+class CorrectAnswerGeneratorImplTest {
 
 
     @Test
@@ -14,13 +14,13 @@ class ThreeDigitNumberTest {
     void makeCorrectAnswerTest() {
 
         //given
-        ThreeDigitNumber threeDigitNumber = new ThreeDigitNumber();
+        CorrectAnswerGeneratorImpl correctAnswerGeneratorImpl = new CorrectAnswerGeneratorImpl();
 
         //when
-        threeDigitNumber.makeCorrectAnswer();
+        correctAnswerGeneratorImpl.makeCorrectAnswer();
 
         //then
-        System.out.println(threeDigitNumber.getCorrectAnswer());
+        System.out.println(correctAnswerGeneratorImpl.getCorrectAnswer());
     }
 
     @Test
@@ -28,13 +28,13 @@ class ThreeDigitNumberTest {
     void checkRandom() {
 
         //given
-        ThreeDigitNumber threeDigitNumber = new ThreeDigitNumber();
+        CorrectAnswerGeneratorImpl correctAnswerGeneratorImpl = new CorrectAnswerGeneratorImpl();
         List<String> answers = new ArrayList<>();
 
         //when
         for (int i = 0; i < 20; i++) {
-            threeDigitNumber.makeCorrectAnswer();
-            answers.add(threeDigitNumber.getCorrectAnswer());
+            correctAnswerGeneratorImpl.makeCorrectAnswer();
+            answers.add(correctAnswerGeneratorImpl.getCorrectAnswer());
         }
 
         //then

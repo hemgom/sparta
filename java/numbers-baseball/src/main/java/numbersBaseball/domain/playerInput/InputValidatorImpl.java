@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 import static numbersBaseball.enums.ValidCriteria.PLAYER_INPUT_THREE_DIGITS;
 
-// 플레이어의 입력(세 자리 숫자)의 유효성을 검증하는 역할
-public class ThreeDigitValidator implements InputValidator {
+// InputValidator 인터페이스를 구현한 클래스
+public class InputValidatorImpl implements InputValidator {
     private final int inputLength = 3;
 
     /**
@@ -17,7 +17,7 @@ public class ThreeDigitValidator implements InputValidator {
      * 검증을 위한 두 개의 메서드를 호출해 예외를 처리
      */
     @Override
-    public boolean isValid(String input) {
+    public boolean isValidInput(String input) {
         try {
             checkInputPattern(input);
             checkInputElements(input);

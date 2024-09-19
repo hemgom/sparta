@@ -14,5 +14,4 @@ public enum ValidCriteria {
     public String getCriteria() {
         return criteria;
     }
-
 }
