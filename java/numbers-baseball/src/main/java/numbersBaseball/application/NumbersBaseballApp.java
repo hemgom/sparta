@@ -9,17 +9,38 @@ import numbersBaseball.domain.playerInput.InputValidatorImpl;
 
 import java.util.Scanner;
 
+import static numbersBaseball.enums.SystemMessage.*;
+import static numbersBaseball.enums.ValidCriteria.FIRST_MENU_NUM;
+import static numbersBaseball.enums.ValidCriteria.THIRD_MENU_NUM;
+
 public class NumbersBaseball {
     private final CorrectAnswerGenerator correctAnswerGenerator = new CorrectAnswerGeneratorImpl();
     private final InputValidator inputValidator = new InputValidatorImpl();
     private final CorrectAnswerComparator correctAnswerComparator = new CorrectAnswerComparatorImpl();
 
-    public void start(Scanner scanner) {
+    public boolean start(Scanner scanner) {
+        System.out.println(START_MENU.getMessage());
 
+        String menuNum;
+        do {
+            menuNum = scanner.nextLine();
+        } while (!inputValidator.isValidMenuNum(menuNum));
+
+        if (menuNum.equals(FIRST_MENU_NUM.getCriteria())) {
+            System.out.println(GAME_START.getMessage());
+            play(scanner);
+        }
+
+        return !menuNum.equals(THIRD_MENU_NUM.getCriteria());
+    }
+
+    private void play(Scanner scanner) {
         correctAnswerGenerator.makeCorrectAnswer();
         String correctAnswer = correctAnswerGenerator.getCorrectAnswer();
 
         while (true) {
+            System.out.println(PLEASE_INPUT_NUMBERS.getMessage());
+
             // 사용자 입력
             String playerInput = scanner.nextLine();
 
@@ -29,14 +50,15 @@ public class NumbersBaseball {
             // 정답과 입력 값 비교
             correctAnswerComparator.compareCorrectAnswer(correctAnswer, playerInput);
             if (correctAnswerComparator.getStrike() == 3) {
-                System.out.println("축하합니다! 정답입니다!");
+                System.out.println(CONGRATULATION.getMessage());
                 break;
             } else {
-                System.out.println(
-                        "결과 : " +
-                                correctAnswerComparator.getStrike() + "스트라이크, " +
-                                correctAnswerComparator.getBall() + "볼, " +
-                                correctAnswerComparator.getOut() + "아웃");
+                System.out.printf(
+                        COMPARE_RESULT.getMessage() + "\n",
+                        correctAnswerComparator.getStrike(),
+                        correctAnswerComparator.getBall(),
+                        correctAnswerComparator.getOut()
+                );
             }
         }
     }
