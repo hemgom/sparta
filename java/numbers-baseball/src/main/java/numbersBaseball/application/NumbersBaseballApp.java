@@ -13,7 +13,7 @@ import static numbersBaseball.enums.SystemMessage.*;
 import static numbersBaseball.enums.ValidCriteria.FIRST_MENU_NUM;
 import static numbersBaseball.enums.ValidCriteria.THIRD_MENU_NUM;
 
-public class NumbersBaseball {
+public class NumbersBaseballApp {
     private final CorrectAnswerGenerator correctAnswerGenerator = new CorrectAnswerGeneratorImpl();
     private final InputValidator inputValidator = new InputValidatorImpl();
     private final CorrectAnswerComparator correctAnswerComparator = new CorrectAnswerComparatorImpl();

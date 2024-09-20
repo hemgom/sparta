@@ -4,4 +4,7 @@ package numbersBaseball.domain.playerInput;
 public interface InputValidator {
     // 입력 값의 유효성을 검증하는 메서드
     boolean isValidInput(String input);
+
+    // 메뉴 번호의 유효성을 검증하는 메서드
+    boolean isValidMenuNum(String menuNum);
 }
