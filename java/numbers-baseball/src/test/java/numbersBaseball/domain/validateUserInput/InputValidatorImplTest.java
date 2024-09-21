@@ -1,4 +1,4 @@
-package numbersBaseball.domain.playerInput;
+package numbersBaseball.domain.userInput;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

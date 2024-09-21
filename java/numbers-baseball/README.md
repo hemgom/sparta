@@ -65,3 +65,4 @@ src/main/java/numberBaseball ── Main.java
 구현에 대한 내용과 어떤 문제점을 예상, 파악해 코드를 수정했는지에 대한 내용을 담은 포스팅 목록
 - [구현 전 요구사항 분석 및 설계](https://development-diary-for-me.tistory.com/135)
 - [Level01-02 요구사항 반영 후 리팩토링](https://development-diary-for-me.tistory.com/144)
+- [Level03 요구사항 반영 후 리팩토링](https://development-diary-for-me.tistory.com/145)
