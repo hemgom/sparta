@@ -1,6 +1,6 @@
-package numbersBaseball.domain.playRecord;
+package numbersBaseball.domain.saveGameRecord;
 
-import java.util.Queue;
+import java.util.List;
 
 // 게임 기록을 저장(기록)하는 역할을 가질 클래스가 구현할 인터페이스
 public interface GameRecorder {
@@ -14,7 +14,7 @@ public interface GameRecorder {
     void saveRecord();
 
     // 저장된 모든 게임 기록을 가져오는 메서드
-    Queue<Integer> getGameRecords();
+    List<Integer> getGameRecords();
 
     // 저장된 모든 게임 기록을 초기화하는 메서드
     void clearGameRecords();

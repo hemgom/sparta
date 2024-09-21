@@ -1,4 +1,4 @@
-package numbersBaseball.domain.correctAnswer;
+package numbersBaseball.domain.generateCorrectAnswer;
 
 // 정답을 생성하는 역할을 가질 클래스가 구현할 인터페이스
 public interface CorrectAnswerGenerator {

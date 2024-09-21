@@ -1,4 +1,4 @@
-package numbersBaseball.domain.correctAnswer;
+package numbersBaseball.domain.generateCorrectAnswer;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

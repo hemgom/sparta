@@ -1,4 +1,4 @@
-package numbersBaseball.domain.dataCompare;
+package numbersBaseball.domain.checkCorrectAnswer;
 
 // CorrectAnswerComparator 인터페이스를 구현한 클래스
 public class CorrectAnswerComparatorImpl implements CorrectAnswerComparator {

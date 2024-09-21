@@ -1,4 +1,4 @@
-package numbersBaseball.domain.correctAnswer;
+package numbersBaseball.domain.generateCorrectAnswer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.List;
 
 // CorrectAnswerGenerator 인터페이스를 구현한 클래스
 public class CorrectAnswerGeneratorImpl implements CorrectAnswerGenerator {
-    private final List<Integer> numbers = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+    private final List<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     private String correctAnswer;
 
     @Override

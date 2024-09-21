@@ -1,15 +1,15 @@
 package numbersBaseball.application;
 
-import numbersBaseball.domain.correctAnswer.CorrectAnswerGenerator;
-import numbersBaseball.domain.correctAnswer.CorrectAnswerGeneratorImpl;
-import numbersBaseball.domain.dataCompare.CorrectAnswerComparator;
-import numbersBaseball.domain.dataCompare.CorrectAnswerComparatorImpl;
-import numbersBaseball.domain.playRecord.GameRecorder;
-import numbersBaseball.domain.playRecord.GameRecorderImpl;
-import numbersBaseball.domain.playerInput.InputValidator;
-import numbersBaseball.domain.playerInput.InputValidatorImpl;
+import numbersBaseball.domain.checkCorrectAnswer.CorrectAnswerComparator;
+import numbersBaseball.domain.checkCorrectAnswer.CorrectAnswerComparatorImpl;
+import numbersBaseball.domain.generateCorrectAnswer.CorrectAnswerGenerator;
+import numbersBaseball.domain.generateCorrectAnswer.CorrectAnswerGeneratorImpl;
+import numbersBaseball.domain.saveGameRecord.GameRecorder;
+import numbersBaseball.domain.saveGameRecord.GameRecorderImpl;
+import numbersBaseball.domain.validateUserInput.InputValidator;
+import numbersBaseball.domain.validateUserInput.InputValidatorImpl;
 
-import java.util.Queue;
+import java.util.List;
 import java.util.Scanner;
 
 import static numbersBaseball.enums.SystemMessage.*;
@@ -37,12 +37,17 @@ public class NumbersBaseballApp {
         }
 
         if (menuNum.equals(SECOND_MENU_NUM.getCriteria())) {
-            Queue<Integer> allRecord = gameRecorder.getGameRecords();
+            System.out.println(VIEW_GAME_RECORD.getMessage());
 
-            System.out.println("< 게임 기록 보기 >");
-            int playCount = 1;
-            while (!allRecord.isEmpty()) {
-                System.out.printf("%d번째 게임 : 시도 횟수 - %d\n", playCount++, allRecord.poll());
+            List<Integer> gameRecords = gameRecorder.getGameRecords();
+
+            if (gameRecords.isEmpty()) {
+                System.out.println(NO_SAVED_GAME_RECORD.getMessage());
+                return true;
+            }
+
+            for (int i = 0; i < gameRecords.size(); i++) {
+                System.out.printf(GAME_RECORD.getMessage(), i, gameRecords.get(i));
             }
 
             return true;

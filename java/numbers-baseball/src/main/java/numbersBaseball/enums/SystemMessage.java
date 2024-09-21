@@ -16,6 +16,12 @@ public enum SystemMessage {
             "결과 : %d 스트라이크, %d 볼, %d 아웃\n" +
             "=============================="
     ),
+    VIEW_GAME_RECORD("< 게임 기록 보기 >"),
+    NO_SAVED_GAME_RECORD(
+            "저장된 게임 기록이 존재하지 않습니다.\n" +
+            "=============================="
+    ),
+    GAME_RECORD("%d번째 게임 : 시도 횟수 - %d\n"),
     ;
 
     private final String message;

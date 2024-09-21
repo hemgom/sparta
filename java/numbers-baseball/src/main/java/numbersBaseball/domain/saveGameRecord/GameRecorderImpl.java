@@ -1,7 +1,7 @@
-package numbersBaseball.domain.playRecord;
+package numbersBaseball.domain.saveGameRecord;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 // GameRecorder 인터페이스를 구현한 클래스
 public class GameRecorderImpl implements GameRecorder {
@@ -9,7 +9,7 @@ public class GameRecorderImpl implements GameRecorder {
     private int tryCount = 0;
 
     // 각 게임별 정답을 맞추기까지 시도한 '입력 횟수(= 플레이 기록)' 를 저장하는 Collection 객체
-    private final Queue<Integer> gameRecords = new LinkedList<>();
+    private final List<Integer> gameRecords = new ArrayList<>();
 
     @Override
     public void playNewGame() {
@@ -24,12 +24,12 @@ public class GameRecorderImpl implements GameRecorder {
 
     @Override
     public void saveRecord() {
-        gameRecords.offer(tryCount);
+        gameRecords.add(tryCount);
     }
 
     @Override
-    public Queue<Integer> getGameRecords() {
-        return gameRecords;
+    public List<Integer> getGameRecords() {
+        return new ArrayList<>(gameRecords);
     }
 
     @Override

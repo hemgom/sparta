@@ -1,4 +1,4 @@
-package numbersBaseball.domain.userInput;
+package numbersBaseball.domain.validateUserInput;
 
 import numbersBaseball.exception.BadInputException;
 
