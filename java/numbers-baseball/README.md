@@ -46,16 +46,16 @@ src/main/java/numberBaseball ── Main.java
 
 ## 도전 기능
 ### Level.03 - 기능 추가 및 개선한 '숫자 야구 게임'
-- [ ] `게임 기록 통계` 기능 추가
+- [x] `게임 기록 통계` 기능 추가
   - 현재 진행 중인 게임이 몇 번째 게임인지 기록
   - 플레이어가 정답을 맞출 때까지 `시도한 횟수` 를 기록 게임이 끝났을 때, 모든 게임에 대한 기록을 출력
-- [ ] 출력 개선
+- [x] 출력 개선
   - `게임 기록 통계` 기능이 추가 되었으니 정답시 출력되는 안내 문구에서 `2` 번을 선택할 수 있게 수정
   - `3` 번을 누르면 이전 처럼 게임이 종료되며, 이전 게임 기록은 초기화 된다.
   - `1,2,3` 이외의 입력에 대한 오류 메시지 출력
 
 ### Level.04 - 기능 추가 및 개선한 '숫자 야구 게임'
-- [ ] `게임 난이도 조절` 기능 추가
+- [x] `게임 난이도 조절` 기능 추가
   - 난이도를 입력 받을 수 있고 난이도에 따라 숫자의 자릿수를 조절할 수 있다.
   - 자리수(난이도)는 `3,4,5` 중에 선택 가능, 이외의 숫자는 예외 메시지 출력
   - 자리수(난이도)를 입력하는 경우 자동적으로 게임이 시작됨
@@ -66,3 +66,4 @@ src/main/java/numberBaseball ── Main.java
 - [구현 전 요구사항 분석 및 설계](https://development-diary-for-me.tistory.com/135)
 - [Level01-02 요구사항 반영 후 리팩토링](https://development-diary-for-me.tistory.com/144)
 - [Level03 요구사항 반영 후 리팩토링](https://development-diary-for-me.tistory.com/145)
+- [Level04 요구사항 반영](https://development-diary-for-me.tistory.com/146)
