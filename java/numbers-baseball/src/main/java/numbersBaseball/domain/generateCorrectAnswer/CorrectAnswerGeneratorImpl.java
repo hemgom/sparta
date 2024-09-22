@@ -11,12 +11,12 @@ public class CorrectAnswerGeneratorImpl implements CorrectAnswerGenerator {
     private String correctAnswer;
 
     @Override
-    public void makeCorrectAnswer() {
+    public void makeCorrectAnswer(int digits) {
 
         StringBuilder result = new StringBuilder();
 
         Collections.shuffle(numbers);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < digits; i++) {
             result.append(numbers.get(i));
         }
 

@@ -16,7 +16,7 @@ class InputValidatorImplTest {
         String input = "252";
 
         //when
-        boolean result = validator.isValidInput(input);
+        boolean result = validator.isValidInput(input, 3);
 
         //then
         assertThat(result).isFalse();
@@ -29,7 +29,7 @@ class InputValidatorImplTest {
         String input = "A12";
 
         //when
-        boolean result = validator.isValidInput(input);
+        boolean result = validator.isValidInput(input, 3);
 
         //then
         assertThat(result).isFalse();
@@ -42,7 +42,7 @@ class InputValidatorImplTest {
         String input = "1234";
 
         //when
-        boolean result = validator.isValidInput(input);
+        boolean result = validator.isValidInput(input, 3);
 
         //then
         assertThat(result).isFalse();
@@ -55,7 +55,7 @@ class InputValidatorImplTest {
         String input = "349";
 
         //when
-        boolean result = validator.isValidInput(input);
+        boolean result = validator.isValidInput(input, 3);
 
         //then
         assertThat(result).isTrue();

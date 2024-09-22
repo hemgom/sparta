@@ -30,13 +30,31 @@ public class NumbersBaseballApp {
             menuNum = scanner.nextLine();
         } while (!inputValidator.isValidMenuNum(menuNum));
 
-        if (menuNum.equals(FIRST_MENU_NUM.getCriteria())) {
+        int choiceLength = Integer.parseInt(DEFAULT_LENGTH.getCriteria());
+
+        if (menuNum.equals(MENU_NUM_ZERO.getCriteria())) {
+            System.out.println(PLEASE_INPUT_LENGTH.getMessage());
+
+            while (true) {
+                String difficultyLevel = scanner.nextLine();
+                if (!inputValidator.isValidDifficultyLevel(difficultyLevel)) continue;
+                choiceLength = Integer.parseInt(difficultyLevel);
+                break;
+            }
+
+            System.out.printf(LENGTH_SETTING_COMPLETE.getMessage(), choiceLength);
             System.out.println(GAME_START.getMessage());
-            play(scanner);
+            play(scanner, choiceLength);
             return true;
         }
 
-        if (menuNum.equals(SECOND_MENU_NUM.getCriteria())) {
+        if (menuNum.equals(MENU_NUM_ONE.getCriteria())) {
+            System.out.println(GAME_START.getMessage());
+            play(scanner, choiceLength);
+            return true;
+        }
+
+        if (menuNum.equals(MENU_NUM_TWO.getCriteria())) {
             System.out.println(VIEW_GAME_RECORD.getMessage());
 
             List<Integer> gameRecords = gameRecorder.getGameRecords();
@@ -53,7 +71,7 @@ public class NumbersBaseballApp {
             return true;
         }
 
-        if (menuNum.equals(THIRD_MENU_NUM.getCriteria())) {
+        if (menuNum.equals(MENU_NUM_THREE.getCriteria())) {
             gameRecorder.clearGameRecords();
             return false;
         }
@@ -61,8 +79,8 @@ public class NumbersBaseballApp {
         return true;
     }
 
-    private void play(Scanner scanner) {
-        correctAnswerGenerator.makeCorrectAnswer();
+    private void play(Scanner scanner, int length) {
+        correctAnswerGenerator.makeCorrectAnswer(length);
         String correctAnswer = correctAnswerGenerator.getCorrectAnswer();
 
         while (true) {
@@ -72,12 +90,12 @@ public class NumbersBaseballApp {
             String playerInput = scanner.nextLine();
 
             // 입력 값 유효성 검증
-            if (!inputValidator.isValidInput(playerInput)) continue;
+            if (!inputValidator.isValidInput(playerInput, correctAnswer.length())) continue;
 
             // 정답과 입력 값 비교
             correctAnswerComparator.compareCorrectAnswer(correctAnswer, playerInput);
             gameRecorder.guessCorrectAnswer();
-            if (correctAnswerComparator.getStrike() == 3) {
+            if (correctAnswerComparator.getStrike() == length) {
                 System.out.println(CONGRATULATION.getMessage());
                 gameRecorder.saveRecord();
                 break;
