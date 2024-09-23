@@ -12,28 +12,28 @@ public class GameRecorderImpl implements GameRecorder {
     private final List<Integer> gameRecords = new ArrayList<>();
 
     @Override
-    public void playNewGame() {
+    public void resetGameRecord() {
         if (tryCount == 0) return;      // 이전 게임 기록이 없으면 아무것도 수행하지 않음
         tryCount = 0;                   // 이전 게임 기록 초기화
     }
 
     @Override
-    public void guessCorrectAnswer() {
-        tryCount++;
+    public void addTryCount() {
+        tryCount++;     // 입력 시도 횟수 1 증가
     }
 
     @Override
-    public void saveRecord() {
-        gameRecords.add(tryCount);
+    public void saveGameRecord() {
+        gameRecords.add(tryCount);      // 클리어한 게임 기록을 List<Integer> gameRecords 에 저장
     }
 
     @Override
     public List<Integer> getGameRecords() {
-        return new ArrayList<>(gameRecords);
+        return new ArrayList<>(gameRecords);    // List<Integer> 타입의 컬랙션 객체에 gameRecords 의 모든 요소를 담아 반환
     }
 
     @Override
-    public void clearGameRecords() {
-        gameRecords.clear();
+    public void clearAllGameRecords() {
+        gameRecords.clear();    // 지금까지 저장된 모든 게임기록들을 초기화(삭제)
     }
 }

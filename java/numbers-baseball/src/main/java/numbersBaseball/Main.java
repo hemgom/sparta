@@ -2,20 +2,17 @@ package numbersBaseball;
 
 import numbersBaseball.application.NumbersBaseballApp;
 
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
-
+        // NumberBaseballApp 객체를 생성, start() 메서드 호출
+        // start() 메서드의 반환 값을 통해 반복 호출 여부를 확인함
         NumbersBaseballApp numbersBaseballApp = new NumbersBaseballApp();
-        boolean playContinue;
+        boolean restart;
         do {
-            playContinue = numbersBaseballApp.start(scanner);
-        } while (playContinue);
+            restart = numbersBaseballApp.start();
+        } while (restart);
 
-        scanner.close();
+        // 실행 정상 종료
         System.exit(0);
     }
 }

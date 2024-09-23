@@ -9,27 +9,31 @@ public class CorrectAnswerComparatorImpl implements CorrectAnswerComparator {
     @Override
     public void compareCorrectAnswer(String correctAnswer, String input) {
         char correctAnswerElement, inputElement;
-        int s = 0, b = 0, o = 0;
+        int strikeResult = 0, ballResult = 0, outResult = 0;
 
+        // 정답과 사용자 입력 값의 각 요소를 비교
         for (int i = 0; i < correctAnswer.length(); i++) {
             correctAnswerElement = correctAnswer.charAt(i);
             inputElement = input.charAt(i);
 
+            // '정답' 과 '입력 값' 의 요소의 위치(index), 문자(char) 가 같다면 '스트라이크'
             if (correctAnswerElement == inputElement) {
-                s++;
+                strikeResult++;
                 continue;
             }
 
+            // '입력 값' 의 요소를 '정답 이 포함만 하는 경우(위치는 다름) '볼'
+            // '입력 값' 의 요소를 '정답' 이 포함조차 하지 않는 경우 '아웃'
             if (correctAnswer.contains(Character.toString(inputElement))) {
-                b++;
+                ballResult++;
             } else {
-                o++;
+                outResult++;
             }
         }
 
-        strike = s;
-        ball = b;
-        out = o;
+        strike = strikeResult;
+        ball = ballResult;
+        out = outResult;
     }
 
     @Override

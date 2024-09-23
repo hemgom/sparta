@@ -2,20 +2,32 @@ package numbersBaseball.domain.saveGameRecord;
 
 import java.util.List;
 
-// 게임 기록을 저장(기록)하는 역할을 가질 클래스가 구현할 인터페이스
+/**
+ * '게임 기록 저장' 역할을 가지는 클래스가 구현해야 하는 인터페이스
+ */
 public interface GameRecorder {
-    // 새 게임이 시작시 이전 게임 기록 초기화
-    void playNewGame();
+    /**
+     * 이전 게임의 기록을 초기화하는 기능 수행
+     */
+    void resetGameRecord();
 
-    // 사용자가 정답을 맞추기 위한 시도를 할 때마다 '입력 시도 횟수' 를 증가시키는 메서드
-    void guessCorrectAnswer();
+    /**
+     * 정답을 맞추기 위한 입력 시도의 횟수를 증가시키는 기능 수행
+     */
+    void addTryCount();
 
-    // 현재 게임 기록을 저장하는 메서드
-    void saveRecord();
+    /**
+     * 게임기록을 저장하는 기능 수행
+     */
+    void saveGameRecord();
 
-    // 저장된 모든 게임 기록을 가져오는 메서드
+    /**
+     * application 실행 후 현재까지 플레이한 게임기록들을 반환하는 기능 수행
+     */
     List<Integer> getGameRecords();
-
-    // 저장된 모든 게임 기록을 초기화하는 메서드
-    void clearGameRecords();
+    
+    /**
+     * 저장된 모든 게임기록들을 초기화하는 기능 수행
+     */
+    void clearAllGameRecords();
 }
