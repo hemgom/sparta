@@ -1,3 +1,11 @@
+# 목차
+1. [프로젝트 목적](#numbers-baseball)
+   - [패키지 구성](#package)
+2. [요구사항](#요구사항)
+   - [필수 기능](#필수-기능)
+   - [도전 기능](#도전-기능)
+3. [구현 및 트러블 슈팅](#구현-및-트러블-슈팅)
+
 # Numbers Baseball
 캠프 `CH2` 에서 학습한 `Java` 를 통해 `숫자 야구 게임` 을 구현하는 `개인과제(프로젝트)`, 이번 프로젝트의 목표는 `Calculator` 프로젝트보다 `Java` 를 더 `객체지향스럽게` 사용하는 것이다.
 <br/><br/>
@@ -5,9 +13,30 @@
 
 ## Package
 ```
-src/main/java/numberBaseball ── Main.java
+src/main/java/numberBaseball ┬─ Main.java
+                             │
+                             ├─ /application
+                             │
+                             ├─ /enums
+                             │
+                             ├─ /exception
+                             │
+                             └─ /domain ┬─ /checkCorrectAnswer
+                                        │
+                                        ├─ /generateCorrectAnswer
+                                        │
+                                        ├─ /saveGameRecord
+                                        │
+                                        └─ /validateUserInput
 ```
-- `Main.java` : 애플리케이션 실행 역할
+- `Main.java` : 애플리케이션 `실행`
+- `/application` : `애플리케이션` 위치
+- `/enums` : 클래스 및 메서드에서 사용되는 상수들을 보유한 `enum 클래스` 위치
+- `/exception` : `예외 클래스` 위치
+- `/checkCorrectAnswer` : `정답 확인` 과 관련된 클래스(인터페이스) 위치
+- `/generateCorrectAnswer` : `정답 생성` 과 관련된 클래스(인터페이스) 위치
+- `/saveGameRecord` : `게임 기록 저장` 과 관련된 클래스(인터페이스) 위치
+- `/validateUserInput` : `사용자 입력 검증` 과 관련된 클래스(인터페이스) 위치
 <br/><br/><br/>
 
 # 요구사항
@@ -64,6 +93,7 @@ src/main/java/numberBaseball ── Main.java
 # 구현 및 트러블 슈팅
 구현에 대한 내용과 어떤 문제점을 예상, 파악해 코드를 수정했는지에 대한 내용을 담은 포스팅 목록
 - [구현 전 요구사항 분석 및 설계](https://development-diary-for-me.tistory.com/135)
-- [Level01-02 요구사항 반영 후 리팩토링](https://development-diary-for-me.tistory.com/144)
-- [Level03 요구사항 반영 후 리팩토링](https://development-diary-for-me.tistory.com/145)
+- [Level01-02 요구사항 반영 후 리팩토링(1)](https://development-diary-for-me.tistory.com/144)
+- [Level03 요구사항 반영 후 리팩토링(2)](https://development-diary-for-me.tistory.com/145)
 - [Level04 요구사항 반영](https://development-diary-for-me.tistory.com/146)
+- [리팩토링(3)](https://development-diary-for-me.tistory.com/147)
