@@ -9,7 +9,8 @@
 4. [ERD](#erd)
     - [필수 기능](#필수-기능-2)
     - [도전 기능](#도전-기능-2)
-5. [작성 포스팅](#구현-및-트러블-슈팅-관련-포스팅)
+5. [SQL - DB 및 Table 생성](#sql)
+6. [작성 포스팅](#구현-및-트러블-슈팅-관련-포스팅)
 
 # Schedule Management
 부트캠프 `CH 3` 에서 학습한 `Spring` 을 토대로 구현한 `일정 관리 앱` 프로젝트<br/>
@@ -22,14 +23,14 @@
 ### Lv.0
 - [ ] : 사용자 요청에 대한 응답으로 데이터 전송시 `비밀번호` 에 대한 정보는 항상 제외되어야 한다.
 - [ ] : `3 Layer Architecture` 에 따라 각 `Layer` 목적에 맞게 구현해야 한다.
-- [ ] : `CRUD` 필수 기능들은 모두 `DB 연결` 및 `JDBC` 를 사용해 구현해야 한다.
+- [x] : `CRUD` 필수 기능들은 모두 `DB 연결` 및 `JDBC` 를 사용해 구현해야 한다.
 ### Lv.1
-- [ ] : API 명세서 작성
-- [ ] : ERD 작성
-- [ ] : `테이블` 생성에 사용된 `Query` 를 담은 `schedule.sql` 작성
+- [x] : API 명세서 작성
+- [x] : ERD 작성
+- [x] : `테이블` 생성에 사용된 `Query` 를 담은 `schedule.sql` 작성
     - 해당 문서는 애플리케이션 구현보다 이후 과제 확인에서 필요하기 때문에 작성이 필요함!
 ### Lv.2
-- [ ] : 스케줄(일정) 생성 - Create
+- [x] : 스케줄(일정) 생성 - Create
     - 생성에 필요한 데이터 : `할 일`, `작성자명`, `비밀번호`, `작성일/수정일`
         - `작성일/수정일` 같은 경우 `날짜 및 시간` 을 모두 포함한 데이터여야 함
         - 또한 생성시 두 데이터는 같은 값을 가짐
@@ -69,14 +70,15 @@
 
 # API 명세서
 ## 필수 기능
-|    기능    | Method |          URL           |     request body      |   response   |  status   |
-|:--------:|:------:|:----------------------:|:---------------------:|:------------:|:---------:|
-|  일정 생성   |  POST  |       /schedule        |    할일, 작성자명, 비밀번호     | id, 할일, 작성자명 | 200: 정상등록 |
-|  일정 수정   |  PUT   | /schedule/{scheduleId} | 비밀번호, 수정 내용(할일, 작성자명) | id, 할일, 작성자명 | 200: 정상수정 |
-|  일정 삭제   | DELETE | /schedule/{scheduleId} |         비밀번호          |      -       | 200: 정상삭제 |
-| 전체 일정 조회 |  GET   |       /schedule        |       수정일, 작성자명       |   다건 응답 정보   | 200: 정상조회 |
-| 선택 일정 조회 |  GET   | /schedule/{scheduleId} |           -           |   단건 응답 정보   | 200: 정상조회 |
-<br/><br/>
+|    기능    | Method |          URL           |     request body      |     response      |  status   |
+|:--------:|:------:|:----------------------:|:---------------------:|:-----------------:|:---------:|
+|  일정 생성   |  POST  |       /schedule        |    할일, 작성자명, 비밀번호     | id, 할일, 작성자명, 작성일 | 201: 정상등록 |
+|  일정 수정   |  PUT   | /schedule/{scheduleId} | 비밀번호, 수정 내용(할일, 작성자명) |   id, 할일, 작성자명    | 200: 정상수정 |
+|  일정 삭제   | DELETE | /schedule/{scheduleId} |         비밀번호          |         -         | 200: 정상삭제 |
+| 전체 일정 조회 |  GET   |       /schedule        |       수정일, 작성자명       |     다건 응답 정보      | 200: 정상조회 |
+| 선택 일정 조회 |  GET   | /schedule/{scheduleId} |           -           |     단건 응답 정보      | 200: 정상조회 |
+
+<br/>
 
 ## 도전 기능
 추후 추가 예정
@@ -92,11 +94,25 @@
 <br/><br/><br/>
 
 # SQL
-DB 스키마와 해당 스키마의 테이블을 생성하는 `Query` 문들을 나열한 것, 요구사항 대로 `schedule.sql` 도 작성해 두었다.
+DB 스키마와 해당 스키마의 테이블을 생성하는 `Query` 문들을 나열한 것, 요구사항 대로 `schedule.sql` 도 작성해 두었으며 `MySQL Workbench` 를 통해서도 생성할 수 있었으나 평소 잘 사용해보지 않았던 `MySQL Command line Client` 로 생성해 보았다.
 ```mysql
+# Database (=schema) 생성 쿼리
+CREATE DATABASE schedule_management;
 
+# Table 생성 쿼리
+CREATE TABLE 'schedule' (
+    id int NOT NULL AUTO_INCREMENT,
+    body varchar(150) NOT NULL,
+    author varchar(20) NOT NULL,
+    password varchar(6) NOT NULL,
+    create_at DATETIME NOT NULL,
+    update_at DATETIME NOT NULL,
+    PRIMARY KEY (id)
+);
 ```
 <br/><br/><br/>
 
 # 구현 및 트러블 슈팅 관련 포스팅
 해당 프로젝트 진행간 구현한 내용 또는 마주한 문제를 해결한 내용을 다룬 포스팅 목록을 링크 해두었다.
+- [DB 세팅 및 IntelliJ 연결](https://development-diary-for-me.tistory.com/159)
+- [DB 연결 + 일정 생성 API 테스트](https://development-diary-for-me.tistory.com/160)
