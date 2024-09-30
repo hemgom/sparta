@@ -43,12 +43,12 @@
     - 선택한 특정 스케줄 정보를 조회할 수 있어야 함
     - 스케줄 정보의 `id` 를 통해 조회한다.
 ### Lv.3
-- [ ] : 선택한 일정 수정 - Update
+- [x] : 선택한 일정 수정 - Update
     - 수정 가능한 데이터는 `할 일`, `작성자명` 뿐이다.
     - 서버에 수정을 요청할 때는 `비밀번호` 를 함께 전달해야 한다.
         - 물론 `비밀번호` 정보가 일치하지 않는다면 수정은 수행되지 않고 오류 코드 및 메시지가 반환되어야 한다.
     - 수정이 이루어지면 `수정일` 데이터가 수정 시점의 `날짜/시간` 데이터로 변경되어야 한다.
-- [ ] : 선택한 일정 삭제 - Delete
+- [x] : 선택한 일정 삭제 - Delete
     - 서버에 삭제를 요청할 때는 `비밀번호` 를 함께 전달해야 한다.
         - 물론 `비밀번호` 정보가 일치하지 않는다면 삭제는 수행되지 않고 오류 코드 및 메시지가 반환되어야 한다.
           <br/><br/>
@@ -73,8 +73,8 @@
 |    기능    | Method |          URL           |     request body      |     response      |  status   |
 |:--------:|:------:|:----------------------:|:---------------------:|:-----------------:|:---------:|
 |  일정 생성   |  POST  |       /schedule        |    할일, 작성자명, 비밀번호     | id, 할일, 작성자명, 작성일 | 201: 정상등록 |
-|  일정 수정   |  PUT   | /schedule/{scheduleId} | 비밀번호, 수정 내용(할일, 작성자명) |   id, 할일, 작성자명    | 200: 정상수정 |
-|  일정 삭제   | DELETE | /schedule/{scheduleId} |         비밀번호          |         -         | 200: 정상삭제 |
+|  일정 수정   |  PUT   | /schedule/{scheduleId} | 비밀번호, 수정 내용(할일, 작성자명) |   id, 할일, 작성자명    | 202: 정상수정 |
+|  일정 삭제   | DELETE | /schedule/{scheduleId} |         비밀번호          |         -         | 202: 정상삭제 |
 | 전체 일정 조회 |  GET   |       /schedule        |       수정일, 작성자명       |     다건 응답 정보      | 200: 정상조회 |
 | 선택 일정 조회 |  GET   | /schedule/{scheduleId} |           -           |     단건 응답 정보      | 200: 정상조회 |
 
@@ -117,3 +117,4 @@ CREATE TABLE 'schedule' (
 - [DB 세팅 및 IntelliJ 연결](https://development-diary-for-me.tistory.com/159)
 - [DB 연결 + 일정 생성 API 테스트](https://development-diary-for-me.tistory.com/160)
 - [Spring Framework 6.x 이상 파라미터 인식 오류](https://development-diary-for-me.tistory.com/162)
+- [API 테스트 - 일정 수정 및 삭제](https://development-diary-for-me.tistory.com/163)
