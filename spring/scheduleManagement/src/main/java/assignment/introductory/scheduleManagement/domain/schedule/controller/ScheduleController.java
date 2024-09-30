@@ -1,7 +1,9 @@
 package assignment.introductory.scheduleManagement.domain.schedule.controller;
 
 import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestAddSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.ResponseAddSchedule;
+import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestFindAllSchedule;
+import assignment.introductory.scheduleManagement.domain.schedule.dto.ResponseSchedule;
+import assignment.introductory.scheduleManagement.domain.schedule.dto.ResponseScheduleList;
 import assignment.introductory.scheduleManagement.domain.schedule.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,22 @@ public class ScheduleController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseAddSchedule addSchedule(@RequestBody RequestAddSchedule request) {
-        log.info("일정 추가 요청 확인");
+    public ResponseSchedule addSchedule(@RequestBody RequestAddSchedule request) {
+        log.info("'일정 추가' 요청 확인");
         return scheduleService.save(request);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseScheduleList findAllSchedule(@RequestBody RequestFindAllSchedule request) {
+        log.info("'모든 일정 조회' 요청 확인");
+        return scheduleService.findAll(request);
+    }
+
+    @GetMapping("/{scheduleId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseSchedule findScheduleById(@PathVariable int scheduleId) {
+        log.info("'특정 일정 조회' 요청 확인");
+        return scheduleService.findById(scheduleId);
     }
 }
