@@ -2,7 +2,9 @@ package assignment.introductory.scheduleManagement.domain.schedule.repository;
 
 import assignment.introductory.scheduleManagement.domain.schedule.Schedule;
 import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestAddSchedule;
+import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestDeleteSchedule;
 import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestFindAllSchedule;
+import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestUpdateSchedule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -97,20 +99,39 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             Schedule foundSchedule = jdbcTemplate.query(sql, scheduleRowMapper(), id).get(0);
             return Optional.of(foundSchedule);
 
-        } catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException | IndexOutOfBoundsException e) {
             return Optional.empty();
         }
     }
 
+    @Override
+    public void update(int id, RequestUpdateSchedule request) {
+        String sql = "update schedule set body = ?, author = ?, update_at = ? where id = ? and password = ?";
+
+        LocalDateTime now = LocalDateTime.now();
+
+        jdbcTemplate.update(sql,
+                request.getBody(),
+                request.getAuthor(),
+                now,
+                id,
+                request.getPassword());
+    }
+
+    @Override
+    public void delete(int id, RequestDeleteSchedule request) {
+        String sql = "delete from schedule where id = ? and password = ?";
+
+        jdbcTemplate.update(sql, id, request.getPassword());
+    }
+
     private RowMapper<Schedule> scheduleRowMapper() {
-        return ((rs, rowNum) -> {
-            return Schedule.builder()
-                    .id(rs.getInt("id"))
-                    .body(rs.getString("body"))
-                    .author(rs.getString("author"))
-                    .createAt(rs.getTimestamp("create_at").toLocalDateTime())
-                    .updateAt(rs.getTimestamp("update_at").toLocalDateTime())
-                    .build();
-        });
+        return ((rs, rowNum) -> Schedule.builder()
+                .id(rs.getInt("id"))
+                .body(rs.getString("body"))
+                .author(rs.getString("author"))
+                .createAt(rs.getTimestamp("create_at").toLocalDateTime())
+                .updateAt(rs.getTimestamp("update_at").toLocalDateTime())
+                .build());
     }
 }

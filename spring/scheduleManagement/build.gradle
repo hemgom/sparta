@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'	// 스프링 확인용
+	implementation 'org.springframework.boot:spring-boot-starter-web'	// web
 
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'	// JDBC
  	runtimeOnly 'com.mysql:mysql-connector-j'							// MySQL

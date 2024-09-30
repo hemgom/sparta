@@ -1,10 +1,7 @@
 package assignment.introductory.scheduleManagement.domain.schedule.service;
 
 import assignment.introductory.scheduleManagement.domain.schedule.Schedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestAddSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestFindAllSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.ResponseSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.ResponseScheduleList;
+import assignment.introductory.scheduleManagement.domain.schedule.dto.*;
 import assignment.introductory.scheduleManagement.domain.schedule.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
@@ -63,5 +60,19 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .createAt(foundSchedule.get().getCreateAt())
                 .updateAt(foundSchedule.get().getUpdateAt())
                 .build();
+    }
+
+    @Override
+    public ResponseSchedule update(int id, RequestUpdateSchedule request) {
+        scheduleRepository.update(id, request);
+
+        return findById(id);
+    }
+
+    @Override
+    public ResponseSchedule delete(int id, RequestDeleteSchedule request) {
+        scheduleRepository.delete(id, request);
+
+        return findById(id);
     }
 }

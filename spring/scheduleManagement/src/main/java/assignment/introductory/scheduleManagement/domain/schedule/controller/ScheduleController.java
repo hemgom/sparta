@@ -1,9 +1,6 @@
 package assignment.introductory.scheduleManagement.domain.schedule.controller;
 
-import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestAddSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestFindAllSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.ResponseSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.ResponseScheduleList;
+import assignment.introductory.scheduleManagement.domain.schedule.dto.*;
 import assignment.introductory.scheduleManagement.domain.schedule.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,5 +35,19 @@ public class ScheduleController {
     public ResponseSchedule findScheduleById(@PathVariable int scheduleId) {
         log.info("'특정 일정 조회' 요청 확인");
         return scheduleService.findById(scheduleId);
+    }
+
+    @PutMapping("/{scheduleId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseSchedule updateSchedule(@PathVariable int scheduleId,
+                                           @RequestBody RequestUpdateSchedule request) {
+        return scheduleService.update(scheduleId, request);
+    }
+
+    @DeleteMapping("/{scheduleId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseSchedule deleteSchedule(@PathVariable int scheduleId,
+                                           @RequestBody RequestDeleteSchedule request) {
+        return scheduleService.delete(scheduleId, request);
     }
 }
