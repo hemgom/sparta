@@ -116,3 +116,4 @@ CREATE TABLE 'schedule' (
 해당 프로젝트 진행간 구현한 내용 또는 마주한 문제를 해결한 내용을 다룬 포스팅 목록을 링크 해두었다.
 - [DB 세팅 및 IntelliJ 연결](https://development-diary-for-me.tistory.com/159)
 - [DB 연결 + 일정 생성 API 테스트](https://development-diary-for-me.tistory.com/160)
+- [Spring Framework 6.x 이상 파라미터 인식 오류](https://development-diary-for-me.tistory.com/162)
