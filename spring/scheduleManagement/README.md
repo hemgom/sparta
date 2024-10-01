@@ -118,3 +118,4 @@ CREATE TABLE 'schedule' (
 - [DB 연결 + 일정 생성 API 테스트](https://development-diary-for-me.tistory.com/160)
 - [Spring Framework 6.x 이상 파라미터 인식 오류](https://development-diary-for-me.tistory.com/162)
 - [API 테스트 - 일정 수정 및 삭제](https://development-diary-for-me.tistory.com/163)
+- [예외 처리 적용 및 API 테스트](https://development-diary-for-me.tistory.com/165)
