@@ -13,8 +13,8 @@ public class Schedule {
     private int id;
 
     private String body;
-    private String author;
     private String password;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
+    private int authorId;
 }

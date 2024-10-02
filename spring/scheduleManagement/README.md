@@ -51,7 +51,7 @@
 - [x] : 선택한 일정 삭제 - Delete
     - 서버에 삭제를 요청할 때는 `비밀번호` 를 함께 전달해야 한다.
         - 물론 `비밀번호` 정보가 일치하지 않는다면 삭제는 수행되지 않고 오류 코드 및 메시지가 반환되어야 한다.
-          <br/><br/>
+<br/><br/>
 ## 도전 기능
 ### Lv.4
 - [ ] : 연관관계 설정
@@ -81,8 +81,15 @@
 <br/>
 
 ## 도전 기능
-추후 추가 예정
-<br/><br/><br/>
+|    기능    | Method |          URL           |     request body      |     response      |  status   |
+|:--------:|:------:|:----------------------:|:---------------------:|:-----------------:|:---------:|
+|  일정 생성   |  POST  |       /schedule        |    할일, 작성자명, 비밀번호     | id, 할일, 작성자명, 작성일 | 201: 정상등록 |
+|  일정 수정   |  PUT   | /schedule/{scheduleId} | 비밀번호, 수정 내용(할일, 작성자명) |   id, 할일, 작성자명    | 202: 정상수정 |
+|  일정 삭제   | DELETE | /schedule/{scheduleId} |         비밀번호          |         -         | 202: 정상삭제 |
+| 전체 일정 조회 |  GET   |       /schedule        |       수정일, 작성자명       |     다건 응답 정보      | 200: 정상조회 |
+| 선택 일정 조회 |  GET   | /schedule/{scheduleId} |           -           |     단건 응답 정보      | 200: 정상조회 |
+
+<br/><br/>
 
 # ERD
 ## 필수 기능
@@ -90,11 +97,12 @@
 <br/><br/>
 
 ## 도전 기능
-추후 추가 예정
+![ERD - challenge features](image/ERD%20-%20challenge%20feature.png)
 <br/><br/><br/>
 
 # SQL
 DB 스키마와 해당 스키마의 테이블을 생성하는 `Query` 문들을 나열한 것, 요구사항 대로 `schedule.sql` 도 작성해 두었으며 `MySQL Workbench` 를 통해서도 생성할 수 있었으나 평소 잘 사용해보지 않았던 `MySQL Command line Client` 로 생성해 보았다.
+## 필수 기능
 ```mysql
 # Database (=schema) 생성 쿼리
 CREATE DATABASE schedule_management;
@@ -110,6 +118,36 @@ CREATE TABLE 'schedule' (
     PRIMARY KEY (id)
 );
 ```
+<br/>
+
+## 도전 기능
+```mysql
+-- 기존 schedule_management.schedule 삭제
+DROP TABLE schedule;
+
+-- author Table 생성 쿼리
+CREATE TABLE author (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(20) NOT NULL,
+    e_mail varchar(254) NOT NULL,
+    create_at DATETIME NOT NULL,
+    update_at DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE INDEX e_mail_unique (e_mail ASC) VISIBLE
+);
+
+-- schedule Table 생성 쿼리
+CREATE TABLE schedule (
+    id int NOT NULL AUTO_INCREMENT,
+    body varchar(150) NOT NULL,
+    author_id int NOT NULL,
+    password varchar(6) NOT NULL,
+    create_at DATETIME NOT NULL,
+    update_at DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (author_id) REFERENCES author (id)
+);
+```
 <br/><br/><br/>
 
 # 구현 및 트러블 슈팅 관련 포스팅
@@ -119,3 +157,4 @@ CREATE TABLE 'schedule' (
 - [Spring Framework 6.x 이상 파라미터 인식 오류](https://development-diary-for-me.tistory.com/162)
 - [API 테스트 - 일정 수정 및 삭제](https://development-diary-for-me.tistory.com/163)
 - [예외 처리 적용 및 API 테스트](https://development-diary-for-me.tistory.com/165)
+- [Level 4 요구사항 정리, DB 세팅](https://development-diary-for-me.tistory.com/166)
