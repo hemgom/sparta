@@ -1,88 +1,134 @@
 package assignment.introductory.scheduleManagement.domain.schedule.service;
 
+import assignment.introductory.scheduleManagement.domain.schedule.Author;
 import assignment.introductory.scheduleManagement.domain.schedule.Schedule;
 import assignment.introductory.scheduleManagement.domain.schedule.dto.*;
+import assignment.introductory.scheduleManagement.domain.schedule.repository.AuthorRepository;
 import assignment.introductory.scheduleManagement.domain.schedule.repository.ScheduleRepository;
 import assignment.introductory.scheduleManagement.domain.schedule.validator.ScheduleValidator;
+import assignment.introductory.scheduleManagement.exception.customException.NotMatchedPasswordException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import static assignment.introductory.scheduleManagement.domain.schedule.dto.AddScheduleDTO.AuthorInfo;
+import static assignment.introductory.scheduleManagement.domain.schedule.dto.AddScheduleDTO.ScheduleInfo;
+import static assignment.introductory.scheduleManagement.exception.exceptionCode.ExceptionCode.NOT_MATCH_PASSWORD;
+
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleValidator scheduleValidator;
-
-    public ScheduleServiceImpl(ScheduleRepository scheduleRepository,
-                               ScheduleValidator scheduleValidator) {
-        this.scheduleRepository = scheduleRepository;
-        this.scheduleValidator = scheduleValidator;
-    }
+    private final AuthorRepository authorRepository;
 
     @Override
-    public ResponseSchedule save(RequestAddSchedule request) {
-        scheduleValidator.checkRequestAddSchedule(request.getBody(), request.getAuthor(), request.getPassword());
+    public ScheduleDTO save(AddScheduleDTO request) {
+        ScheduleInfo scheduleInfo = request.getScheduleInfo();
+        AuthorInfo authorInfo = request.getAuthorInfo();
 
-        Schedule createSchedule = scheduleRepository.save(request);
-        return ResponseSchedule.builder()
+        scheduleValidator.checkRequestAddSchedule(scheduleInfo.getBody(), authorInfo.getName(), scheduleInfo.getPassword());
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        Optional<Author> foundAuthor = authorRepository.findByEmail(authorInfo.getEmail());
+        Author author = foundAuthor.orElseGet(() -> authorRepository.save(authorInfo, currentDateTime));
+
+        String requestAuthorName = request.getAuthorInfo().getName();
+        String foundAuthorName = author.getName();
+        if (!requestAuthorName.equals(foundAuthorName))
+            authorRepository.update(author.getId(), requestAuthorName, currentDateTime);
+
+        Schedule createSchedule = scheduleRepository.save(scheduleInfo, author, currentDateTime);
+
+        return ScheduleDTO.builder()
                 .id(createSchedule.getId())
                 .body(createSchedule.getBody())
-                .author(createSchedule.getAuthor())
-                .createAt(createSchedule.getCreateAt())
-                .updateAt(createSchedule.getUpdateAt())
+                .authorName(authorInfo.getName())
+                .createAt(parseStringFormat(createSchedule.getCreateAt()))
+                .updateAt(parseStringFormat(createSchedule.getUpdateAt()))
                 .build();
     }
 
     @Override
-    public ResponseScheduleList findAll(RequestFindAllSchedule request) {
-        scheduleValidator.checkRequestFindAllSchedule(request.getUpdateAt(), request.getAuthor());
+    public ScheduleListDTO findAll(String authorName, String updateAt, int pageNum, int pageSize) {
+        scheduleValidator.checkRequestFindAllSchedule(updateAt, authorName);
 
-        List<Schedule> allSchedule = scheduleRepository.findAll(request);
+        List<Schedule> allSchedule = scheduleRepository.findAll(authorName, updateAt, pageNum, pageSize);
 
-        ResponseScheduleList responseScheduleList = new ResponseScheduleList();
+        ScheduleListDTO scheduleListDTO = new ScheduleListDTO();
+
+        scheduleListDTO.setPageNum(pageNum);
+
         for (Schedule schedule : allSchedule) {
-            responseScheduleList.getScheduleList().add(
-                    ResponseSchedule.builder()
+            scheduleListDTO.getScheduleList().add(
+                    ScheduleDTO.builder()
                             .id(schedule.getId())
                             .body(schedule.getBody())
-                            .author(schedule.getAuthor())
-                            .createAt(schedule.getCreateAt())
-                            .updateAt(schedule.getUpdateAt())
+                            .authorName(schedule.getAuthor().getName())
+                            .createAt(parseStringFormat(schedule.getCreateAt()))
+                            .updateAt(parseStringFormat(schedule.getUpdateAt()))
                             .build());
         }
 
-        return responseScheduleList;
+        return scheduleListDTO;
     }
 
     @Override
-    public ResponseSchedule findById(int id) {
-        Optional<Schedule> foundSchedule = scheduleRepository.findById(id);
+    public ScheduleDTO findById(int id) {
+        Schedule schedule = scheduleRepository.findById(id);
 
-        if (foundSchedule.isEmpty()) return new ResponseSchedule();
+        Author author = authorRepository.findById(schedule.getAuthor().getId());
 
-        return ResponseSchedule.builder()
-                .id(foundSchedule.get().getId())
-                .body(foundSchedule.get().getBody())
-                .author(foundSchedule.get().getAuthor())
-                .createAt(foundSchedule.get().getCreateAt())
-                .updateAt(foundSchedule.get().getUpdateAt())
+        return ScheduleDTO.builder()
+                .id(schedule.getId())
+                .body(schedule.getBody())
+                .authorName(author.getName())
+                .createAt(parseStringFormat(schedule.getCreateAt()))
+                .updateAt(parseStringFormat(schedule.getUpdateAt()))
                 .build();
     }
 
     @Override
-    public ResponseSchedule update(int id, RequestUpdateSchedule request) {
-        scheduleValidator.checkRequestUpdateSchedule(request.getBody(), request.getAuthor());
+    public ScheduleDTO update(int id, UpdateScheduleDTO request) {
+        scheduleValidator.checkRequestUpdateSchedule(request.getBody(), request.getAuthorName());
 
-        scheduleRepository.update(id, request);
+        Schedule foundSchedule = scheduleRepository.findById(id);
 
-        return findById(id);
+        if (!foundSchedule.getPassword().equals(request.getPassword()))
+            throw new NotMatchedPasswordException(NOT_MATCH_PASSWORD);
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        scheduleRepository.update(id, request, currentDateTime);
+        authorRepository.update(foundSchedule.getAuthor().getId(), request.getAuthorName(), currentDateTime);
+
+        return ScheduleDTO.builder()
+                .id(foundSchedule.getId())
+                .body(request.getBody())
+                .authorName(request.getAuthorName())
+                .createAt(parseStringFormat(foundSchedule.getCreateAt()))
+                .updateAt(parseStringFormat(currentDateTime))
+                .build();
     }
 
     @Override
-    public ResponseSchedule delete(int id, RequestDeleteSchedule request) {
-        scheduleRepository.delete(id, request);
+    public void delete(int id, DeleteScheduleDTO request) {
+        Schedule foundSchedule = scheduleRepository.findById(id);
 
-        return findById(id);
+        if (!foundSchedule.getPassword().equals(request.getPassword()))
+            throw new NotMatchedPasswordException(NOT_MATCH_PASSWORD);
+
+        scheduleRepository.delete(id, request);
+    }
+
+    private String parseStringFormat(LocalDateTime localDateTime) {
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

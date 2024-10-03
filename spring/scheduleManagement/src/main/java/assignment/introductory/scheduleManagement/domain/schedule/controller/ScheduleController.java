@@ -18,36 +18,40 @@ public class ScheduleController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseSchedule addSchedule(@RequestBody RequestAddSchedule request) {
+    public ScheduleDTO addSchedule(@RequestBody AddScheduleDTO request) {
         log.info("'일정 추가' 요청 확인");
         return scheduleService.save(request);
     }
 
-    @GetMapping
+    @GetMapping("/search-condition")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseScheduleList findAllSchedule(@RequestBody RequestFindAllSchedule request) {
+    public ScheduleListDTO findAllSchedule(@RequestParam("authorName") String authorName,
+                                           @RequestParam("updateAt") String updateAt,
+                                           @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                           @RequestParam(value = "pageSize", defaultValue = "0") int pageSize) {
         log.info("'모든 일정 조회' 요청 확인");
-        return scheduleService.findAll(request);
+        log.info("pageNum = {}, pageSize = {}", pageNum, pageSize);
+        return scheduleService.findAll(authorName, updateAt, pageNum, pageSize);
     }
 
     @GetMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseSchedule findScheduleById(@PathVariable int scheduleId) {
+    public ScheduleDTO findScheduleById(@PathVariable int scheduleId) {
         log.info("'특정 일정 조회' 요청 확인");
         return scheduleService.findById(scheduleId);
     }
 
     @PutMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseSchedule updateSchedule(@PathVariable int scheduleId,
-                                           @RequestBody RequestUpdateSchedule request) {
+    public ScheduleDTO updateSchedule(@PathVariable int scheduleId,
+                                      @RequestBody UpdateScheduleDTO request) {
         return scheduleService.update(scheduleId, request);
     }
 
     @DeleteMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseSchedule deleteSchedule(@PathVariable int scheduleId,
-                                           @RequestBody RequestDeleteSchedule request) {
-        return scheduleService.delete(scheduleId, request);
+    public void deleteSchedule(@PathVariable int scheduleId,
+                                      @RequestBody DeleteScheduleDTO request) {
+        scheduleService.delete(scheduleId, request);
     }
 }

@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestFindAllSchedule {
-    private String author;
-    private String updateAt;
+public class UpdateScheduleDTO {
+    private String password;
+
+    private String body;
+
+    private String authorName;
 }

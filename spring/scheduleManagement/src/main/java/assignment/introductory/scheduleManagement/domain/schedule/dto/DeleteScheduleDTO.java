@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class RequestAddSchedule {
-    private String body;
-    private String author;
+@AllArgsConstructor
+public class DeleteScheduleDTO {
     private String password;
 }

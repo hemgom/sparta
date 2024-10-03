@@ -3,13 +3,13 @@ package assignment.introductory.scheduleManagement.domain.schedule.service;
 import assignment.introductory.scheduleManagement.domain.schedule.dto.*;
 
 public interface ScheduleService {
-    ResponseSchedule save(RequestAddSchedule request);
+    ScheduleDTO save(AddScheduleDTO request);
 
-    ResponseScheduleList findAll(RequestFindAllSchedule request);
+    ScheduleListDTO findAll(String authorName, String updateAt, int pageNum, int pageSize);
 
-    ResponseSchedule findById(int id);
+    ScheduleDTO findById(int id);
 
-    ResponseSchedule update(int id, RequestUpdateSchedule request);
+    ScheduleDTO update(int id, UpdateScheduleDTO request);
 
-    ResponseSchedule delete(int id, RequestDeleteSchedule request);
+    void delete(int id, DeleteScheduleDTO request);
 }

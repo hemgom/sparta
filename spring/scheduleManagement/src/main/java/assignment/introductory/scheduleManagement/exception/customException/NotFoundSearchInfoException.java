@@ -4,10 +4,10 @@ import assignment.introductory.scheduleManagement.exception.exceptionCode.Except
 import lombok.Getter;
 
 @Getter
-public class NotMatchedConstantException extends RuntimeException {
+public class NotFoundSearchInfoException extends RuntimeException {
     private final ExceptionCode exceptionCode;
 
-    public NotMatchedConstantException(ExceptionCode exceptionCode) {
+    public NotFoundSearchInfoException(ExceptionCode exceptionCode) {
         this.exceptionCode = exceptionCode;
     }
 }

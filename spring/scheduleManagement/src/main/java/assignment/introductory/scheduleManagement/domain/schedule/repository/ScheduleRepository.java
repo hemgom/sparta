@@ -1,22 +1,24 @@
 package assignment.introductory.scheduleManagement.domain.schedule.repository;
 
+import assignment.introductory.scheduleManagement.domain.schedule.Author;
 import assignment.introductory.scheduleManagement.domain.schedule.Schedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestAddSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestDeleteSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestFindAllSchedule;
-import assignment.introductory.scheduleManagement.domain.schedule.dto.RequestUpdateSchedule;
+import assignment.introductory.scheduleManagement.domain.schedule.dto.DeleteScheduleDTO;
+import assignment.introductory.scheduleManagement.domain.schedule.dto.UpdateScheduleDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static assignment.introductory.scheduleManagement.domain.schedule.dto.AddScheduleDTO.ScheduleInfo;
+
 public interface ScheduleRepository {
-    Schedule save(RequestAddSchedule request);
+    Schedule save(ScheduleInfo scheduleInfo, Author author, LocalDateTime createAt);
 
-    List<Schedule> findAll(RequestFindAllSchedule request);
+    List<Schedule> findAll(String authorName, String updateAt, int pageNum, int pageSize);
 
-    Optional<Schedule> findById(int scheduleId);
+    Schedule findById(int scheduleId);
 
-    void update(int id, RequestUpdateSchedule request);
+    void update(int id, UpdateScheduleDTO request, LocalDateTime updateAt);
 
-    void delete(int id, RequestDeleteSchedule request);
+    void delete(int id, DeleteScheduleDTO request);
 }
