@@ -25,8 +25,8 @@ public class ScheduleController {
 
     @GetMapping("/search-condition")
     @ResponseStatus(HttpStatus.OK)
-    public ScheduleListDTO findAllSchedule(@RequestParam("authorName") String authorName,
-                                           @RequestParam("updateAt") String updateAt,
+    public ScheduleListDTO findAllSchedule(@RequestParam(value = "authorName", defaultValue = "") String authorName,
+                                           @RequestParam(value = "updateAt", defaultValue = "") String updateAt,
                                            @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
                                            @RequestParam(value = "pageSize", defaultValue = "0") int pageSize) {
         log.info("'모든 일정 조회' 요청 확인");
