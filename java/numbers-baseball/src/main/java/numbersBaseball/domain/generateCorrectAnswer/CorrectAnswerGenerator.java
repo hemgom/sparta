@@ -7,10 +7,5 @@ public interface CorrectAnswerGenerator {
     /**
      * 정답을 생성하는 기능 수행
      */
-    void makeCorrectAnswer(int digits);
-
-    /**
-     * 생성된 정답을 반환하는 기능 수행
-     */
-    String getCorrectAnswer();
+    String makeCorrectAnswer(int digits);
 }

@@ -2,6 +2,7 @@ package numbersBaseball.application;
 
 import numbersBaseball.domain.checkCorrectAnswer.CorrectAnswerComparator;
 import numbersBaseball.domain.checkCorrectAnswer.CorrectAnswerComparatorImpl;
+import numbersBaseball.domain.checkCorrectAnswer.dto.ComparedResult;
 import numbersBaseball.domain.generateCorrectAnswer.CorrectAnswerGenerator;
 import numbersBaseball.domain.generateCorrectAnswer.CorrectAnswerGeneratorImpl;
 import numbersBaseball.domain.saveGameRecord.GameRecorder;
@@ -30,7 +31,7 @@ public class NumbersBaseballApp {
     private final Scanner scanner = new Scanner(System.in);
 
     // 기본 '정답 길이' 를 지정
-    private final int defaultNumberLength = Integer.parseInt(DEFAULT_LENGTH.getCriteria());
+    private final int DEFAULT_NUMBER_LENGTH = Integer.parseInt(DEFAULT_LENGTH.getCriteria());
 
     /**
      * NumbersBaseball application 실행 기능 수행
@@ -55,7 +56,7 @@ public class NumbersBaseballApp {
         } else if (menuNumber.equals(MENU_NUM_ONE.getCriteria())) {
             System.out.println(GAME_START.getMessage());
 
-            playGame(defaultNumberLength);
+            playGame(DEFAULT_NUMBER_LENGTH);
 
         } else if (menuNumber.equals(MENU_NUM_TWO.getCriteria())) {
             System.out.println(VIEW_GAME_RECORD.getMessage());
@@ -64,7 +65,7 @@ public class NumbersBaseballApp {
 
             if (gameRecords.isEmpty()) {
                 System.out.println(NO_SAVED_GAME_RECORD.getMessage());
-                return continueGame;
+                return true;
             }
 
             for (int i = 0; i < gameRecords.size(); i++) {
@@ -110,43 +111,27 @@ public class NumbersBaseballApp {
      * 숫자 야구 게임 시작
      */
     private void playGame(int correctAnswerLength) {
-        correctAnswerGenerator.makeCorrectAnswer(correctAnswerLength);
-        String correctAnswer = correctAnswerGenerator.getCorrectAnswer();
+        String correctAnswer = correctAnswerGenerator.makeCorrectAnswer(correctAnswerLength);
 
-        // 정답을 맞추기 위한 시도를 반복적으로 수행, 정답을 맞추면 반복 종료
-        while (true) {
+        boolean isNotClear = true;
+        while (isNotClear) {
             System.out.println(PLEASE_INPUT_NUMBERS.getMessage());
 
-            // 사용자가 정답이라 생각하는 값
             String userAnswer = scanner.nextLine();
-
-            // 사용자의 입력 값 유효성 검증, 유효하지 않다면 다음 반복 수행
             if (!inputValidator.isValidInput(userAnswer, correctAnswer.length())) continue;
 
-            // 현재 게임의 정답을 맞추기 위한 '입력 시도 횟수' 추가
             gameRecorder.addTryCount();
-            
-            // 생성된 정답과 사용자 입력 값을 비교
-            correctAnswerComparator.compareCorrectAnswer(correctAnswer, userAnswer);
+            ComparedResult comparedResult = correctAnswerComparator.compareCorrectAnswer(correctAnswer, userAnswer);
 
-            // 정답 결과를 확인해 '스트라이크' 가 '정답 길이' 와 같을 경우(=정답을 맞춤) 반복 종료
-            // 정답을 못 했다면 현재 '비교 결과' 를 출력하고 다음 반복 수행
-            if (correctAnswerComparator.getStrike() == correctAnswerLength) {
+            if (comparedResult.isCorrectAnswer(correctAnswerLength)) {
                 System.out.println(ANSWER_CORRECTLY.getMessage());
-                
-                // 정답을 맞추기까지 '입력 시도 횟수' 를 저장
+
                 gameRecorder.saveGameRecord();
 
-                break;
+                isNotClear = false;
 
             } else {
-                // 현재 비교 결과 출력
-                System.out.printf(
-                        COMPARISON_RESULT.getMessage() + "\n",
-                        correctAnswerComparator.getStrike(),
-                        correctAnswerComparator.getBall(),
-                        correctAnswerComparator.getOut()
-                );
+                comparedResult.printResult();
             }
         }
     }

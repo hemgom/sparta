@@ -98,4 +98,5 @@ src/main/java/numberBaseball ┬─ Main.java
 - [Level03 요구사항 반영 후 리팩토링(2)](https://development-diary-for-me.tistory.com/145)
 - [Level04 요구사항 반영](https://development-diary-for-me.tistory.com/146)
 - [리팩토링(3)](https://development-diary-for-me.tistory.com/147)
-- [피드백 반영 - 메서드 복잡도 줄이기](https://development-diary-for-me.tistory.com/168)
+- [피드백 반영 - start() 메서드 복잡도 낮추기](https://development-diary-for-me.tistory.com/168)
+- [피드백 반영 - playGame() 메서드 복잡도 낮추기](https://development-diary-for-me.tistory.com/169)
