@@ -36,83 +36,80 @@ public class NumbersBaseballApp {
      * NumbersBaseball application 실행 기능 수행
      */
     public boolean start() {
-        // 게임기록 초기화 및 '게임 시작하기' 메시지 출력
         gameRecorder.resetGameRecord();
+
         System.out.println(MENU.getMessage());
+        String menuNumber = selectMenu();
 
-        // '시작 메뉴' 출력 및 메뉴 선택(선택에 따라 시스템 메시지 출력)
-        // 유효하지 않은 '메뉴 번호' 를 입력 받았다면 입력과정 반복
-        String menuNumber;  // 사용자가 선택한 '메뉴 번호' 저장
-        do {
-            menuNumber = scanner.nextLine();
-        } while (!inputValidator.isValidMenuNumber(menuNumber));   // 입력 받은 값이 유효한 '메뉴 번호' 인지 검증
-
-        // '0. 자리수 설정' 메뉴 선택시 수행
+        boolean continueGame = true;
         if (menuNumber.equals(MENU_NUM_ZERO.getCriteria())) {
             System.out.println(PLEASE_INPUT_NUMBER_LENGTH.getMessage());
 
-            // 사용자가 선택한 '정답 길이'
             int selectedNumberLength = selectNumberLength();
-            
+
             System.out.printf(PLEASE_SETTING_NUMBER_LENGTH.getMessage(), selectedNumberLength);
             System.out.println(GAME_START.getMessage());
-            
-            // 설정한 '정답 길이' 로 게임 시작
-            playGame(selectedNumberLength);
-            
-            return true;
-        }
 
-        // '1. 게임 시작하기' 메뉴 선택시 수행
-        if (menuNumber.equals(MENU_NUM_ONE.getCriteria())) {
+            playGame(selectedNumberLength);
+
+        } else if (menuNumber.equals(MENU_NUM_ONE.getCriteria())) {
             System.out.println(GAME_START.getMessage());
 
-            // 기본 '정답 길이' 로 게임 시작
             playGame(defaultNumberLength);
 
-            return true;
-        }
-
-        // '2. 게임 기록보기' 메뉴 선택시 수행
-        if (menuNumber.equals(MENU_NUM_TWO.getCriteria())) {
+        } else if (menuNumber.equals(MENU_NUM_TWO.getCriteria())) {
             System.out.println(VIEW_GAME_RECORD.getMessage());
 
-            // 현재까지 저장된 '게임 플레이 기록' 들 가져오기
             List<Integer> gameRecords = gameRecorder.getGameRecords();
 
-            // 저장된 '게임 플레이 기록' 이 없다면 해당되는 시스템 메시지 출력
             if (gameRecords.isEmpty()) {
                 System.out.println(NO_SAVED_GAME_RECORD.getMessage());
-                return true;
+                return continueGame;
             }
 
-            // 저장된 '게임 플레이 기록' 이 있다면 저장된 기록들을 순차적으로 출력
             for (int i = 0; i < gameRecords.size(); i++) {
                 System.out.printf(GAME_RECORD.getMessage(), i, gameRecords.get(i));
             }
 
-            return true;
-        }
-
-        // '3. 종료하기' 메뉴 선택시 수행
-        if (menuNumber.equals(MENU_NUM_THREE.getCriteria())) {
-            // 종료전 저장된 모든 게임 기록들을 삭제(초기화)
+        } else if (menuNumber.equals(MENU_NUM_THREE.getCriteria())) {
             gameRecorder.clearAllGameRecords();
 
-            // application 이 종료되어 더 이상 '입력' 이 없으므로 Scanner 닫기
             scanner.close();
 
-            return false;
+            continueGame = false;
         }
 
-        return true;
+        return continueGame;
+    }
+
+    private String selectMenu() {
+        String selectedMenuNum;
+        do {
+            selectedMenuNum = scanner.nextLine();
+        } while (!inputValidator.isValidMenuNumber(selectedMenuNum));
+
+        return selectedMenuNum;
+    }
+
+    private int selectNumberLength() {
+        int selectedNumberLength;
+
+        while (true) {
+            String numberLength = scanner.nextLine();
+
+            if (inputValidator.isValidNumberLength(numberLength)) {
+                selectedNumberLength = Integer.parseInt(numberLength);
+                break;
+            }
+        }
+
+        return selectedNumberLength;
     }
 
     /**
      * 숫자 야구 게임 시작
      */
     private void playGame(int correctAnswerLength) {
-        // 파라미터로 전달받은 '정답 길이' 로 정답 생성
         correctAnswerGenerator.makeCorrectAnswer(correctAnswerLength);
         String correctAnswer = correctAnswerGenerator.getCorrectAnswer();
 
@@ -152,26 +149,5 @@ public class NumbersBaseballApp {
                 );
             }
         }
-    }
-
-    /**
-     * 게임의 '정답 길이' 를 선택하는 기능을 수행
-     */
-    private int selectNumberLength() {
-        int selectedNumberLength;
-
-        while (true) {
-            String numberLength = scanner.nextLine();
-
-            // 사용자가 입력한 값이 유효한지 검증
-            if (!inputValidator.isValidNumberLength(numberLength)) continue;
-
-            // 입력 값(String)을 'int' 타입으로 파싱
-            selectedNumberLength = Integer.parseInt(numberLength);
-
-            break;
-        }
-
-        return selectedNumberLength;
     }
 }

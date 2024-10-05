@@ -7,10 +7,10 @@ public class Main {
         // NumberBaseballApp 객체를 생성, start() 메서드 호출
         // start() 메서드의 반환 값을 통해 반복 호출 여부를 확인함
         NumbersBaseballApp numbersBaseballApp = new NumbersBaseballApp();
-        boolean restart;
+        boolean reStart;
         do {
-            restart = numbersBaseballApp.start();
-        } while (restart);
+            reStart = numbersBaseballApp.start();
+        } while (reStart);
 
         // 실행 정상 종료
         System.exit(0);
