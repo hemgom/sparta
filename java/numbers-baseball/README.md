@@ -100,3 +100,4 @@ src/main/java/numberBaseball ┬─ Main.java
 - [리팩토링(3)](https://development-diary-for-me.tistory.com/147)
 - [피드백 반영 - start() 메서드 복잡도 낮추기](https://development-diary-for-me.tistory.com/168)
 - [피드백 반영 - playGame() 메서드 복잡도 낮추기](https://development-diary-for-me.tistory.com/169)
+- [피드백 반영 - start() 메서드 복잡도 낮추기(2)](https://development-diary-for-me.tistory.com/170)

@@ -22,9 +22,9 @@ public interface GameRecorder {
     void saveGameRecord();
 
     /**
-     * application 실행 후 현재까지 플레이한 게임기록들을 반환하는 기능 수행
+     * application 실행 후 현재까지 플레이한 게임기록들을 출력하는 기능 수행
      */
-    List<Integer> getGameRecords();
+    void printGameRecords();
     
     /**
      * 저장된 모든 게임기록들을 초기화하는 기능 수행

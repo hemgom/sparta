@@ -3,6 +3,9 @@ package numbersBaseball.domain.saveGameRecord;
 import java.util.ArrayList;
 import java.util.List;
 
+import static numbersBaseball.enums.SystemMessage.GAME_RECORD;
+import static numbersBaseball.enums.SystemMessage.NO_SAVED_GAME_RECORD;
+
 // GameRecorder 인터페이스를 구현한 클래스
 public class GameRecorderImpl implements GameRecorder {
     // 한 게임에서 정답을 맞추기 위한 시도 횟수를 저장하는 변수
@@ -28,8 +31,15 @@ public class GameRecorderImpl implements GameRecorder {
     }
 
     @Override
-    public List<Integer> getGameRecords() {
-        return new ArrayList<>(gameRecords);    // List<Integer> 타입의 컬랙션 객체에 gameRecords 의 모든 요소를 담아 반환
+    public void printGameRecords() {
+        if (gameRecords.isEmpty()) {
+            System.out.println(NO_SAVED_GAME_RECORD.getMessage());
+
+        } else {
+            for (int i = 0; i < gameRecords.size(); i++) {
+                System.out.printf(GAME_RECORD.getMessage(), i, gameRecords.get(i));
+            }
+        }
     }
 
     @Override

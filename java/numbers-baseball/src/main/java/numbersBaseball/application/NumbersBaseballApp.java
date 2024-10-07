@@ -61,16 +61,7 @@ public class NumbersBaseballApp {
         } else if (menuNumber.equals(MENU_NUM_TWO.getCriteria())) {
             System.out.println(VIEW_GAME_RECORD.getMessage());
 
-            List<Integer> gameRecords = gameRecorder.getGameRecords();
-
-            if (gameRecords.isEmpty()) {
-                System.out.println(NO_SAVED_GAME_RECORD.getMessage());
-                return true;
-            }
-
-            for (int i = 0; i < gameRecords.size(); i++) {
-                System.out.printf(GAME_RECORD.getMessage(), i, gameRecords.get(i));
-            }
+            gameRecorder.printGameRecords();
 
         } else if (menuNumber.equals(MENU_NUM_THREE.getCriteria())) {
             gameRecorder.clearAllGameRecords();
