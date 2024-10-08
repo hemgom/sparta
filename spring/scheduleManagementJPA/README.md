@@ -91,7 +91,19 @@ DB 스키마와 해당 스키마의 테이블을 생성하는 `Query` 를 나열
 
 ## 필수 기능
 ```mysql
+# Database(schema) 생성
+CREATE DATABASE schedule_management_jpa;
 
+# Lv.1 요구사항 : 'schedule' 테이블 생성
+CREATE TABLE schedule (
+    id bigint not null auto_increment,
+    author varChar(20) not null,
+    title varChar(100) not null,
+    body varChar(250) not null,
+    create_at timestamp not null,
+    update_at timestamp not null,
+    primary key (id)
+);
 ```
 <br/><br/>
 
@@ -103,3 +115,4 @@ DB 스키마와 해당 스키마의 테이블을 생성하는 `Query` 를 나열
 
 # 구현 및 트러블 슈팅 관련 포스팅
 해당 프로젝트 진행간 `구현 및 문제 해결` 에 대한 내용을 다룬 포스팅 목록, 링크를 클릭하면 포스팅을 작성한 개인 블로그로 이동된다.
+- [일정 생성, 조회 API 테스트 + 요청 파라미터 검증 문제 파악](https://development-diary-for-me.tistory.com/173)

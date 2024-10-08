@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: scheduleManagement
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/schedule_management_jpa
-    username: root
-    password: 0000
