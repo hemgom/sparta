@@ -4,12 +4,12 @@ import assigment.mastery.scheduleManagementJPA.domain.schedule.Schedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.AddSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseScheduleList;
+import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.UpdateSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.repository.ScheduleRepository;
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,60 +28,39 @@ public class ScheduleService {
 
         Schedule saved = scheduleRepository.save(created);
 
-        return ResponseSchedule.builder()
-                .id(saved.getId())
-                .author(saved.getAuthor())
-                .title(saved.getTitle())
-                .body(saved.getBody())
-                .createAt(convertToFormat(saved.getCreateAt()))
-                .updateAt(convertToFormat(saved.getCreateAt()))
-                .build();
+        return Schedule.makeResponse(saved);
     }
 
     public ResponseSchedule findById(Long id) {
         Schedule found = scheduleRepository.findById(id)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
 
-        return ResponseSchedule.builder()
-                .id(found.getId())
-                .author(found.getAuthor())
-                .title(found.getTitle())
-                .body(found.getBody())
-                .createAt(convertToFormat(found.getCreateAt()))
-                .updateAt(convertToFormat(found.getCreateAt()))
-                .build();
+        return Schedule.makeResponse(found);
     }
 
     public ResponseScheduleList findAll(String author, String title) {
         List<Schedule> foundList = scheduleRepository.findAll(author, title);
 
         List<ResponseSchedule> responseScheduleList = new ArrayList<>();
-        for (Schedule schedule : foundList) {
-            responseScheduleList.add(ResponseSchedule.builder()
-                    .id(schedule.getId())
-                    .author(schedule.getAuthor())
-                    .title(schedule.getTitle())
-                    .body(schedule.getBody())
-                    .createAt(convertToFormat(schedule.getCreateAt()))
-                    .updateAt(convertToFormat(schedule.getCreateAt()))
-                    .build());
-        }
+        foundList.stream().map(Schedule::makeResponse).forEach(responseScheduleList::add);
 
         return ResponseScheduleList.builder()
                 .schedules(responseScheduleList)
                 .build();
     }
 
-    public void delete(Long id) {
-        try {
-            scheduleRepository.deleteById(id);
+    @Transactional
+    public void update(Long id, UpdateSchedule request) {
+        Schedule found = scheduleRepository.findById(id)
+                .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
 
-        } catch (NotFoundEntityException e) {
-            throw new NotFoundEntityException(NOT_FOUND_SCHEDULE);
-        }
+        scheduleRepository.update(found, request);
     }
 
-    private String convertToFormat(LocalDateTime localDateTime) {
-        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public void delete(Long id) {
+        Schedule found = scheduleRepository.findById(id)
+                .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
+
+        scheduleRepository.deleteById(found.getId());
     }
 }

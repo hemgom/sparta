@@ -1,6 +1,7 @@
 package assigment.mastery.scheduleManagementJPA.domain.schedule.repository;
 
 import assigment.mastery.scheduleManagementJPA.domain.schedule.Schedule;
+import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.UpdateSchedule;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
@@ -36,6 +37,8 @@ public class QueryScheduleRepositoryImpl implements QueryScheduleRepository {
             jpql += " WHERE " + String.join(" AND ", searchCondition);
         }
 
+        jpql += " ORDER BY s.updateAt DESC";
+
         TypedQuery<Schedule> query = entityManager.createQuery(jpql, Schedule.class);
 
         if (StringUtils.hasText(author)) {
@@ -47,5 +50,9 @@ public class QueryScheduleRepositoryImpl implements QueryScheduleRepository {
         }
 
         return query.getResultList();
+    }
+
+    public void update(Schedule foundSchedule, UpdateSchedule request) {
+        foundSchedule.update(request);
     }
 }

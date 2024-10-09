@@ -1,7 +1,9 @@
 package assigment.mastery.scheduleManagementJPA.domain.schedule;
 
+import assigment.mastery.scheduleManagementJPA.converter.DateTimeFormatConverter;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.AddSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseSchedule;
+import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.UpdateSchedule;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -39,6 +41,11 @@ public class Schedule {
     @LastModifiedDate
     private LocalDateTime updateAt;
 
+    public void update(UpdateSchedule request) {
+        this.title = request.getTitle();
+        this.body = request.getBody();
+    }
+
     public static Schedule create(AddSchedule request) {
         return Schedule.builder()
                 .author(request.getAuthor())
@@ -52,7 +59,9 @@ public class Schedule {
                 .id(schedule.getId())
                 .author(schedule.getAuthor())
                 .title(schedule.getTitle())
-
+                .body(schedule.getBody())
+                .createAt(DateTimeFormatConverter.convertDateTimeFormat(schedule.getCreateAt()))
+                .updateAt(DateTimeFormatConverter.convertDateTimeFormat(schedule.getUpdateAt()))
                 .build();
     }
 }
