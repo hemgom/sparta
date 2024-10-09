@@ -27,13 +27,13 @@
 ### Lv.1 - 일정 CRUD
 - [x] : `일정` 을 `생성, 조회, 수정, 삭제` 할 수 있어야 한다.
 - [x] : `일정` 은 `작성 유저명`, `할 일 제목`, `할 일 내용`, `작성일`, `수정일` 필드를 가져야 한다.
-- [ ] : `일정` 삭제시 `일정` 에 달린 `댓글` 들도 함께 삭제되어야 한다.
+- [x] : `일정` 삭제시 `일정` 에 달린 `댓글` 들도 함께 삭제되어야 한다.
 <br/>
 
 ### Lv.2 - 댓글 CRUD
-- [ ] : `댓글` 을 `생성, 조회, 수정, 삭제` 할 수 있어야 한다.
-- [ ] : `댓글` 은 `댓글 내용`, `작성일`, `수정일`, `작성 유저명` 필드를 가져야 한다.
-- [ ] : 생성된 `일정` 에 `댓글` 을 남길(작성) 수 있어야 한다.
+- [x] : `댓글` 을 `생성, 조회, 수정, 삭제` 할 수 있어야 한다.
+- [x] : `댓글` 은 `댓글 내용`, `작성일`, `수정일`, `작성 유저명` 필드를 가져야 한다.
+- [x] : 생성된 `일정` 에 `댓글` 을 남길(작성) 수 있어야 한다.
   - `댓글` 과 `일정` 은 연관 관계를 갖는다.
 <br/>
 
@@ -66,13 +66,18 @@
 
 # API 명세서
 ## 필수 기능
-|   API    | Method |        Request URL         |                                                  Request Body                                                   |   HttpStatus   |                                                                       Response Body                                                                       |
-|:--------:|:------:|:--------------------------:|:---------------------------------------------------------------------------------------------------------------:|:--------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|  일정 생성   |  POST  |         /schedule          | json { "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" } |  201 Created   |              json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }              |
-|  일정 조회   |  GET   |   /schedule/{scheduleId}   |                                                        -                                                        |     200 OK     |              json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }              |
-| 일정 목록 조회 |  GET   | /schedule/search-condition |                                                        -                                                        |     200 OK     | json { "scheduleList" : { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }, ... } |
-|  일정 수정   |  PUT   |   /schedule/{scheduleId}   |                                  json { "title" : "일정 제목", "body" : "일정 본문" }                                   | 204 No Content |                                                                             -                                                                             |
-|  일정 삭제   | DELETE |   /schedule/{scheduleId}   |                                                        -                                                        | 204 No Content |                                                                             -                                                                             |
+|   API    | Method |        Request URL         |                            Request Body                             |   HttpStatus   |                                                                         Response Body                                                                         |
+|:--------:|:------:|:--------------------------:|:-------------------------------------------------------------------:|:--------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  일정 생성   |  POST  |         /schedule          |  json { "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문" }  |  201 Created   |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
+|  일정 조회   |  GET   |   /schedule/{scheduleId}   |                                  -                                  |     200 OK     |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
+| 일정 목록 조회 |  GET   | /schedule/search-condition |                                  -                                  |     200 OK     |   json { "scheduleList" : { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }, ... }   |
+|  일정 수정   |  PUT   |   /schedule/{scheduleId}   |            json { "title" : "일정 제목", "body" : "일정 본문" }             | 204 No Content |                                                                               -                                                                               |
+|  일정 삭제   | DELETE |   /schedule/{scheduleId}   |                                  -                                  | 204 No Content |                                                                               -                                                                               |
+|  댓글 생성   |  POST  |   /comment/{scheduleId}    |            json { body" : "댓글 본문", "author" : "작성자 이름" }            |  201 Created   |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
+|  댓글 조회   |  GET   |    /comment/{commentId}    |                                  -                                  |     200 OK     |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
+| 댓글 목록 조회 |  GET   | /comment/search-condition  |                                  -                                  |     200 OK     | json { "commentList" : { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }, ... } |
+|  댓글 수정   |  PUT   |    /comment/{commentId}    |                      json { "body" : "댓글 본문" }                      | 204 No Content |                                                                               -                                                                               |
+|  댓글 삭제   | DELETE |    /comment/{commentId}    |                                  -                                  | 204 No Content |                                                                               -                                                                               |
 <br/>
 
 ## 도전 기능
@@ -80,7 +85,12 @@
 
 # ERD
 ## 필수 기능
-![ERD - Essential Functions](images/ERD%20-%20Essential%20Functions.Level01.png)
+### Lv.1
+![ERD - Essential Functions(1)](images/ERD%20-%20Essential%20Functions.Level01.png)
+<br/>
+
+### Lv.2
+![ERD - Essential Functions(2)](images/ERD%20-%20Essential%20Functions.Level02.png)
 <br/><br/>
 
 ## 도전 기능
@@ -104,6 +114,18 @@ CREATE TABLE schedule (
     update_at timestamp not null,
     primary key (id)
 );
+
+# Lv.2 요구사항 : 'comment' 테이블 생성
+CREATE TABLE comment (
+    id bigint not null auto_increment,
+    body varChar(150) not null,
+    create_at timestamp not null,
+    update_at timestamp not null,
+    author varChar(20) not null,
+    schedule_id bigint not null,
+    primary key (id),
+    foreign key (schedule_id) references schedule (id)
+);
 ```
 <br/><br/>
 
@@ -115,4 +137,5 @@ CREATE TABLE schedule (
 
 # 구현 및 트러블 슈팅 관련 포스팅
 해당 프로젝트 진행간 `구현 및 문제 해결` 에 대한 내용을 다룬 포스팅 목록, 링크를 클릭하면 포스팅을 작성한 개인 블로그로 이동된다.
-- [일정 생성, 조회 API 테스트 + 요청 파라미터 검증 문제 파악](https://development-diary-for-me.tistory.com/173)
+- [일정 생성, 조회 API 테스트 - 요청 파라미터 검증 문제 파악](https://development-diary-for-me.tistory.com/173)
+- [일정 수정, 삭제 API 테스트 - '수정' 기능 수행후 반환 값이 꼭 있어야 할까?](https://development-diary-for-me.tistory.com/174)

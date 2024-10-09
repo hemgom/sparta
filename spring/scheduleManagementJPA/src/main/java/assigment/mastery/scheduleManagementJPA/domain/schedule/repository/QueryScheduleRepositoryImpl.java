@@ -52,6 +52,7 @@ public class QueryScheduleRepositoryImpl implements QueryScheduleRepository {
         return query.getResultList();
     }
 
+    @Override
     public void update(Schedule foundSchedule, UpdateSchedule request) {
         foundSchedule.update(request);
     }

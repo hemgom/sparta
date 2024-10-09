@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ExceptionCode {
     INVALID_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "Invalid parameter included"),
     NOT_FOUND_SCHEDULE(HttpStatus.NOT_FOUND, "Schedule not found"),
+    NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND, "Comment not found"),
     ;
 
     private final HttpStatus httpStatus;

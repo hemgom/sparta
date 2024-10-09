@@ -1,6 +1,7 @@
 package assigment.mastery.scheduleManagementJPA.domain.schedule;
 
 import assigment.mastery.scheduleManagementJPA.converter.DateTimeFormatConverter;
+import assigment.mastery.scheduleManagementJPA.domain.comment.Comment;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.AddSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.UpdateSchedule;
@@ -11,6 +12,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -40,6 +43,9 @@ public class Schedule {
     @Column(name = "UPDATE_AT", nullable = false)
     @LastModifiedDate
     private LocalDateTime updateAt;
+
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
 
     public void update(UpdateSchedule request) {
         this.title = request.getTitle();

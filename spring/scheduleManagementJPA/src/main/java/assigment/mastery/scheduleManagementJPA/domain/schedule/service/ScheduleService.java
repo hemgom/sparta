@@ -31,8 +31,8 @@ public class ScheduleService {
         return Schedule.makeResponse(saved);
     }
 
-    public ResponseSchedule findById(Long id) {
-        Schedule found = scheduleRepository.findById(id)
+    public ResponseSchedule findById(long scheduleId) {
+        Schedule found = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
 
         return Schedule.makeResponse(found);
@@ -50,15 +50,15 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void update(Long id, UpdateSchedule request) {
-        Schedule found = scheduleRepository.findById(id)
+    public void update(long scheduleId, UpdateSchedule request) {
+        Schedule found = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
 
         scheduleRepository.update(found, request);
     }
 
-    public void delete(Long id) {
-        Schedule found = scheduleRepository.findById(id)
+    public void delete(long scheduleId) {
+        Schedule found = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
 
         scheduleRepository.deleteById(found.getId());
