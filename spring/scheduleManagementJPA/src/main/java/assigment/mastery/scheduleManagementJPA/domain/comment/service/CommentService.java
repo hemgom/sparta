@@ -44,7 +44,7 @@ public class CommentService {
     }
 
     public ResponseCommentList findAll(String author) {
-        List<Comment> foundList = commentRepository.findAll(author);
+        List<Comment> foundList = commentRepository.findAllByAuthor(author);
 
         List<ResponseComment> responseCommentList = new ArrayList<>();
         foundList.stream().map(Comment::makeResponse).forEach(responseCommentList::add);

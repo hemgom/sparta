@@ -68,6 +68,7 @@ public class Schedule {
                 .body(schedule.getBody())
                 .createAt(DateTimeFormatConverter.convertDateTimeFormat(schedule.getCreateAt()))
                 .updateAt(DateTimeFormatConverter.convertDateTimeFormat(schedule.getUpdateAt()))
+                .commentCount(schedule.getComments().size())
                 .build();
     }
 }

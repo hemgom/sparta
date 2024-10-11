@@ -2,6 +2,7 @@ package assigment.mastery.scheduleManagementJPA.domain.schedule.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -9,4 +10,6 @@ import java.util.List;
 @Builder
 public class ResponseScheduleList {
     private List<ResponseSchedule> schedules;
+
+    private Pageable pageable;
 }

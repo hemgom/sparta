@@ -7,6 +7,9 @@ import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseSched
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.UpdateSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.repository.ScheduleRepository;
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,14 +41,20 @@ public class ScheduleService {
         return Schedule.makeResponse(found);
     }
 
-    public ResponseScheduleList findAll(String author, String title) {
-        List<Schedule> foundList = scheduleRepository.findAll(author, title);
+    public ResponseScheduleList findAll(String author, String title, PageRequest pageRequest) {
+        Slice<Schedule> foundSchedules = scheduleRepository.findAllByAuthorAndTitle(author, title, pageRequest);
+
+        List<Long> scheduleIds = new ArrayList<>();
+        foundSchedules.getContent().forEach(s -> scheduleIds.add(s.getId()));
+
+        List<Schedule> finish = scheduleRepository.findAllByScheduleIdIn(scheduleIds);
 
         List<ResponseSchedule> responseScheduleList = new ArrayList<>();
-        foundList.stream().map(Schedule::makeResponse).forEach(responseScheduleList::add);
+        finish.stream().map(Schedule::makeResponse).forEach(responseScheduleList::add);
 
         return ResponseScheduleList.builder()
                 .schedules(responseScheduleList)
+                .pageable(foundSchedules.getPageable())
                 .build();
     }
 

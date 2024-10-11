@@ -6,8 +6,14 @@ import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseSched
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.UpdateSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RestController
 @RequestMapping("/schedule")
@@ -33,8 +39,11 @@ public class ScheduleController {
     @GetMapping("/search-condition")
     @ResponseStatus(HttpStatus.OK)
     public ResponseScheduleList findAllSchedules(@RequestParam(name = "author", defaultValue = "") String author,
-                                                 @RequestParam(name = "title", defaultValue = "") String title) {
-        return scheduleService.findAll(author, title);
+                                                 @RequestParam(name = "title", defaultValue = "") String title,
+                                                 @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+                                                 @RequestParam(name = "pageSize", defaultValue = "3") int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNum, pageSize, Sort.by(DESC, "updateAt"));
+        return scheduleService.findAll(author, title, pageRequest);
     }
 
     @PutMapping("/{scheduleId}")

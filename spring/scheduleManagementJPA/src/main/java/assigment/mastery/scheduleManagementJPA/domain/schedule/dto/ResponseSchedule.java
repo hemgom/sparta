@@ -17,4 +17,6 @@ public class ResponseSchedule {
     private String createAt;
 
     private String updateAt;
+
+    private int commentCount;
 }
