@@ -12,8 +12,8 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long>, QueryScheduleRepository {
     @Query(value =
             "SELECT s " +
-            "FROM Schedule AS s " +
-            "WHERE s.author LIKE CONCAT('%', :author, '%') AND s.title LIKE CONCAT('%', :title, '%')"
+            "FROM Schedule AS s LEFT JOIN FETCH s.member " +
+            "WHERE s.member.name = :author AND s.title LIKE CONCAT('%', :title, '%')"
     )
     Slice<Schedule> findAllByAuthorAndTitle(@Param("author") String author, @Param("title") String title, Pageable pageable);
 

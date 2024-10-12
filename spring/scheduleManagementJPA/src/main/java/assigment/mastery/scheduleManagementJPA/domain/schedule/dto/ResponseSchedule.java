@@ -8,7 +8,7 @@ import lombok.Getter;
 public class ResponseSchedule {
     private long id;
 
-    private String author;
+    private String authorName;
 
     private String title;
 

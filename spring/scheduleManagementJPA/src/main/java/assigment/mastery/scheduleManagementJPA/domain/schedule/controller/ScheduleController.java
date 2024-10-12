@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RestController
@@ -24,15 +22,16 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @PostMapping
+    @PostMapping("/{memberId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseSchedule addSchedule(@RequestBody @Valid AddSchedule request) {
-        return scheduleService.save(request);
+    public ResponseSchedule addSchedule(@PathVariable(name = "memberId") Long memberId,
+                                        @RequestBody @Valid AddSchedule request) {
+        return scheduleService.save(memberId, request);
     }
 
     @GetMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseSchedule findScheduleById(@PathVariable(name = "scheduleId") long scheduleId) {
+    public ResponseSchedule findScheduleById(@PathVariable(name = "scheduleId") Long scheduleId) {
         return scheduleService.findById(scheduleId);
     }
 
@@ -41,21 +40,23 @@ public class ScheduleController {
     public ResponseScheduleList findAllSchedules(@RequestParam(name = "author", defaultValue = "") String author,
                                                  @RequestParam(name = "title", defaultValue = "") String title,
                                                  @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-                                                 @RequestParam(name = "pageSize", defaultValue = "3") int pageSize) {
+                                                 @RequestParam(name = "pageSize", defaultValue = "10") int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNum, pageSize, Sort.by(DESC, "updateAt"));
         return scheduleService.findAll(author, title, pageRequest);
     }
 
-    @PutMapping("/{scheduleId}")
+    @PutMapping("/{scheduleId}/{memberId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateSchedule(@PathVariable(name = "scheduleId") long scheduleId,
+    public void updateSchedule(@PathVariable(name = "scheduleId") Long scheduleId,
+                               @PathVariable(name = "memberId") Long memberId,
                                @RequestBody @Valid UpdateSchedule request) {
-        scheduleService.update(scheduleId, request);
+        scheduleService.update(scheduleId, memberId, request);
     }
 
-    @DeleteMapping("/{scheduleId}")
+    @DeleteMapping("/{scheduleId}/{memberId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSchedule(@PathVariable(name = "scheduleId") long scheduleId) {
-        scheduleService.delete(scheduleId);
+    public void deleteSchedule(@PathVariable(name = "scheduleId") Long scheduleId,
+                               @PathVariable(name = "memberId") Long memberId) {
+        scheduleService.delete(scheduleId, memberId);
     }
 }

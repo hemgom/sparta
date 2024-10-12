@@ -46,19 +46,19 @@
 <br/>
 
 ### Lv.4 - 유저 CRUD
-- [ ] : `유저` 를 `생성, 조회, 수정, 삭제` 할 수 있어야 한다.
-- [ ] : `유저` 는 `유저명, 이메일, 작성일, 수정일` 필드를 가져야 한다.
-- [ ] : `일정` 은 `작성 유저명` 필드 대신 `유저` 의 `고유 식별자(PK)` 필드를 갖는다.
-- [ ] : `일정` 을 작성한 `유저` 는 `일정 담당 유저(들)` 을 설정할 수 있다.
+- [x] : `유저` 를 `생성, 조회, 수정, 삭제` 할 수 있어야 한다.
+- [x] : `유저` 는 `유저명, 이메일, 작성일, 수정일` 필드를 가져야 한다.
+- [x] : `일정` 은 `작성 유저명` 필드 대신 `유저` 의 `고유 식별자(PK)` 필드를 갖는다.
+- [x] : `일정` 을 작성한 `유저` 는 `일정 담당 유저(들)` 을 설정할 수 있다.
   - `일정 담당 유저(들)` 은 한 마디로 `일정 담당자(들)` 이다.
   - 하나의 `일정`이 여러 `유저` 를 가지게끔 추가된 `설정` 이라 보면 된다.
-- [ ] : `일정` 과 `유저` 는 `N:M` 관계를 맺어야 한다.
-- [ ] : `JPA 지연로딩` 을 활용해야 한다.
+- [x] : `일정` 과 `유저` 는 `N:M` 관계를 맺어야 한다.
+- [x] : `JPA 지연로딩` 을 활용해야 한다.
 <br/>
 
 ### Lv.5 - 다양한 예외처리 적용하기
-- [ ] : `validation` 을 활용해 다양한 예외처리를 적용해야 한다.
-- [ ] : 구현한 프로젝트를 분석하고 `예외사항` 을 파악해보자.
+- [x] : `validation` 을 활용해 다양한 예외처리를 적용해야 한다.
+- [x] : 구현한 프로젝트를 분석하고 `예외사항` 을 파악해보자.
 <br/><br/>
 
 ## 도전 기능
@@ -66,18 +66,23 @@
 
 # API 명세서
 ## 필수 기능
-|   API    | Method |        Request URL         |                            Request Body                             |   HttpStatus   |                                                                         Response Body                                                                         |
-|:--------:|:------:|:--------------------------:|:-------------------------------------------------------------------:|:--------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|  일정 생성   |  POST  |         /schedule          |  json { "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문" }  |  201 Created   |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
-|  일정 조회   |  GET   |   /schedule/{scheduleId}   |                                  -                                  |     200 OK     |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
-| 일정 목록 조회 |  GET   | /schedule/search-condition |                                  -                                  |     200 OK     |   json { "scheduleList" : { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }, ... }   |
-|  일정 수정   |  PUT   |   /schedule/{scheduleId}   |            json { "title" : "일정 제목", "body" : "일정 본문" }             | 204 No Content |                                                                               -                                                                               |
-|  일정 삭제   | DELETE |   /schedule/{scheduleId}   |                                  -                                  | 204 No Content |                                                                               -                                                                               |
-|  댓글 생성   |  POST  |   /comment/{scheduleId}    |            json { body" : "댓글 본문", "author" : "작성자 이름" }            |  201 Created   |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
-|  댓글 조회   |  GET   |    /comment/{commentId}    |                                  -                                  |     200 OK     |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
-| 댓글 목록 조회 |  GET   | /comment/search-condition  |                                  -                                  |     200 OK     | json { "commentList" : { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }, ... } |
-|  댓글 수정   |  PUT   |    /comment/{commentId}    |                      json { "body" : "댓글 본문" }                      | 204 No Content |                                                                               -                                                                               |
-|  댓글 삭제   | DELETE |    /comment/{commentId}    |                                  -                                  | 204 No Content |                                                                               -                                                                               |
+|   API    | Method |        Request URL         |                                                     Request Body                                                     |   HttpStatus   |                                                                         Response Body                                                                         |
+|:--------:|:------:|:--------------------------:|:--------------------------------------------------------------------------------------------------------------------:|:--------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  일정 생성   |  POST  |         /schedule          | json { "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "scheduleManagers" : ["매니저 이름1", "매니저 이름2", ... ] } |  201 Created   |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
+|  일정 조회   |  GET   |   /schedule/{scheduleId}   |                                                          -                                                           |     200 OK     |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
+| 일정 목록 조회 |  GET   | /schedule/search-condition |                                                          -                                                           |     200 OK     |   json { "scheduleList" : { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }, ... }   |
+|  일정 수정   |  PUT   |   /schedule/{scheduleId}   |                                     json { "title" : "일정 제목", "body" : "일정 본문" }                                     | 204 No Content |                                                                               -                                                                               |
+|  일정 삭제   | DELETE |   /schedule/{scheduleId}   |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
+|  댓글 생성   |  POST  |   /comment/{scheduleId}    |                                    json { body" : "댓글 본문", "author" : "작성자 이름" }                                     |  201 Created   |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
+|  댓글 조회   |  GET   |    /comment/{commentId}    |                                                          -                                                           |     200 OK     |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
+| 댓글 목록 조회 |  GET   | /comment/search-condition  |                                                          -                                                           |     200 OK     | json { "commentList" : { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }, ... } |
+|  댓글 수정   |  PUT   |    /comment/{commentId}    |                                              json { "body" : "댓글 본문" }                                               | 204 No Content |                                                                               -                                                                               |
+|  댓글 삭제   | DELETE |    /comment/{commentId}    |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
+|  유저 생성   | DELETE |          /member           |                                       json { "name" : "이름", "email" : "이메일" }                                        |  201 Created   |                                json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                |
+|  유저 조회   | DELETE |     /member/{memberId}     |                                                          -                                                           |     200 OK     |                                json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                |
+| 유저 목록 조회 | DELETE |  /member/search-condition  |                                                          -                                                           |     200 OK     |                    json { "memberList" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, ... }                    |
+|  유저 수정   | DELETE |     /member/{memberId}     |                                                json { "name" : "이름" }                                                | 204 No Content |                                                                               -                                                                               |
+|  유저 삭제   | DELETE |     /member/{memberId}     |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
 <br/>
 
 ## 도전 기능
@@ -91,6 +96,10 @@
 
 ### Lv.2
 ![ERD - Essential Functions(2)](images/ERD%20-%20Essential%20Functions.Level02.png)
+<br/>
+
+### Lv.4
+![ERD - Essential Functions(3)](images/ERD%20-%20Essential%20Functions.Level04.png)
 <br/><br/>
 
 ## 도전 기능
@@ -126,6 +135,56 @@ CREATE TABLE comment (
     primary key (id),
     foreign key (schedule_id) references schedule (id)
 );
+
+# Lv.4 요구사항
+# Database(= schedule_management_jpa) Table 삭제
+use schedule_management_jpa;
+drop table comment;
+drop table schedule;
+
+-- 'member' 테이블 생성
+CREATE TABLE member (
+    id bigint not null auto_increment,
+    name varChar(20) not null,
+    email varCHar(350) not null,
+    create_at timestamp not null,
+    update_at timestamp not null,
+    primary key (id)
+);
+
+# 'schedule' 테이블 생성
+CREATE TABLE schedule (
+    id bigint not null auto_increment,
+    title varChar(100) not null,
+    body varChar(250) not null,
+    create_at timestamp not null,
+    update_at timestamp not null,
+    member_id bigint not null,
+    primary key (id),
+    foreign key (member_id) references member (id)
+);
+
+# 'comment' 테이블 생성
+CREATE TABLE comment (
+    id bigint not null auto_increment,
+    body varChar(150) not null,
+    create_at timestamp not null,
+    update_at timestamp not null,
+    author varChar(20) not null,
+    schedule_id bigint not null,
+    primary key (id),
+    foreign key (schedule_id) references schedule (id)
+);
+
+# 'schedule_manager' 테이블 생성
+CREATE TABLE schedule_manager (
+    id bigint not null auto_increment,
+    schedule_id bigint not null,
+    member_id bigint not null,
+    primary key (id),
+    foreign key (schedule_id) references schedule (id),
+    foreign key (member_id) references member (id)
+);
 ```
 <br/><br/>
 
@@ -140,3 +199,4 @@ CREATE TABLE comment (
 - [일정 생성, 조회 API 테스트 - 요청 파라미터 검증 문제 파악](https://development-diary-for-me.tistory.com/173)
 - [일정 수정, 삭제 API 테스트 - '수정' 기능 수행후 반환 값이 꼭 있어야 할까?](https://development-diary-for-me.tistory.com/174)
 - [댓글 CRUD API 테스트 - 'Cascade(영속성 전이)' 활용하기](https://development-diary-for-me.tistory.com/175)
+- [기묘한 모험 - '1:N' 관계에서의 전체 조회](https://development-diary-for-me.tistory.com/176)

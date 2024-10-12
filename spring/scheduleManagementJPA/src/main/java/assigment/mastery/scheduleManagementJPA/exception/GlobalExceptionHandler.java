@@ -1,5 +1,6 @@
 package assigment.mastery.scheduleManagementJPA.exception;
 
+import assigment.mastery.scheduleManagementJPA.exception.customException.HasNotPermissionException;
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
 import assigment.mastery.scheduleManagementJPA.exception.dto.ResponseExceptionCode;
 import assigment.mastery.scheduleManagementJPA.exception.dto.NotValidRequestParameter;
@@ -17,6 +18,13 @@ import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionC
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(HasNotPermissionException.class)
+    public ResponseEntity<Object> handleHasNotPermissionException(HasNotPermissionException e) {
+        ExceptionCode exceptionCode = e.getExceptionCode();
+        return ResponseEntity.status(exceptionCode.getHttpStatus())
+                .body(makeResponseExceptionCode(exceptionCode));
+    }
+
     @ExceptionHandler(NotFoundEntityException.class)
     public ResponseEntity<Object> handleNotFoundEntityException(NotFoundEntityException e) {
         ExceptionCode exceptionCode = e.getExceptionCode();

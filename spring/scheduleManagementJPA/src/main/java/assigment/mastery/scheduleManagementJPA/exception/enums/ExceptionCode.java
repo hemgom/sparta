@@ -8,6 +8,8 @@ public enum ExceptionCode {
     INVALID_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "Invalid parameter included"),
     NOT_FOUND_SCHEDULE(HttpStatus.NOT_FOUND, "Schedule not found"),
     NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND, "Comment not found"),
+    NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "Member not found"),
+    HAS_NOT_PERMISSION(HttpStatus.UNAUTHORIZED, "You do not have permission"),
     ;
 
     private final HttpStatus httpStatus;
