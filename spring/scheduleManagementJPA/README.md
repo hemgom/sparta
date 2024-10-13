@@ -6,7 +6,7 @@
 <br/><br/><br/>
 
 # 요구사항
-`필수 기능` 에 해당하는 요구사항을 `순차적` 으로 모두 반영 후, `도전 기능` 에 해당하는 요구사항을 `순차적` 으로 반영해 볼 생각이다.
+`필수 기능` 에 해당하는 요구사항을 `순차적` 으로 모두 반영 후, `도전 기능` 에 해당하는 요구사항을 반영해 볼 생각이다.
 
 ## 공통 조건
 - 모든 테이블은 `고유 식별자(ID)` 를 가져야 한다.
@@ -62,6 +62,38 @@
 <br/><br/>
 
 ## 도전 기능
+### Lv.6 - 회원가입(JWT)
+- [x] : `유저` 에 `비밀번호` 필드를 추가한다.
+  - `비밀번호` 는 `암호화` 되어야 한다. 암호화를 위한 `PasswordEncoder` 를 직접 만들어 사용해야 한다.
+- [x] : `유저` 를 생성(회원가입)하면 `JWT` 를 발급해 반환해야 한다.
+<br/>
+
+### Lv.7 - 로그인(인증)
+- [ ] : `JWT` 를 활용해 로그인 기능을 구현해야 한다.
+- [ ] : `필터` 를 활용해 인증 처리를 해야 한다.
+- [ ] : 유저의 `이메일` 과 `비밀번호` 를 활용 로그인 기능을 구현해야 한다.
+  - 로그인에 성공하면 `JWT` 발급 후 반환한다.
+- [ ] : 모든 요청에서 `토큰` 을 활용해 `인증 처리` 를 진행해야 한다.
+  - `토큰` 은 `Header` 에 추가한다.
+  - 단, `회원가입` 및 `로그인` 요청은 `인증 처리` 를 진행하지 않는다.
+- [ ] : 로그인 시 `이메일과 비밀번호` 가 일치 하지 않을 경우 `401` 을 반환한다.
+- [ ] : `토큰` 이 전달되지 않은 경우 `400` 을 반환한다.
+- [ ] : 유효 기간이 만료된 토큰의 경우 `401` 을 반환한다.
+<br/>
+
+### Lv.8 - 권환 확인(인가)
+- [ ] : `유저` 에 `권한` 을 추가한다.
+- [ ] : `권한` 에는 `관리자`, `일반 사용자` 두 가지가 존재해야 한다.
+- [ ] : `JWT` 발급시 유저의 권한 정보도 함께 담아야 한다.
+- [ ] : `일정` 수정 및 삭제는 `관리자` 권한이 있는 유저만이 할 수 있어야 한다.
+- [ ] : 권한이 없는 유저가 '일정 수정 및 삭제' 를 요청할 경우 `403` 을 반환해야 한다.
+<br/>
+
+### Lv.9 - 외부 API 조회
+- [ ] : `날씨 정보 데이터(Open API)` 활용해 오늘의 날씨를 조회할 수 있어야 한다.
+  - `RestTemplate` 을 사용해 날씨를 조회한다.
+- [ ] : `일정` 에 `날씨` 필드를 추가해야 한다.
+  - 일정 생성 시 `날씨 정보` 를 `생성일(=작성일)` 기준으로 저장해야 한다.
 <br/><br/><br/>
 
 # API 명세서
@@ -78,14 +110,33 @@
 | 댓글 목록 조회 |  GET   | /comment/search-condition  |                                                          -                                                           |     200 OK     | json { "commentList" : { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }, ... } |
 |  댓글 수정   |  PUT   |    /comment/{commentId}    |                                              json { "body" : "댓글 본문" }                                               | 204 No Content |                                                                               -                                                                               |
 |  댓글 삭제   | DELETE |    /comment/{commentId}    |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
-|  유저 생성   | DELETE |          /member           |                                       json { "name" : "이름", "email" : "이메일" }                                        |  201 Created   |                                json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                |
-|  유저 조회   | DELETE |     /member/{memberId}     |                                                          -                                                           |     200 OK     |                                json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                |
-| 유저 목록 조회 | DELETE |  /member/search-condition  |                                                          -                                                           |     200 OK     |                    json { "memberList" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, ... }                    |
-|  유저 수정   | DELETE |     /member/{memberId}     |                                                json { "name" : "이름" }                                                | 204 No Content |                                                                               -                                                                               |
+|  유저 생성   |  POST  |          /member           |                                       json { "name" : "이름", "email" : "이메일" }                                        |  201 Created   |                                json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                |
+|  유저 조회   |  GET   |     /member/{memberId}     |                                                          -                                                           |     200 OK     |                                json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                |
+| 유저 목록 조회 |  GET   |  /member/search-condition  |                                                          -                                                           |     200 OK     |                    json { "memberList" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, ... }                    |
+|  유저 수정   |  PUT   |     /member/{memberId}     |                                                json { "name" : "이름" }                                                | 204 No Content |                                                                               -                                                                               |
 |  유저 삭제   | DELETE |     /member/{memberId}     |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
 <br/>
 
 ## 도전 기능
+|   API    | Method |        Request URL         |                                                     Request Body                                                     |   HttpStatus   |                                                                         Response Body                                                                         |
+|:--------:|:------:|:--------------------------:|:--------------------------------------------------------------------------------------------------------------------:|:--------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  회원 가입   |  POST  |          /member           |                             json { "name" : "이름", "email" : "이메일", "password" : "비밀번호" }                             |  201 Created   |                                                                               -                                                                               |
+|   로그인    |  POST  |       /member/signIn       |                                                          -                                                           |     200 OK     |                                                                               -                                                                               |
+|   로그아웃   |  POST  |      /member/signOut       |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
+|  회원 조회   |  GET   |     /member/{memberId}     |                                                          -                                                           |     200 OK     |                                json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                |
+| 회원 목록 조회 |  GET   |  /member/search-condition  |                                                          -                                                           |     200 OK     |                    json { "memberList" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, ... }                    |
+| 회원 정보 수정 |  PUT   |     /member/{memberId}     |                                                json { "name" : "이름" }                                                | 204 No Content |                                                                               -                                                                               |
+|  유저 삭제   | DELETE |     /member/{memberId}     |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
+|  일정 생성   |  POST  |         /schedule          | json { "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "scheduleManagers" : ["매니저 이름1", "매니저 이름2", ... ] } |  201 Created   |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
+|  일정 조회   |  GET   |   /schedule/{scheduleId}   |                                                          -                                                           |     200 OK     |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
+| 일정 목록 조회 |  GET   | /schedule/search-condition |                                                          -                                                           |     200 OK     |   json { "scheduleList" : { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }, ... }   |
+|  일정 수정   |  PUT   |   /schedule/{scheduleId}   |                                     json { "title" : "일정 제목", "body" : "일정 본문" }                                     | 204 No Content |                                                                               -                                                                               |
+|  일정 삭제   | DELETE |   /schedule/{scheduleId}   |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
+|  댓글 생성   |  POST  |   /comment/{scheduleId}    |                                    json { body" : "댓글 본문", "author" : "작성자 이름" }                                     |  201 Created   |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
+|  댓글 조회   |  GET   |    /comment/{commentId}    |                                                          -                                                           |     200 OK     |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
+| 댓글 목록 조회 |  GET   | /comment/search-condition  |                                                          -                                                           |     200 OK     | json { "commentList" : { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }, ... } |
+|  댓글 수정   |  PUT   |    /comment/{commentId}    |                                              json { "body" : "댓글 본문" }                                               | 204 No Content |                                                                               -                                                                               |
+|  댓글 삭제   | DELETE |    /comment/{commentId}    |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
 <br/><br/>
 
 # ERD
@@ -103,6 +154,7 @@
 <br/><br/>
 
 ## 도전 기능
+![ERD - Challenge Functions](images/ERD%20-%20Challenge%20Functions.png)
 <br/><br/><br/>
 
 # SQL
@@ -190,7 +242,59 @@ CREATE TABLE schedule_manager (
 
 ## 도전 기능
 ```mysql
+-- 'member' 테이블 생성
+CREATE TABLE member (
+    id bigint not null auto_increment,
+    name varChar(20) not null,
+    email varchar(350) not null,
+    password varchar(255) not null,
+    role varChar(20) not null,
+    create_at timestamp not null,
+    update_at timestamp not null,
+    primary key (id),
+    unique index email_unique (email ASC) visible
+);
 
+-- 'schedule' 테이블 생성
+CREATE TABLE schedule (
+    id bigint not null auto_increment,
+    title varChar(100) not null,
+    body varChar(250) not null,
+    create_at timestamp not null,
+    update_at timestamp not null,
+    member_id bigint not null,
+    primary key (id),
+    foreign key (member_id) references member (id)
+);
+
+-- 'comment' 테이블 생성
+CREATE TABLE comment (
+    id bigint not null auto_increment,
+    body varChar(150) not null,
+    create_at timestamp not null,
+    update_at timestamp not null,
+    author_name varChar(20) not null,
+    schedule_id bigint not null,
+    primary key (id),
+    foreign key (schedule_id) references schedule (id)
+);
+
+-- 'schedule_manager' 테이블 생성
+CREATE TABLE schedule_manager (
+    id bigint not null auto_increment,
+    schedule_id bigint not null,
+    member_id bigint not null,
+    primary key (id),
+    foreign key (schedule_id) references schedule (id),
+    foreign key (member_id) references member (id)
+);
+
+-- 'refresh_token' 테이블 생성
+CREATE TABLE refresh_token (
+    id bigint not null auto_increment,
+    refresh_token varChar(350) not null,
+    primary key (id)
+);
 ```
 <br/><br/><br/>
 
@@ -200,3 +304,4 @@ CREATE TABLE schedule_manager (
 - [일정 수정, 삭제 API 테스트 - '수정' 기능 수행후 반환 값이 꼭 있어야 할까?](https://development-diary-for-me.tistory.com/174)
 - [댓글 CRUD API 테스트 - 'Cascade(영속성 전이)' 활용하기](https://development-diary-for-me.tistory.com/175)
 - [기묘한 모험 - '1:N' 관계에서의 전체 조회](https://development-diary-for-me.tistory.com/176)
+- [N:M(다대다) 관계 풀어내기](https://development-diary-for-me.tistory.com/177)

@@ -1,10 +1,11 @@
 package assigment.mastery.scheduleManagementJPA.domain.member;
 
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.AddMember;
+import assigment.mastery.scheduleManagementJPA.domain.member.dto.JoinMember;
 import assigment.mastery.scheduleManagementJPA.domain.member.dto.ResponseMember;
 import assigment.mastery.scheduleManagementJPA.domain.member.dto.UpdateMember;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.Schedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.ScheduleManager;
+import assigment.mastery.scheduleManagementJPA.security.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -32,8 +33,15 @@ public class Member {
     @Column(name = "NAME", nullable = false, length = 20)
     private String name;
 
-    @Column(name = "EMAIL", nullable = false, length = 350)
+    @Column(name = "EMAIL", nullable = false, length = 350, unique = true)
     private String email;
+
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
+
+    @Column(name = "ROLE")
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
 
     @Column(name = "CREATE_AT", nullable = false)
     @CreatedDate
@@ -53,10 +61,12 @@ public class Member {
         this.name = request.getName();
     }
 
-    public static Member create(AddMember addMember) {
+    public static Member create(JoinMember joinMember, String encodedPassword, MemberRole role) {
         return Member.builder()
-                .name(addMember.getName())
-                .email(addMember.getEmail())
+                .name(joinMember.getName())
+                .email(joinMember.getEmail())
+                .password(encodedPassword)
+                .role(role)
                 .build();
     }
 

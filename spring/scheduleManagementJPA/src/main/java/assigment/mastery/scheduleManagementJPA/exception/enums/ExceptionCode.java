@@ -10,6 +10,7 @@ public enum ExceptionCode {
     NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND, "Comment not found"),
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "Member not found"),
     HAS_NOT_PERMISSION(HttpStatus.UNAUTHORIZED, "You do not have permission"),
+    DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "Email address already in use"),
     ;
 
     private final HttpStatus httpStatus;

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class AddMember {
+public class JoinMember {
     @NotBlank
     @Size(min = 2, max = 20)
     private String name;
@@ -15,4 +15,8 @@ public class AddMember {
     @NotNull
     @Email
     private String email;
+
+    @NotBlank
+    @Size(min = 10, max = 20)
+    private String password;
 }

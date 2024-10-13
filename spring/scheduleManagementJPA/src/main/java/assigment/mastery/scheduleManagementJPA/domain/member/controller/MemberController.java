@@ -1,31 +1,31 @@
 package assigment.mastery.scheduleManagementJPA.domain.member.controller;
 
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.AddMember;
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.ResponseMember;
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.ResponseMemberList;
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.UpdateMember;
+import assigment.mastery.scheduleManagementJPA.domain.member.dto.*;
 import assigment.mastery.scheduleManagementJPA.domain.member.service.MemberService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.data.domain.Sort.Direction.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
+@Slf4j
 @RestController
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
 
-    public MemberController(final MemberService memberService) {
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMember addMember(@RequestBody @Valid AddMember request) {
-        return memberService.save(request);
+    public ResponseMemberAndToken joinMember(@RequestBody @Valid JoinMember request) {
+        return memberService.join(request);
     }
 
     @GetMapping("/{memberId}")

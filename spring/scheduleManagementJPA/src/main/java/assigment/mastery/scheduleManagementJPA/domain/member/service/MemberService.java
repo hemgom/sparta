@@ -1,12 +1,15 @@
 package assigment.mastery.scheduleManagementJPA.domain.member.service;
 
+import assigment.mastery.scheduleManagementJPA.config.PasswordEncoder;
 import assigment.mastery.scheduleManagementJPA.domain.member.Member;
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.AddMember;
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.ResponseMember;
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.ResponseMemberList;
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.UpdateMember;
+import assigment.mastery.scheduleManagementJPA.domain.member.RefreshToken;
+import assigment.mastery.scheduleManagementJPA.domain.member.dto.*;
 import assigment.mastery.scheduleManagementJPA.domain.member.repository.MemberRepository;
+import assigment.mastery.scheduleManagementJPA.domain.member.repository.RefreshTokenRepository;
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
+import assigment.mastery.scheduleManagementJPA.security.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -16,21 +19,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.NOT_FOUND_MEMBER;
+import static assigment.mastery.scheduleManagementJPA.security.enums.MemberRole.USER;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
+    @Transactional
+    public ResponseMemberAndToken join(JoinMember request) {
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
 
-    public ResponseMember save(AddMember request) {
-        Member created = Member.create(request);
+        Member createdMember = Member.create(request, encodedPassword, USER);
+        Member savedMember = memberRepository.save(createdMember);
 
-        Member saved = memberRepository.save(created);
+        String accessToken = jwtUtil.createAccessToken(savedMember.getId(), USER);
+        String refreshToken = jwtUtil.createRefreshToken(savedMember.getId(), USER);
 
-        return Member.makeResponse(saved);
+        RefreshToken createdRefreshTokenEntity = RefreshToken.create(refreshToken);
+        refreshTokenRepository.save(createdRefreshTokenEntity);
+
+        return ResponseMemberAndToken.builder()
+                .member(Member.makeResponse(savedMember))
+                .token(ResponseToken.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken)
+                        .build())
+                .build();
     }
 
     public ResponseMember findById(Long memberId) {
