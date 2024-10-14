@@ -1,4 +1,4 @@
-package assigment.mastery.scheduleManagementJPA.domain.member;
+package assigment.mastery.scheduleManagementJPA.domain.refreshToken;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,5 +21,9 @@ public class RefreshToken {
         return RefreshToken.builder()
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public void updateToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

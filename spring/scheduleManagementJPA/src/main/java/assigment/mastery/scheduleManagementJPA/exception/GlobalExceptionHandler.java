@@ -3,28 +3,36 @@ package assigment.mastery.scheduleManagementJPA.exception;
 import assigment.mastery.scheduleManagementJPA.exception.customException.DuplicateEmailException;
 import assigment.mastery.scheduleManagementJPA.exception.customException.HasNotPermissionException;
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
+import assigment.mastery.scheduleManagementJPA.exception.customException.NotMatchPasswordException;
 import assigment.mastery.scheduleManagementJPA.exception.dto.NotValidRequestParameter;
 import assigment.mastery.scheduleManagementJPA.exception.dto.ResponseExceptionCode;
 import assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import static assigment.mastery.scheduleManagementJPA.exception.dto.NotValidRequestParameter.NotValidParameter;
 import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.INVALID_REQUEST_PARAMETER;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(NotMatchPasswordException.class)
+    public ResponseEntity<Object> handleNotMatchPasswordException(NotMatchPasswordException e) {
+        ExceptionCode exceptionCode = e.getExceptionCode();
+        return ResponseEntity.status(exceptionCode.getHttpStatus())
+                .body(makeResponseExceptionCode(exceptionCode));
+    }
+
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<Object> handleDuplicateEmailException(DuplicateEmailException e) {
         ExceptionCode exceptionCode = e.getExceptionCode();
-        return ResponseEntity.status(exceptionCode.getHttpStatus()).body(exceptionCode.getMessage());
+        return ResponseEntity.status(exceptionCode.getHttpStatus())
+                .body(makeResponseExceptionCode(exceptionCode));
     }
 
     @ExceptionHandler(HasNotPermissionException.class)

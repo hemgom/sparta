@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long>, QueryMemberRepository {
     @Query(value = "SELECT m FROM Member AS m WHERE m.name LIKE CONCAT('%', :name, '%')")
@@ -15,4 +16,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, QueryMemb
 
     @Query(value = "SELECT m FROM Member AS m WHERE m.name IN (:names)")
     List<Member> findAllByNameIn(@Param("names") List<String> names);
+
+    @Query(value = "SELECT m FROM Member AS m WHERE m.email = :email")
+    Optional<Member> findByEmail(@Param("email") String email);
 }

@@ -2,7 +2,7 @@ package assigment.mastery.scheduleManagementJPA.domain.member.controller;
 
 import assigment.mastery.scheduleManagementJPA.domain.member.dto.*;
 import assigment.mastery.scheduleManagementJPA.domain.member.service.MemberService;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +26,18 @@ public class MemberController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseMemberAndToken joinMember(@RequestBody @Valid JoinMember request) {
         return memberService.join(request);
+    }
+
+    @PostMapping("/logIn")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseToken logIn(@RequestBody @Valid SignInDTO request) {
+        return memberService.logIn(request);
+    }
+
+    @PostMapping("/logOut")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logOut(HttpServletRequest request) {
+        memberService.logOut(request);
     }
 
     @GetMapping("/{memberId}")

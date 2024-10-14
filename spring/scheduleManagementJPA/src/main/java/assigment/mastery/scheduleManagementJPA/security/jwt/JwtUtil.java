@@ -5,19 +5,17 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import java.net.URLEncoder;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
 import static assigment.mastery.scheduleManagementJPA.security.enums.AuthorizationKey.*;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 @Component
@@ -44,7 +42,7 @@ public class JwtUtil {
     public String createAccessToken(Long memberId, MemberRole role) {
         Date now = now();
 
-        return BEARER.getKey() + Jwts.builder()
+        return BEARER.getKey() + " " + Jwts.builder()
                 .setSubject(Long.toString(memberId))
                 .claim(AUTH.getKey(), role)
                 .setExpiration(new Date(now.getTime() + accessTokenValidPeriod))
@@ -56,7 +54,7 @@ public class JwtUtil {
     public String createRefreshToken(Long memberId, MemberRole role) {
         Date now = now();
 
-        return BEARER.getKey() + Jwts.builder()
+        return BEARER.getKey() + " " + Jwts.builder()
                 .setSubject(Long.toString(memberId))
                 .claim(AUTH.getKey(), role)
                 .setExpiration(new Date(now.getTime() + refreshTokenValidPeriod))
@@ -86,7 +84,21 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
+    public String getTokenFromRequest(HttpServletRequest request) {
+        String token = request.getHeader(HEADER.getKey());
+
+        if (!StringUtils.hasText(token)) {
+            throw new RuntimeException("request has not token");
+        }
+
+        return removeTokenType(token);
+    }
+
     private Date now() {
         return new Date();
+    }
+
+    private String removeTokenType(String token) {
+        return token.substring(7);
     }
 }
