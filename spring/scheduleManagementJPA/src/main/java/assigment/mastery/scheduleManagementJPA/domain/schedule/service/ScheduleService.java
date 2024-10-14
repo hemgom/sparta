@@ -4,31 +4,35 @@ import assigment.mastery.scheduleManagementJPA.domain.member.Member;
 import assigment.mastery.scheduleManagementJPA.domain.member.repository.MemberRepository;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.Schedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.ScheduleManager;
-import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.AddSchedule;
-import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseSchedule;
-import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseScheduleList;
-import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.UpdateSchedule;
+import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.*;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.repository.ScheduleManagerRepository;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.repository.ScheduleRepository;
 import assigment.mastery.scheduleManagementJPA.exception.customException.HasNotPermissionException;
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final MemberRepository memberRepository;
     private final ScheduleManagerRepository scheduleManagerRepository;
+    private final RestTemplate restTemplate;
 
     public ResponseSchedule save(Long memberId, AddSchedule request) {
         Member writeMember = memberRepository.findById(memberId)
@@ -36,6 +40,10 @@ public class ScheduleService {
 
         Schedule created = Schedule.create(writeMember, request);
         Schedule saved = scheduleRepository.save(created);
+
+        String today = saved.getCreateAt().toString().substring(5, 10);
+        String todayWeather = requestTodayWeather(today);
+        log.info("오늘 날씨: {}", todayWeather);
 
         if (!request.getScheduleManagers().isEmpty()) {
             List<Member> managers = memberRepository.findAllByNameIn(request.getScheduleManagers());
@@ -104,5 +112,31 @@ public class ScheduleService {
         if (!memberId.equals(scheduleAuthorId)) {
             throw new HasNotPermissionException(HAS_NOT_PERMISSION);
         }
+    }
+
+    private String requestTodayWeather(String today) {
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://f-api.github.io/")
+                .path("/f-api/weather.json")
+                .encode().build().toUri();
+        log.info("uri: {}", uri);
+
+        WeatherDTO[] responseWeather = restTemplate.getForObject(uri, WeatherDTO[].class);
+
+        if (responseWeather == null || responseWeather.length == 0)
+            throw new RuntimeException("날씨 정보를 찾아올 수 없습니다");
+
+        String todayWeather = "";
+        for (WeatherDTO w : responseWeather) {
+            if (w.getDate().equals(today)) {
+                todayWeather = w.getWeather();
+                break;
+            }
+        }
+
+        if (!StringUtils.hasText(todayWeather))
+            throw new RuntimeException("오늘 날씨 정보를 찾아올 수 없습니다.");
+
+        return todayWeather;
     }
 }
