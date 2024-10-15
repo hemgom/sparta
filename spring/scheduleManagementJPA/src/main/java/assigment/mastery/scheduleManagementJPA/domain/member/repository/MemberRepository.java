@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long>, QueryMemberRepository {
+public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value = "SELECT m FROM Member AS m WHERE m.name LIKE CONCAT('%', :name, '%')")
     Slice<Member> findAllByName(@Param("name") String name, Pageable pageable);
 

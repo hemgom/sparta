@@ -22,8 +22,4 @@ public class RefreshToken {
                 .refreshToken(refreshToken)
                 .build();
     }
-
-    public void updateToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
 }

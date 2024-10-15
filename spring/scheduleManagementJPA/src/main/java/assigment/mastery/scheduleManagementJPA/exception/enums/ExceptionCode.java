@@ -13,6 +13,8 @@ public enum ExceptionCode {
 
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "Member not found"),
 
+    NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "RefreshToken not found"),
+
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "Email address already in use"),
 
     NOT_MATCH_PASSWORD(HttpStatus.UNAUTHORIZED, "Password does not match"),

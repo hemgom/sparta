@@ -1,8 +1,8 @@
 package assigment.mastery.scheduleManagementJPA.domain.member.controller;
 
+import assigment.mastery.scheduleManagementJPA.domain.member.Member;
 import assigment.mastery.scheduleManagementJPA.domain.member.dto.*;
 import assigment.mastery.scheduleManagementJPA.domain.member.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -24,20 +24,20 @@ public class MemberController {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseMemberAndToken joinMember(@RequestBody @Valid JoinMember request) {
+    public ResponseMemberAndToken joinMember(@RequestBody @Valid RequestJoin request) {
         return memberService.join(request);
     }
 
     @PostMapping("/logIn")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseToken logIn(@RequestBody @Valid SignInDTO request) {
+    public ResponseMemberAndToken logIn(@RequestBody @Valid RequestLogIn request) {
         return memberService.logIn(request);
     }
 
     @PostMapping("/logOut")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logOut(HttpServletRequest request) {
-        memberService.logOut(request);
+    public void logOut(@RequestHeader(name = "Authorization") String refreshToken) {
+        memberService.logOut(refreshToken);
     }
 
     @GetMapping("/{memberId}")
@@ -55,16 +55,16 @@ public class MemberController {
         return memberService.findAll(name, pageRequest);
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateMember(@PathVariable(name = "memberId") Long memberId,
-                             @RequestBody @Valid UpdateMember request) {
-        memberService.update(memberId, request);
+    public void updateMember(@RequestAttribute(name = "member") Member member,
+                             @RequestBody @Valid RequestUpdate request) {
+        memberService.update(member, request);
     }
 
-    @DeleteMapping("/{memberId}")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMember(@PathVariable(name = "memberId") Long memberId) {
-        memberService.delete(memberId);
+    public void deleteMember(@RequestAttribute(name = "member") Member member) {
+        memberService.delete(member);
     }
 }

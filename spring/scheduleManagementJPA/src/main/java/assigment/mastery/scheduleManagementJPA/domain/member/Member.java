@@ -1,8 +1,8 @@
 package assigment.mastery.scheduleManagementJPA.domain.member;
 
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.JoinMember;
+import assigment.mastery.scheduleManagementJPA.domain.member.dto.RequestJoin;
 import assigment.mastery.scheduleManagementJPA.domain.member.dto.ResponseMember;
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.UpdateMember;
+import assigment.mastery.scheduleManagementJPA.domain.member.dto.RequestUpdate;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.Schedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.ScheduleManager;
 import assigment.mastery.scheduleManagementJPA.security.enums.MemberRole;
@@ -57,14 +57,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<ScheduleManager> scheduleManagers = new ArrayList<>();
 
-    public void update(UpdateMember request) {
-        this.name = request.getName();
-    }
-
-    public static Member create(JoinMember joinMember, String encodedPassword, MemberRole role) {
+    public static Member create(RequestJoin request, String encodedPassword, MemberRole role) {
         return Member.builder()
-                .name(joinMember.getName())
-                .email(joinMember.getEmail())
+                .name(request.getName())
+                .email(request.getEmail())
                 .password(encodedPassword)
                 .role(role)
                 .build();
@@ -78,5 +74,9 @@ public class Member {
                 .createAt(convertDateTimeFormat(member.getCreateAt()))
                 .updateAt(convertDateTimeFormat(member.getUpdateAt()))
                 .build();
+    }
+
+    public void update(RequestUpdate request) {
+        this.name = request.getName();
     }
 }
