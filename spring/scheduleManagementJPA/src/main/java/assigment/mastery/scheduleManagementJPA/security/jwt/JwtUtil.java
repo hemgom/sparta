@@ -1,5 +1,6 @@
 package assigment.mastery.scheduleManagementJPA.security.jwt;
 
+import assigment.mastery.scheduleManagementJPA.exception.customException.NotValidTokenException;
 import assigment.mastery.scheduleManagementJPA.security.enums.MemberRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -15,7 +16,8 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-import static assigment.mastery.scheduleManagementJPA.security.enums.AuthorizationKey.*;
+import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.*;
+import static assigment.mastery.scheduleManagementJPA.security.enums.AuthenticationConstant.*;
 
 @Slf4j
 @Component
@@ -42,7 +44,7 @@ public class JwtUtil {
     public String createAccessToken(Long memberId, MemberRole role) {
         Date now = now();
 
-        return BEARER.getKey() + " " + Jwts.builder()
+        return JWT_TYPE.getKey() + " " + Jwts.builder()
                 .setSubject(Long.toString(memberId))
                 .claim(AUTH.getKey(), role)
                 .setExpiration(new Date(now.getTime() + accessTokenValidPeriod))
@@ -54,7 +56,7 @@ public class JwtUtil {
     public String createRefreshToken(Long memberId, MemberRole role) {
         Date now = now();
 
-        return BEARER.getKey() + " " + Jwts.builder()
+        return JWT_TYPE.getKey() + " " + Jwts.builder()
                 .setSubject(Long.toString(memberId))
                 .claim(AUTH.getKey(), role)
                 .setExpiration(new Date(now.getTime() + refreshTokenValidPeriod))
@@ -63,24 +65,29 @@ public class JwtUtil {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
+    public void checkTokenValidity(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
+
         } catch (SecurityException | MalformedJwtException e) {
             log.error("Invalid JWT signature: 유효하지 않은 JWT 서명 입니다.");
+            throw new NotValidTokenException(NOT_VALID_TOKEN);
+        
         } catch (ExpiredJwtException e) {
             log.error("Expired JWT: 만료된 JWT 입니다.");
+            throw new NotValidTokenException(EXPIRED_TOKEN);
+
         } catch (UnsupportedJwtException e) {
             log.error("Unsupported JWT: 지원되지 않는 JWT 입니다.");
+            throw new NotValidTokenException(NOT_SUPPORT_TOKEN);
+
         } catch (IllegalArgumentException e) {
             log.error("JWT claims string is empty: 잘못된 JWT 입니다.");
+            throw new NotValidTokenException(HAS_NOT_TOKEN);
         }
-
-        return false;
     }
 
-    public Claims getMemberInfo(String token) {
+    public Claims getPayload(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
@@ -88,7 +95,7 @@ public class JwtUtil {
         String token = request.getHeader(HEADER.getKey());
 
         if (!StringUtils.hasText(token)) {
-            throw new RuntimeException("request has not token");
+            throw new NotValidTokenException(HAS_NOT_TOKEN);
         }
 
         return removeTokenType(token);
@@ -99,6 +106,10 @@ public class JwtUtil {
     }
 
     private String removeTokenType(String token) {
+        if (token.length() < 7) {
+            throw new NotValidTokenException(NOT_VALID_TOKEN);
+        }
+
         return token.substring(7);
     }
 }

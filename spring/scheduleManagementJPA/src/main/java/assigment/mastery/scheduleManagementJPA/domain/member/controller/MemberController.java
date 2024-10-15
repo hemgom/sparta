@@ -22,7 +22,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @PostMapping
+    @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseMemberAndToken joinMember(@RequestBody @Valid JoinMember request) {
         return memberService.join(request);

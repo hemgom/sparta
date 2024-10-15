@@ -3,15 +3,15 @@ package assigment.mastery.scheduleManagementJPA.security.enums;
 import lombok.Getter;
 
 @Getter
-public enum AuthorizationKey {
+public enum AuthenticationConstant {
     HEADER("Authorization"),
     AUTH("auth"),
-    BEARER("Bearer");
+    JWT_TYPE("Bearer");
     ;
 
     private final String key;
 
-    AuthorizationKey(String key) {
+    AuthenticationConstant(String key) {
         this.key = key;
     }
 }

@@ -77,16 +77,16 @@
   - `토큰` 은 `Header` 에 추가한다.
   - 단, `회원가입` 및 `로그인` 요청은 `인증 처리` 를 진행하지 않는다.
 - [ ] : 로그인 시 `이메일과 비밀번호` 가 일치 하지 않을 경우 `401` 을 반환한다.
-- [ ] : `토큰` 이 전달되지 않은 경우 `400` 을 반환한다.
-- [ ] : 유효 기간이 만료된 토큰의 경우 `401` 을 반환한다.
+- [x] : `토큰` 이 전달되지 않은 경우 `400` 을 반환한다.
+- [x] : 유효 기간이 만료된 토큰의 경우 `401` 을 반환한다.
 <br/>
 
 ### Lv.8 - 권환 확인(인가)
 - [x] : `유저` 에 `권한` 을 추가한다.
 - [x] : `권한` 에는 `관리자`, `일반 사용자` 두 가지가 존재해야 한다.
 - [x] : `JWT` 발급시 유저의 권한 정보도 함께 담아야 한다.
-- [ ] : `일정` 수정 및 삭제는 `관리자` 권한이 있는 유저만이 할 수 있어야 한다.
-- [ ] : 권한이 없는 유저가 '일정 수정 및 삭제' 를 요청할 경우 `403` 을 반환해야 한다.
+- [x] : `일정` 수정 및 삭제는 `관리자` 권한이 있는 유저만이 할 수 있어야 한다.
+- [x] : 권한이 없는 유저가 '일정 수정 및 삭제' 를 요청할 경우 `403` 을 반환해야 한다.
 <br/>
 
 ### Lv.9 - 외부 API 조회
@@ -118,25 +118,25 @@
 <br/>
 
 ## 도전 기능
-|   API    | Method |        Request URL         |                                                     Request Body                                                     |   HttpStatus   |                                                                         Response Body                                                                         |
-|:--------:|:------:|:--------------------------:|:--------------------------------------------------------------------------------------------------------------------:|:--------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|  회원 가입   |  POST  |          /member           |                             json { "name" : "이름", "email" : "이메일", "password" : "비밀번호" }                             |  201 Created   |                                                                               -                                                                               |
-|   로그인    |  POST  |       /member/signIn       |                                                          -                                                           |     200 OK     |                                                                               -                                                                               |
-|   로그아웃   |  POST  |      /member/signOut       |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
-|  회원 조회   |  GET   |     /member/{memberId}     |                                                          -                                                           |     200 OK     |                                json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                |
-| 회원 목록 조회 |  GET   |  /member/search-condition  |                                                          -                                                           |     200 OK     |                    json { "memberList" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, ... }                    |
-| 회원 정보 수정 |  PUT   |     /member/{memberId}     |                                                json { "name" : "이름" }                                                | 204 No Content |                                                                               -                                                                               |
-|  유저 삭제   | DELETE |     /member/{memberId}     |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
-|  일정 생성   |  POST  |         /schedule          | json { "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "scheduleManagers" : ["매니저 이름1", "매니저 이름2", ... ] } |  201 Created   |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
-|  일정 조회   |  GET   |   /schedule/{scheduleId}   |                                                          -                                                           |     200 OK     |                json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                |
-| 일정 목록 조회 |  GET   | /schedule/search-condition |                                                          -                                                           |     200 OK     |   json { "scheduleList" : { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }, ... }   |
-|  일정 수정   |  PUT   |   /schedule/{scheduleId}   |                                     json { "title" : "일정 제목", "body" : "일정 본문" }                                     | 204 No Content |                                                                               -                                                                               |
-|  일정 삭제   | DELETE |   /schedule/{scheduleId}   |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
-|  댓글 생성   |  POST  |   /comment/{scheduleId}    |                                    json { body" : "댓글 본문", "author" : "작성자 이름" }                                     |  201 Created   |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
-|  댓글 조회   |  GET   |    /comment/{commentId}    |                                                          -                                                           |     200 OK     |             json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }              |
-| 댓글 목록 조회 |  GET   | /comment/search-condition  |                                                          -                                                           |     200 OK     | json { "commentList" : { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }, ... } |
-|  댓글 수정   |  PUT   |    /comment/{commentId}    |                                              json { "body" : "댓글 본문" }                                               | 204 No Content |                                                                               -                                                                               |
-|  댓글 삭제   | DELETE |    /comment/{commentId}    |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
+|   API    | Method |        Request URL         |                                                     Request Body                                                     |   HttpStatus   |                                                                                   Response Body                                                                                    |
+|:--------:|:------:|:--------------------------:|:--------------------------------------------------------------------------------------------------------------------:|:--------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  회원 가입   |  POST  |        /member/join        |                             json { "name" : "이름", "email" : "이메일", "password" : "비밀번호" }                             |  201 Created   | json { "member" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, "token" : { "accessToken" : "엑세스 토큰", "refreshToken" : "리프레시 토큰" } } |
+|   로그인    |  POST  |       /member/logIn        |                                                          -                                                           |     200 OK     |                                                                                         -                                                                                          |
+|   로그아웃   |  POST  |       /member/logOut       |                                                          -                                                           | 204 No Content |                                                                                         -                                                                                          |
+|  회원 조회   |  GET   |     /member/{memberId}     |                                                          -                                                           |     200 OK     |                                          json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                           |
+| 회원 목록 조회 |  GET   |  /member/search-condition  |                                                          -                                                           |     200 OK     |                              json { "memberList" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, ... }                               |
+| 회원 정보 수정 |  PUT   |     /member/{memberId}     |                                                json { "name" : "이름" }                                                | 204 No Content |                                                                                         -                                                                                          |
+|  유저 삭제   | DELETE |     /member/{memberId}     |                                                          -                                                           | 204 No Content |                                                                                         -                                                                                          |
+|  일정 생성   |  POST  |         /schedule          | json { "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "scheduleManagers" : ["매니저 이름1", "매니저 이름2", ... ] } |  201 Created   |                          json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                           |
+|  일정 조회   |  GET   |   /schedule/{scheduleId}   |                                                          -                                                           |     200 OK     |                          json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                           |
+| 일정 목록 조회 |  GET   | /schedule/search-condition |                                                          -                                                           |     200 OK     |             json { "scheduleList" : { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }, ... }              |
+|  일정 수정   |  PUT   |   /schedule/{scheduleId}   |                                     json { "title" : "일정 제목", "body" : "일정 본문" }                                     | 204 No Content |                                                                                         -                                                                                          |
+|  일정 삭제   | DELETE |   /schedule/{scheduleId}   |                                                          -                                                           | 204 No Content |                                                                                         -                                                                                          |
+|  댓글 생성   |  POST  |   /comment/{scheduleId}    |                                    json { body" : "댓글 본문", "author" : "작성자 이름" }                                     |  201 Created   |                        json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }                        |
+|  댓글 조회   |  GET   |    /comment/{commentId}    |                                                          -                                                           |     200 OK     |                        json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }                        |
+| 댓글 목록 조회 |  GET   | /comment/search-condition  |                                                          -                                                           |     200 OK     |           json { "commentList" : { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }, ... }            |
+|  댓글 수정   |  PUT   |    /comment/{commentId}    |                                              json { "body" : "댓글 본문" }                                               | 204 No Content |                                                                                         -                                                                                          |
+|  댓글 삭제   | DELETE |    /comment/{commentId}    |                                                          -                                                           | 204 No Content |                                                                                         -                                                                                          |
 <br/><br/>
 
 # ERD
@@ -154,7 +154,12 @@
 <br/><br/>
 
 ## 도전 기능
-![ERD - Challenge Functions](images/ERD%20-%20Challenge%20Functions.png)
+### Lv.1 ~ 3
+![ERD - Challenge Functions(1)](images/ERD%20-%20Challenge%20Functions.png)
+<br/>
+
+### Lv.4
+![ERD - Challenge Functions(2)](images/ERD%20-%20Challenge%20Fuctions.2.png)
 <br/><br/><br/>
 
 # SQL
@@ -305,3 +310,5 @@ CREATE TABLE refresh_token (
 - [댓글 CRUD API 테스트 - 'Cascade(영속성 전이)' 활용하기](https://development-diary-for-me.tistory.com/175)
 - [기묘한 모험 - '1:N' 관계에서의 전체 조회](https://development-diary-for-me.tistory.com/176)
 - [N:M(다대다) 관계 풀어내기](https://development-diary-for-me.tistory.com/177)
+- [도전 기능 요구사항 반영 도중 발생한 이슈](https://development-diary-for-me.tistory.com/178)
+- [리팩토링(1) - 필터 예외 핸들링](https://development-diary-for-me.tistory.com/179)

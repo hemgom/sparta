@@ -1,9 +1,6 @@
 package assigment.mastery.scheduleManagementJPA.exception;
 
-import assigment.mastery.scheduleManagementJPA.exception.customException.DuplicateEmailException;
-import assigment.mastery.scheduleManagementJPA.exception.customException.HasNotPermissionException;
-import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
-import assigment.mastery.scheduleManagementJPA.exception.customException.NotMatchPasswordException;
+import assigment.mastery.scheduleManagementJPA.exception.customException.*;
 import assigment.mastery.scheduleManagementJPA.exception.dto.NotValidRequestParameter;
 import assigment.mastery.scheduleManagementJPA.exception.dto.ResponseExceptionCode;
 import assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode;
@@ -21,6 +18,13 @@ import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionC
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(NotValidTokenException.class)
+    public ResponseEntity<Object> handleNotValidTokenException(NotValidTokenException e) {
+        ExceptionCode exceptionCode = e.getExceptionCode();
+        return ResponseEntity.status(exceptionCode.getHttpStatus())
+                .body(makeResponseExceptionCode(exceptionCode));
+    }
+
     @ExceptionHandler(NotMatchPasswordException.class)
     public ResponseEntity<Object> handleNotMatchPasswordException(NotMatchPasswordException e) {
         ExceptionCode exceptionCode = e.getExceptionCode();
