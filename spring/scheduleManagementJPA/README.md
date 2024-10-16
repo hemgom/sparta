@@ -17,7 +17,6 @@
 - IntelliJ
 - Postman
 - GitHub
-<br/><br/>
 
 ## 사용 기술
 ### 주요 프레임워크 및 라이브러리
@@ -29,11 +28,9 @@
 - bcrypt
 - Lombok
 - JWT
-<br/>
 
 ### Build tool
 - Gradle
-<br/>
 
 ### DB
 - MySQL
@@ -49,27 +46,23 @@
   - `JDBC` 와 `Spring Security` 는 사용하지 않는다.
 - `인증/인가` 절차는 `JWT(JSON Web Token)` 을 활용해 개발해야 한다.
 - `연관관계 매핑(Relationship Mapping)` 은 `양방향 매핑` 으로 한다.
-<br/><br/>
 
 ## 필수 기능
 ### Lv.0 - API 명세서 및 ERD 작성
 - [x] : `README.md` 에 `API 명세서` 작성
 - [x] : `README.md` 에 `ERD` 첨부
 - [x] : `schedule.sql` 에 프로젝트에 사용되는 `DB(shcema) 및 Table` 생성 쿼리 작성
-<br/>
 
 ### Lv.1 - 일정 CRUD
 - [x] : `일정` 을 `생성, 조회, 수정, 삭제` 할 수 있어야 한다.
 - [x] : `일정` 은 `작성 유저명`, `할 일 제목`, `할 일 내용`, `작성일`, `수정일` 필드를 가져야 한다.
 - [x] : `일정` 삭제시 `일정` 에 달린 `댓글` 들도 함께 삭제되어야 한다.
-<br/>
 
 ### Lv.2 - 댓글 CRUD
 - [x] : `댓글` 을 `생성, 조회, 수정, 삭제` 할 수 있어야 한다.
 - [x] : `댓글` 은 `댓글 내용`, `작성일`, `수정일`, `작성 유저명` 필드를 가져야 한다.
 - [x] : 생성된 `일정` 에 `댓글` 을 남길(작성) 수 있어야 한다.
   - `댓글` 과 `일정` 은 연관 관계를 갖는다.
-<br/>
 
 ### Lv.3 - 일정 페이징 조회
 - [x] : `일정` 을 조회시 `Spring Data JPA` 에서 제공하는 `Pageable` 인터페이스를 활용해 `페이지네이션` 을 구현해야 한다.
@@ -77,7 +70,6 @@
   - `기본 페이지 크기` 는 `10` 으로 적용한다.
 - [x] : `일정` 조회시 반환 되어야 할 정보는 `할 일 제목`, `할 일 내용`, `댓글 개수`, `일정 작성일`, `일정 수정일`, `일정 작성 유저명` 이다.
 - [x] : `일정` 조회시 `수정일` 을 기준으로 `내림차순` 정렬한 결과를 반환해야 한다.
-<br/>
 
 ### Lv.4 - 유저 CRUD
 - [x] : `유저` 를 `생성, 조회, 수정, 삭제` 할 수 있어야 한다.
@@ -88,19 +80,16 @@
   - 하나의 `일정`이 여러 `유저` 를 가지게끔 추가된 `설정` 이라 보면 된다.
 - [x] : `일정` 과 `유저` 는 `N:M` 관계를 맺어야 한다.
 - [x] : `JPA 지연로딩` 을 활용해야 한다.
-<br/>
 
 ### Lv.5 - 다양한 예외처리 적용하기
 - [x] : `validation` 을 활용해 다양한 예외처리를 적용해야 한다.
 - [x] : 구현한 프로젝트를 분석하고 `예외사항` 을 파악해보자.
-<br/><br/>
 
 ## 도전 기능
 ### Lv.6 - 회원가입(JWT)
 - [x] : `유저` 에 `비밀번호` 필드를 추가한다.
   - `비밀번호` 는 `암호화` 되어야 한다. 암호화를 위한 `PasswordEncoder` 를 직접 만들어 사용해야 한다.
 - [x] : `유저` 를 생성(회원가입)하면 `JWT` 를 발급해 반환해야 한다.
-<br/>
 
 ### Lv.7 - 로그인(인증)
 - [x] : `JWT` 를 활용해 로그인 기능을 구현해야 한다.
@@ -113,7 +102,6 @@
 - [x] : 로그인 시 `이메일과 비밀번호` 가 일치 하지 않을 경우 `401` 을 반환한다.
 - [x] : `토큰` 이 전달되지 않은 경우 `400` 을 반환한다.
 - [x] : 유효 기간이 만료된 토큰의 경우 `401` 을 반환한다.
-<br/>
 
 ### Lv.8 - 권환 확인(인가)
 - [x] : `유저` 에 `권한` 을 추가한다.
@@ -121,7 +109,6 @@
 - [x] : `JWT` 발급시 유저의 권한 정보도 함께 담아야 한다.
 - [x] : `일정` 수정 및 삭제는 `관리자` 권한이 있는 유저만이 할 수 있어야 한다.
 - [x] : 권한이 없는 유저가 '일정 수정 및 삭제' 를 요청할 경우 `403` 을 반환해야 한다.
-<br/>
 
 ### Lv.9 - 외부 API 조회
 - [x] : `날씨 정보 데이터(Open API)` 활용해 오늘의 날씨를 조회할 수 있어야 한다.
@@ -149,7 +136,6 @@
 | 유저 목록 조회 |  GET   |  /member/search-condition  |                                                          -                                                           |     200 OK     |                    json { "memberList" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, ... }                    |
 |  유저 수정   |  PUT   |     /member/{memberId}     |                                                json { "name" : "이름" }                                                | 204 No Content |                                                                               -                                                                               |
 |  유저 삭제   | DELETE |     /member/{memberId}     |                                                          -                                                           | 204 No Content |                                                                               -                                                                               |
-<br/>
 
 ## 도전 기능
 |       API        | Method |        Request URL         |        Request Header         |                                          Request Body                                           |   HttpStatus   |                                                                                                            Response Body                                                                                                            |
@@ -172,26 +158,23 @@
 |      댓글 수정       |  PUT   |    /comment/{commentId}    | Authorization : Access Token  |                                    json { "body" : "댓글 본문" }                                    | 204 No Content |                                                                                                                  -                                                                                                                  |
 |      댓글 삭제       | DELETE |    /comment/{commentId}    | Authorization : Access Token  |                                                -                                                | 204 No Content |                                                                                                                  -                                                                                                                  |
 | Access Token 재발급 |  POST  |       /token/reissue       | Authorization : Refresh Token |                                                -                                                |     200 OK     |                                                                                            json { "accessToken" : "재발급한 Access Token" }                                                                                             |
+
 <br/><br/>
 
 # ERD
 ## 필수 기능
 ### Lv.1
 ![ERD - Essential Functions(1)](images/ERD%20-%20Essential%20Functions.Level01.png)
-<br/>
 
 ### Lv.2
 ![ERD - Essential Functions(2)](images/ERD%20-%20Essential%20Functions.Level02.png)
-<br/>
 
 ### Lv.4
 ![ERD - Essential Functions(3)](images/ERD%20-%20Essential%20Functions.Level04.png)
-<br/><br/>
 
 ## 도전 기능
 ### Lv.1 ~ 3
 ![ERD - Challenge Functions(1)](images/ERD%20-%20Challenge%20Functions.png)
-<br/>
 
 ### Lv.4
 ![ERD - Challenge Functions(2)](images/ERD%20-%20Challenge%20Fuctions.2.png)
@@ -278,7 +261,6 @@ CREATE TABLE schedule_manager (
     foreign key (member_id) references member (id)
 );
 ```
-<br/><br/>
 
 ## 도전 기능
 ```mysql
@@ -341,7 +323,7 @@ CREATE TABLE refresh_token (
 INSERT INTO member (name, email, password, role, create_at, update_at)
 VALUES ('관리자', 'root@gmail.com', '$2a$04$tbGequEs0rH.Q.ERNIyjJexuWTdQ.22sUYrd4Uhb1nYy9RSVGM5dG', 'ADMIN', now(), now());
 ```
-<br/><br/><br/>
+<br/><br/>
 
 # 구현 및 트러블 슈팅 관련 포스팅
 해당 프로젝트 진행간 `구현 및 문제 해결` 에 대한 내용을 다룬 포스팅 목록, 링크를 클릭하면 포스팅을 작성한 개인 블로그로 이동된다.
