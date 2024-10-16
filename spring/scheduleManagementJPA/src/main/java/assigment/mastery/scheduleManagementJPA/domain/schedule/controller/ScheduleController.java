@@ -1,5 +1,6 @@
 package assigment.mastery.scheduleManagementJPA.domain.schedule.controller;
 
+import assigment.mastery.scheduleManagementJPA.domain.member.Member;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.AddSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseScheduleList;
@@ -22,11 +23,11 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @PostMapping("/{memberId}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseSchedule addSchedule(@PathVariable(name = "memberId") Long memberId,
+    public ResponseSchedule addSchedule(@RequestAttribute(name = "member") Member member,
                                         @RequestBody @Valid AddSchedule request) {
-        return scheduleService.save(memberId, request);
+        return scheduleService.save(member, request);
     }
 
     @GetMapping("/{scheduleId}")
@@ -45,18 +46,16 @@ public class ScheduleController {
         return scheduleService.findAll(author, title, pageRequest);
     }
 
-    @PutMapping("/{scheduleId}/{memberId}")
+    @PutMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateSchedule(@PathVariable(name = "scheduleId") Long scheduleId,
-                               @PathVariable(name = "memberId") Long memberId,
                                @RequestBody @Valid UpdateSchedule request) {
-        scheduleService.update(scheduleId, memberId, request);
+        scheduleService.update(scheduleId, request);
     }
 
-    @DeleteMapping("/{scheduleId}/{memberId}")
+    @DeleteMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSchedule(@PathVariable(name = "scheduleId") Long scheduleId,
-                               @PathVariable(name = "memberId") Long memberId) {
-        scheduleService.delete(scheduleId, memberId);
+    public void deleteSchedule(@PathVariable(name = "scheduleId") Long scheduleId) {
+        scheduleService.delete(scheduleId);
     }
 }

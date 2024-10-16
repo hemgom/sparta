@@ -92,7 +92,7 @@
 ### Lv.9 - 외부 API 조회
 - [x] : `날씨 정보 데이터(Open API)` 활용해 오늘의 날씨를 조회할 수 있어야 한다.
   - `RestTemplate` 을 사용해 날씨를 조회한다.
-- [ ] : `일정` 에 `날씨` 필드를 추가해야 한다.
+- [x] : `일정` 에 `날씨` 필드를 추가해야 한다.
   - 일정 생성 시 `날씨 정보` 를 `생성일(=작성일)` 기준으로 저장해야 한다.
 <br/><br/><br/>
 
@@ -319,3 +319,4 @@ VALUES ('관리자', 'root@gmail.com', '$2a$04$tbGequEs0rH.Q.ERNIyjJexuWTdQ.22sU
 - [리팩토링(1) - 필터 예외 핸들링](https://development-diary-for-me.tistory.com/179)
 - [리팩토링(2) - 로그인/로그아웃 및 Member CRUD 수정](https://development-diary-for-me.tistory.com/180)
 - [리팩토링(3) - AccessToken 재발급 및 관리자 계정](https://development-diary-for-me.tistory.com/182)
+- [리팩토링(4) - 일정에 날짜 추가 및 Schedule CRUD 수정](https://development-diary-for-me.tistory.com/183)

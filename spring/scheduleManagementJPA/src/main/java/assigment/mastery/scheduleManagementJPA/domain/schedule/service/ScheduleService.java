@@ -7,8 +7,8 @@ import assigment.mastery.scheduleManagementJPA.domain.schedule.ScheduleManager;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.*;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.repository.ScheduleManagerRepository;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.repository.ScheduleRepository;
-import assigment.mastery.scheduleManagementJPA.exception.customException.HasNotPermissionException;
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
+import assigment.mastery.scheduleManagementJPA.exception.customException.OpenApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,16 +35,12 @@ public class ScheduleService {
     private final ScheduleManagerRepository scheduleManagerRepository;
     private final RestTemplate restTemplate;
 
-    public ResponseSchedule save(Long memberId, AddSchedule request) {
-        Member writeMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new HasNotPermissionException(HAS_NOT_PERMISSION));
+    @Transactional
+    public ResponseSchedule save(Member member, AddSchedule request) {
+        String todayWeather = requestTodayWeather();
 
-        Schedule created = Schedule.create(writeMember, request);
+        Schedule created = Schedule.create(member, request, todayWeather);
         Schedule saved = scheduleRepository.save(created);
-
-        String today = saved.getCreateAt().toString().substring(5, 10);
-        String todayWeather = requestTodayWeather(today);
-        log.info("오늘 날씨: {}", todayWeather);
 
         if (!request.getScheduleManagers().isEmpty()) {
             List<Member> managers = memberRepository.findAllByNameIn(request.getScheduleManagers());
@@ -59,6 +56,7 @@ public class ScheduleService {
         return Schedule.makeResponse(saved);
     }
 
+    @Transactional(readOnly = true)
     public ResponseSchedule findById(Long scheduleId) {
         Schedule found = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
@@ -66,6 +64,7 @@ public class ScheduleService {
         return Schedule.makeResponse(found);
     }
 
+    @Transactional(readOnly = true)
     public ResponseScheduleList findAll(String author, String title, PageRequest pageRequest) {
         Slice<Schedule> foundSchedules = scheduleRepository.findAllByAuthorAndTitle(author, title, pageRequest);
 
@@ -84,37 +83,24 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void update(Long scheduleId, Long memberId, UpdateSchedule request) {
-        Member foundMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_MEMBER));
-
+    public void update(Long scheduleId, UpdateSchedule request) {
         Schedule foundSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
 
-        checkMember(foundMember.getId(), foundSchedule.getMember().getId());
+        foundSchedule.update(request);
 
-        scheduleRepository.update(foundSchedule, request);
+        scheduleRepository.save(foundSchedule);
     }
 
-    public void delete(Long scheduleId, Long memberId) {
-        Member foundMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_MEMBER));
-
+    @Transactional
+    public void delete(Long scheduleId) {
         Schedule foundSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
 
-        checkMember(foundMember.getId(), foundSchedule.getMember().getId());
-
-        scheduleRepository.deleteById(foundSchedule.getId());
+        scheduleRepository.delete(foundSchedule);
     }
 
-    private void checkMember(Long memberId, Long scheduleAuthorId) {
-        if (!memberId.equals(scheduleAuthorId)) {
-            throw new HasNotPermissionException(HAS_NOT_PERMISSION);
-        }
-    }
-
-    private String requestTodayWeather(String today) {
+    private String requestTodayWeather() {
         URI uri = UriComponentsBuilder
                 .fromUriString("https://f-api.github.io/")
                 .path("/f-api/weather.json")
@@ -124,7 +110,9 @@ public class ScheduleService {
         WeatherDTO[] responseWeather = restTemplate.getForObject(uri, WeatherDTO[].class);
 
         if (responseWeather == null || responseWeather.length == 0)
-            throw new RuntimeException("날씨 정보를 찾아올 수 없습니다");
+            throw new OpenApiException(NOT_FOUND_OPEN_API_DATA);
+
+        String today = LocalDateTime.now().toString().substring(5,10);
 
         String todayWeather = "";
         for (WeatherDTO w : responseWeather) {
@@ -135,7 +123,7 @@ public class ScheduleService {
         }
 
         if (!StringUtils.hasText(todayWeather))
-            throw new RuntimeException("오늘 날씨 정보를 찾아올 수 없습니다.");
+            throw new OpenApiException(NOT_FOUND_WEATHER);
 
         return todayWeather;
     }

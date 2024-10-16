@@ -57,16 +57,12 @@ public class Schedule {
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.REMOVE)
     private List<ScheduleManager> scheduleManagers = new ArrayList<>();
 
-    public void update(UpdateSchedule request) {
-        this.title = request.getTitle();
-        this.body = request.getBody();
-    }
-
-    public static Schedule create(Member member, AddSchedule request) {
+    public static Schedule create(Member member, AddSchedule request, String todayWeather) {
         return Schedule.builder()
                 .member(member)
                 .title(request.getTitle())
                 .body(request.getBody())
+                .weather(todayWeather)
                 .build();
     }
 
@@ -76,9 +72,19 @@ public class Schedule {
                 .authorName(schedule.getMember().getName())
                 .title(schedule.getTitle())
                 .body(schedule.getBody())
+                .weather(schedule.getWeather())
                 .createAt(DateTimeFormatConverter.convertDateTimeFormat(schedule.getCreateAt()))
                 .updateAt(DateTimeFormatConverter.convertDateTimeFormat(schedule.getUpdateAt()))
                 .commentCount(schedule.getComments().size())
                 .build();
+    }
+
+    public void update(UpdateSchedule request) {
+        this.title = request.getTitle();
+        this.body = request.getBody();
+    }
+
+    public void addWeather(String weather) {
+        this.weather = weather;
     }
 }

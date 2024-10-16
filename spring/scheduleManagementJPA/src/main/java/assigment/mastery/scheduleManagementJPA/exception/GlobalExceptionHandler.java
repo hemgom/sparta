@@ -4,7 +4,6 @@ import assigment.mastery.scheduleManagementJPA.exception.customException.*;
 import assigment.mastery.scheduleManagementJPA.exception.dto.NotValidRequestParameter;
 import assigment.mastery.scheduleManagementJPA.exception.dto.ResponseExceptionCode;
 import assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode;
-import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +17,13 @@ import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionC
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(OpenApiException.class)
+    public ResponseEntity<Object> handleNotFoundWeatherException(OpenApiException e) {
+        ExceptionCode exceptionCode = e.getExceptionCode();
+        return ResponseEntity.status(exceptionCode.getHttpStatus())
+                .body(makeResponseExceptionCode(exceptionCode));
+    }
+
     @ExceptionHandler(NotValidTokenException.class)
     public ResponseEntity<Object> handleNotValidTokenException(NotValidTokenException e) {
         ExceptionCode exceptionCode = e.getExceptionCode();

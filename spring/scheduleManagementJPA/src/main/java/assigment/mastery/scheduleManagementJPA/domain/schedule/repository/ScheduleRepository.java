@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ScheduleRepository extends JpaRepository<Schedule, Long>, QueryScheduleRepository {
+public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query(value =
             "SELECT s " +
             "FROM Schedule AS s LEFT JOIN FETCH s.member " +

@@ -15,6 +15,10 @@ public enum ExceptionCode {
 
     NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "RefreshToken not found"),
 
+    NOT_FOUND_OPEN_API_DATA(HttpStatus.NOT_FOUND, "OpenAPI Date not found"),
+
+    NOT_FOUND_WEATHER(HttpStatus.NOT_FOUND, "Today weather not found"),
+
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "Email address already in use"),
 
     NOT_MATCH_PASSWORD(HttpStatus.UNAUTHORIZED, "Password does not match"),

@@ -14,6 +14,8 @@ public class ResponseSchedule {
 
     private String body;
 
+    private String weather;
+
     private String createAt;
 
     private String updateAt;
