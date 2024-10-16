@@ -9,8 +9,4 @@ public class AddComment {
     @NotBlank
     @Size(min = 5, max = 150)
     private String body;
-
-    @NotBlank
-    @Size(min = 3, max = 20)
-    private String author;
 }

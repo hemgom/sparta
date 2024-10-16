@@ -6,15 +6,15 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ResponseComment {
-    private long id;
+    private Long id;
 
     private String body;
+
+    private String author;
 
     private String createAt;
 
     private String updateAt;
 
-    private String author;
-
-    private long scheduleId;
+    private Long scheduleId;
 }

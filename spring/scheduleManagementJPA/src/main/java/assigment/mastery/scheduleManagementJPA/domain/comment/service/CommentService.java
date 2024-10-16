@@ -6,66 +6,90 @@ import assigment.mastery.scheduleManagementJPA.domain.comment.dto.ResponseCommen
 import assigment.mastery.scheduleManagementJPA.domain.comment.dto.ResponseCommentList;
 import assigment.mastery.scheduleManagementJPA.domain.comment.dto.UpdateComment;
 import assigment.mastery.scheduleManagementJPA.domain.comment.repository.CommentRepository;
+import assigment.mastery.scheduleManagementJPA.domain.member.Member;
+import assigment.mastery.scheduleManagementJPA.domain.member.repository.MemberRepository;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.Schedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.repository.ScheduleRepository;
+import assigment.mastery.scheduleManagementJPA.exception.customException.HasNotPermissionException;
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.NOT_FOUND_COMMENT;
-import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.NOT_FOUND_SCHEDULE;
+import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.*;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
     private final ScheduleRepository scheduleRepository;
+    private final MemberRepository memberRepository;
 
-    public ResponseComment save(long scheduleId, AddComment request) {
+    @Transactional
+    public ResponseComment save(Long scheduleId, Member member, AddComment request) {
         Schedule found = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
 
-        Comment created = Comment.create(request, found);
-
+        Comment created = Comment.create(found, member.getId(), request);
         Comment saved = commentRepository.save(created);
 
-        return Comment.makeResponse(saved);
+        return Comment.makeResponse(saved, member.getName());
     }
 
-    public ResponseComment findById(long commentId) {
+    @Transactional(readOnly = true)
+    public ResponseComment findById(Long commentId) {
         Comment found = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_COMMENT));
 
-        return Comment.makeResponse(found);
+        Member author = memberRepository.findById(found.getAuthorId())
+                .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_MEMBER));
+
+        return Comment.makeResponse(found, author.getName());
     }
 
+    @Transactional(readOnly = true)
     public ResponseCommentList findAll(String author) {
-        List<Comment> foundList = commentRepository.findAllByAuthor(author);
+        List<Member> foundMembers = memberRepository.findAllByName(author);
 
-        List<ResponseComment> responseCommentList = new ArrayList<>();
-        foundList.stream().map(Comment::makeResponse).forEach(responseCommentList::add);
+        Map<Long, String> authorsIdAndName = new HashMap<>();
+        foundMembers.forEach(member -> authorsIdAndName.put(member.getId(), member.getName()));
+        Set<Long> authorIds = authorsIdAndName.keySet();
+
+        List<Comment> foundComments = commentRepository.findAllByAuthor(authorIds);
+
+        List<ResponseComment> responseComments = new ArrayList<>();
+        foundComments.forEach(comment -> responseComments.add(Comment.makeResponse(comment, authorsIdAndName.get(comment.getAuthorId()))));
 
         return ResponseCommentList.builder()
-                .comments(responseCommentList)
+                .comments(responseComments)
                 .build();
     }
 
     @Transactional
-    public void update(long commentId, UpdateComment request) {
+    public void update(Long commentId, Member member, UpdateComment request) {
         Comment found = commentRepository.findById(commentId)
                         .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_COMMENT));
 
-        commentRepository.update(found, request);
+        checkAuthor(found.getAuthorId(), member.getId());
+
+        found.update(request);
+        commentRepository.save(found);
     }
 
-    public void delete(long commentId) {
+    @Transactional
+    public void delete(Long commentId, Member member) {
         Comment found = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_COMMENT));
 
-        commentRepository.deleteById(found.getId());
+        checkAuthor(found.getAuthorId(), member.getId());
+
+        commentRepository.delete(found);
+    }
+
+    private void checkAuthor(Long commentAuthorId, Long requesterId) {
+        if (!commentAuthorId.equals(requesterId))
+            throw new HasNotPermissionException(HAS_NOT_PERMISSION);
     }
 }

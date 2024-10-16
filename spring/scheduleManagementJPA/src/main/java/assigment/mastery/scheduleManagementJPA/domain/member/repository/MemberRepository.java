@@ -19,4 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query(value = "SELECT m FROM Member AS m WHERE m.email = :email")
     Optional<Member> findByEmail(@Param("email") String email);
+
+    @Query(value = "SELECT m FROM Member AS m WHERE m.name LIKE CONCAT('%', :name, '%')")
+    List<Member> findAllByName(@Param("name") String name);
 }

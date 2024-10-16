@@ -5,6 +5,7 @@ import assigment.mastery.scheduleManagementJPA.domain.comment.dto.ResponseCommen
 import assigment.mastery.scheduleManagementJPA.domain.comment.dto.ResponseCommentList;
 import assigment.mastery.scheduleManagementJPA.domain.comment.dto.UpdateComment;
 import assigment.mastery.scheduleManagementJPA.domain.comment.service.CommentService;
+import assigment.mastery.scheduleManagementJPA.domain.member.Member;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +21,15 @@ public class CommentController {
 
     @PostMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseComment addComment(@PathVariable(name = "scheduleId") long scheduleId,
+    public ResponseComment addComment(@PathVariable(name = "scheduleId") Long scheduleId,
+                                      @RequestAttribute(name = "member") Member member,
                                       @RequestBody @Valid AddComment request) {
-        return commentService.save(scheduleId, request);
+        return commentService.save(scheduleId, member, request);
     }
 
     @GetMapping("/{commentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseComment findCommentById(@PathVariable(name = "commentId") long commentId) {
+    public ResponseComment findCommentById(@PathVariable(name = "commentId") Long commentId) {
         return commentService.findById(commentId);
     }
 
@@ -39,14 +41,16 @@ public class CommentController {
 
     @PutMapping("/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateComment(@PathVariable(name = "commentId") long commentId,
+    public void updateComment(@PathVariable(name = "commentId") Long commentId,
+                              @RequestAttribute(name = "member") Member member,
                               @RequestBody @Valid UpdateComment request) {
-        commentService.update(commentId, request);
+        commentService.update(commentId, member, request);
     }
 
     @DeleteMapping("/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteComment(@PathVariable(name = "commentId") long commentId) {
-        commentService.delete(commentId);
+    public void deleteComment(@PathVariable(name = "commentId") Long commentId,
+                              @RequestAttribute(name = "member") Member member) {
+        commentService.delete(commentId, member);
     }
 }

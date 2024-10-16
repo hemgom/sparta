@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
-public interface CommentRepository extends JpaRepository<Comment, Long>, QueryCommentRepository {
-    @Query( value = "SELECT c FROM Comment AS c WHERE c.author LIKE CONCAT('%', :author, '%')")
-    public List<Comment> findAllByAuthor(@Param("author") String author);
+public interface CommentRepository extends JpaRepository<Comment, Long> {
+    @Query(value = "SELECT c FROM Comment AS c WHERE c.authorId IN :authorIds")
+    List<Comment> findAllByAuthor(@Param("authorIds")Set<Long> authorIds);
 }

@@ -320,3 +320,4 @@ VALUES ('관리자', 'root@gmail.com', '$2a$04$tbGequEs0rH.Q.ERNIyjJexuWTdQ.22sU
 - [리팩토링(2) - 로그인/로그아웃 및 Member CRUD 수정](https://development-diary-for-me.tistory.com/180)
 - [리팩토링(3) - AccessToken 재발급 및 관리자 계정](https://development-diary-for-me.tistory.com/182)
 - [리팩토링(4) - 일정에 날짜 추가 및 Schedule CRUD 수정](https://development-diary-for-me.tistory.com/183)
+- [리팩토링(5) - Comment CRUD 수정](https://development-diary-for-me.tistory.com/184)

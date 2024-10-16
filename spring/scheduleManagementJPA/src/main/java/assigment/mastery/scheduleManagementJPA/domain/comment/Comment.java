@@ -28,41 +28,41 @@ public class Comment {
     @Column(name = "BODY", nullable = false, length = 150)
     private String body;
 
+    @Column(name = "AUTHOR_ID", nullable = false)
+    private Long authorId;
+
     @Column(name = "CREATE_AT", nullable = false, updatable = false)
     @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDateTime createAt;
 
     @Column(name = "UPDATE_AT", nullable = false)
     @LastModifiedDate
-    private LocalDateTime updatedAt;
-
-    @Column(name = "AUTHOR_NAME", nullable = false, length = 20)
-    private String author;
+    private LocalDateTime updateAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SCHEDULE_ID")
     private Schedule schedule;
 
-    public void update(UpdateComment request) {
-        this.body = request.getBody();
-    }
-
-    public static Comment create(AddComment request, Schedule schedule) {
+    public static Comment create(Schedule schedule, Long authorId, AddComment request) {
         return Comment.builder()
                 .body(request.getBody())
-                .author(request.getAuthor())
+                .authorId(authorId)
                 .schedule(schedule)
                 .build();
     }
 
-    public static ResponseComment makeResponse(Comment comment) {
+    public static ResponseComment makeResponse(Comment comment, String authorName) {
         return ResponseComment.builder()
                 .id(comment.getId())
                 .body(comment.getBody())
-                .createAt(DateTimeFormatConverter.convertDateTimeFormat(comment.getCreatedAt()))
-                .updateAt(DateTimeFormatConverter.convertDateTimeFormat(comment.getUpdatedAt()))
-                .author(comment.getAuthor())
+                .author(authorName)
+                .createAt(DateTimeFormatConverter.convertDateTimeFormat(comment.getCreateAt()))
+                .updateAt(DateTimeFormatConverter.convertDateTimeFormat(comment.getUpdateAt()))
                 .scheduleId(comment.getSchedule().getId())
                 .build();
+    }
+
+    public void update(UpdateComment request) {
+        this.body = request.getBody();
     }
 }
