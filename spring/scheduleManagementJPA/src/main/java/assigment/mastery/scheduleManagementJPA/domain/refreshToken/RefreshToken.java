@@ -14,7 +14,7 @@ public class RefreshToken {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "REFRESH_TOKEN", nullable = false)
+    @Column(name = "REFRESH_TOKEN", nullable = false, length = 350)
     private String refreshToken;
 
     public static RefreshToken create(String refreshToken) {

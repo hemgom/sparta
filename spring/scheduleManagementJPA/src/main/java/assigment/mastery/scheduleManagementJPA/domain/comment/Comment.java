@@ -36,7 +36,7 @@ public class Comment {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @Column(name = "AUTHOR", nullable = false, length = 20)
+    @Column(name = "AUTHOR_NAME", nullable = false, length = 20)
     private String author;
 
     @ManyToOne(fetch = FetchType.LAZY)

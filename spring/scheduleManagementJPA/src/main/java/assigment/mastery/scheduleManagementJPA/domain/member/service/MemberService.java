@@ -27,7 +27,7 @@ import static assigment.mastery.scheduleManagementJPA.security.enums.MemberRole.
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenRepository RefreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
@@ -44,7 +44,7 @@ public class MemberService {
         String refreshToken = jwtUtil.createRefreshToken(savedMember.getId(), USER);
 
         RefreshToken createdRefreshTokenEntity = RefreshToken.create(refreshToken);
-        refreshTokenRepository.save(createdRefreshTokenEntity);
+        RefreshTokenRepository.save(createdRefreshTokenEntity);
 
         return ResponseMemberAndToken.builder()
                 .member(Member.makeResponse(savedMember))
@@ -68,7 +68,7 @@ public class MemberService {
         String refreshToken = jwtUtil.createRefreshToken(foundMember.getId(), foundMember.getRole());
 
         RefreshToken createdRefreshTokenEntity = RefreshToken.create(refreshToken);
-        refreshTokenRepository.save(createdRefreshTokenEntity);
+        RefreshTokenRepository.save(createdRefreshTokenEntity);
 
         return ResponseMemberAndToken.builder()
                 .member(Member.makeResponse(foundMember))
@@ -81,10 +81,10 @@ public class MemberService {
 
     @Transactional
     public void logOut(String refreshToken) {
-        RefreshToken found = refreshTokenRepository.findByRefreshToken(refreshToken)
+        RefreshToken found = RefreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_REFRESH_TOKEN));
 
-        refreshTokenRepository.deleteByRefreshToken(found.getRefreshToken());
+        RefreshTokenRepository.deleteByRefreshToken(found.getRefreshToken());
     }
 
     @Transactional(readOnly = true)

@@ -34,6 +34,9 @@ public class Schedule {
     @Column(name = "BODY", nullable = false, length = 250)
     private String body;
 
+    @Column(name = "WEATHER", nullable = false, length = 30)
+    private String weather;
+
     @Column(name = "CREATE_AT", nullable = false, updatable = false)
     @CreatedDate
     private LocalDateTime createAt;

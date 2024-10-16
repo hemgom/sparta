@@ -104,6 +104,7 @@ CREATE TABLE schedule (
     id bigint not null auto_increment,
     title varChar(100) not null,
     body varChar(250) not null,
+    weather varChar(30) not null,
     create_at timestamp not null,
     update_at timestamp not null,
     member_id bigint not null,
@@ -115,9 +116,9 @@ CREATE TABLE schedule (
 CREATE TABLE comment (
     id bigint not null auto_increment,
     body varChar(150) not null,
+    author_name varChar(20) not null,
     create_at timestamp not null,
     update_at timestamp not null,
-    author_name varChar(20) not null,
     schedule_id bigint not null,
     primary key (id),
     foreign key (schedule_id) references schedule (id)
@@ -139,3 +140,7 @@ CREATE TABLE refresh_token (
     refresh_token varChar(350) not null,
     primary key (id)
 );
+
+-- 관리자(ADMIN)용 계정 생성
+INSERT INTO member (name, email, password, role, create_at, update_at)
+VALUES ('관리자', 'root@gmail.com', '$2a$04$tbGequEs0rH.Q.ERNIyjJexuWTdQ.22sUYrd4Uhb1nYy9RSVGM5dG', 'ADMIN', now(), now());

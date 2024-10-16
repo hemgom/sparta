@@ -76,7 +76,7 @@
 - [x] : 모든 요청에서 `토큰` 을 활용해 `인증 처리` 를 진행해야 한다.
   - `토큰` 은 `Header` 에 추가한다.
   - 단, `회원가입` 및 `로그인` 요청은 `인증 처리` 를 진행하지 않는다.
-- [ ] : 로그인 시 `이메일과 비밀번호` 가 일치 하지 않을 경우 `401` 을 반환한다.
+- [x] : 로그인 시 `이메일과 비밀번호` 가 일치 하지 않을 경우 `401` 을 반환한다.
 - [x] : `토큰` 이 전달되지 않은 경우 `400` 을 반환한다.
 - [x] : 유효 기간이 만료된 토큰의 경우 `401` 을 반환한다.
 <br/>
@@ -265,6 +265,7 @@ CREATE TABLE schedule (
     id bigint not null auto_increment,
     title varChar(100) not null,
     body varChar(250) not null,
+    weather varChar(30) not null,
     create_at timestamp not null,
     update_at timestamp not null,
     member_id bigint not null,
@@ -276,9 +277,9 @@ CREATE TABLE schedule (
 CREATE TABLE comment (
     id bigint not null auto_increment,
     body varChar(150) not null,
+    author_name varChar(20) not null,
     create_at timestamp not null,
     update_at timestamp not null,
-    author_name varChar(20) not null,
     schedule_id bigint not null,
     primary key (id),
     foreign key (schedule_id) references schedule (id)
@@ -300,6 +301,10 @@ CREATE TABLE refresh_token (
     refresh_token varChar(350) not null,
     primary key (id)
 );
+
+-- 관리자(ADMIN)용 계정 생성
+INSERT INTO member (name, email, password, role, create_at, update_at)
+VALUES ('관리자', 'root@gmail.com', '$2a$04$tbGequEs0rH.Q.ERNIyjJexuWTdQ.22sUYrd4Uhb1nYy9RSVGM5dG', 'ADMIN', now(), now());
 ```
 <br/><br/><br/>
 
@@ -312,3 +317,5 @@ CREATE TABLE refresh_token (
 - [N:M(다대다) 관계 풀어내기](https://development-diary-for-me.tistory.com/177)
 - [도전 기능 요구사항 반영 도중 발생한 이슈](https://development-diary-for-me.tistory.com/178)
 - [리팩토링(1) - 필터 예외 핸들링](https://development-diary-for-me.tistory.com/179)
+- [리팩토링(2) - 로그인/로그아웃 및 Member CRUD 수정](https://development-diary-for-me.tistory.com/180)
+- [리팩토링(3) - AccessToken 재발급 및 관리자 계정](https://development-diary-for-me.tistory.com/182)
