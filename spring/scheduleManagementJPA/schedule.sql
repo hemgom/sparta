@@ -116,7 +116,7 @@ CREATE TABLE schedule (
 CREATE TABLE comment (
     id bigint not null auto_increment,
     body varChar(150) not null,
-    author_name varChar(20) not null,
+    author_id bigint not null,
     create_at timestamp not null,
     update_at timestamp not null,
     schedule_id bigint not null,

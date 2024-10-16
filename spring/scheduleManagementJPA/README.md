@@ -1,8 +1,42 @@
+# 목차
+1. [프로젝트 설명](#project---schedule-management)
+2. [요구사항](#요구사항)
+3. [API 명세서](#api-명세서)
+4. [ERD](#erd)
+5. [SQL](#sql)
+6. [프로젝트 관련 포스팅](#구현-및-트러블-슈팅-관련-포스팅)
+<br/><br/><br/>
+
 # Project - Schedule Management
 부트캠프 `CH 3` 에서 학습한 `Spring` 을 토대로 구현한 `일정 관리 앱` 프로젝트 아래와 같은 목표가 있다.
 - `JPA` 의 주요 개념을 이해하고, 애플리케이션에 적용하는 방법 숙달
 - `인증 및 인가` 에 대한 개념을 이해하고, `JWT` 을 사용해 애플리케이션의 `보안 및 접근` 을 제어하는 방법 숙달
 - `RestTemplate` 을 사용해 `외부 자원` 과 상호작용하는 방법을 숙달
+
+## 개발 환경
+- IntelliJ
+- Postman
+- GitHub
+<br/><br/>
+
+## 사용 기술
+### 주요 프레임워크 및 라이브러리
+- Java 17 Amazon Corretto
+- Spring Boot 3.3.4
+- Spring Web
+- Spring Data JPA
+- validation
+- bcrypt
+- Lombok
+- JWT
+<br/>
+
+### Build tool
+- Gradle
+<br/>
+
+### DB
+- MySQL
 <br/><br/><br/>
 
 # 요구사항
@@ -19,9 +53,9 @@
 
 ## 필수 기능
 ### Lv.0 - API 명세서 및 ERD 작성
-- [ ] : `README.md` 에 `API 명세서` 작성
-- [ ] : `README.md` 에 `ERD` 첨부
-- [ ] : `schedule.sql` 에 프로젝트에 사용되는 `DB(shcema) 및 Table` 생성 쿼리 작성
+- [x] : `README.md` 에 `API 명세서` 작성
+- [x] : `README.md` 에 `ERD` 첨부
+- [x] : `schedule.sql` 에 프로젝트에 사용되는 `DB(shcema) 및 Table` 생성 쿼리 작성
 <br/>
 
 ### Lv.1 - 일정 CRUD
@@ -118,25 +152,26 @@
 <br/>
 
 ## 도전 기능
-|   API    | Method |        Request URL         |                                                     Request Body                                                     |   HttpStatus   |                                                                                   Response Body                                                                                    |
-|:--------:|:------:|:--------------------------:|:--------------------------------------------------------------------------------------------------------------------:|:--------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|  회원 가입   |  POST  |        /member/join        |                             json { "name" : "이름", "email" : "이메일", "password" : "비밀번호" }                             |  201 Created   | json { "member" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, "token" : { "accessToken" : "엑세스 토큰", "refreshToken" : "리프레시 토큰" } } |
-|   로그인    |  POST  |       /member/logIn        |                                                          -                                                           |     200 OK     | json { "member" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, "token" : { "accessToken" : "엑세스 토큰", "refreshToken" : "리프레시 토큰" } } |
-|   로그아웃   |  POST  |       /member/logOut       |                                                          -                                                           | 204 No Content |                                                                                         -                                                                                          |
-|  회원 조회   |  GET   |     /member/{memberId}     |                                                          -                                                           |     200 OK     |                                          json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                           |
-| 회원 목록 조회 |  GET   |  /member/search-condition  |                                                          -                                                           |     200 OK     |                              json { "memberList" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, ... }                               |
-| 회원 정보 수정 |  PUT   |          /member           |                                                json { "name" : "이름" }                                                | 204 No Content |                                                                                         -                                                                                          |
-|  유저 삭제   | DELETE |          /member           |                                                          -                                                           | 204 No Content |                                                                                         -                                                                                          |
-|  일정 생성   |  POST  |         /schedule          | json { "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "scheduleManagers" : ["매니저 이름1", "매니저 이름2", ... ] } |  201 Created   |                          json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                           |
-|  일정 조회   |  GET   |   /schedule/{scheduleId}   |                                                          -                                                           |     200 OK     |                          json { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }                           |
-| 일정 목록 조회 |  GET   | /schedule/search-condition |                                                          -                                                           |     200 OK     |             json { "scheduleList" : { "id" : "일정 ID", "author" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "createAt" : "일정 생성일", "updateAt" : "일정 수정일" }, ... }              |
-|  일정 수정   |  PUT   |   /schedule/{scheduleId}   |                                     json { "title" : "일정 제목", "body" : "일정 본문" }                                     | 204 No Content |                                                                                         -                                                                                          |
-|  일정 삭제   | DELETE |   /schedule/{scheduleId}   |                                                          -                                                           | 204 No Content |                                                                                         -                                                                                          |
-|  댓글 생성   |  POST  |   /comment/{scheduleId}    |                                    json { body" : "댓글 본문", "author" : "작성자 이름" }                                     |  201 Created   |                        json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }                        |
-|  댓글 조회   |  GET   |    /comment/{commentId}    |                                                          -                                                           |     200 OK     |                        json { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }                        |
-| 댓글 목록 조회 |  GET   | /comment/search-condition  |                                                          -                                                           |     200 OK     |           json { "commentList" : { "id" : "댓글 ID", "body" : "댓글 본문", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "author" : "작성자 이름", "scheduleId" : "일정 ID" }, ... }            |
-|  댓글 수정   |  PUT   |    /comment/{commentId}    |                                              json { "body" : "댓글 본문" }                                               | 204 No Content |                                                                                         -                                                                                          |
-|  댓글 삭제   | DELETE |    /comment/{commentId}    |                                                          -                                                           | 204 No Content |                                                                                         -                                                                                          |
+|       API        | Method |        Request URL         |        Request Header         |                                          Request Body                                           |   HttpStatus   |                                                                                                            Response Body                                                                                                            |
+|:----------------:|:------:|:--------------------------:|:-----------------------------:|:-----------------------------------------------------------------------------------------------:|:--------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|      회원 가입       |  POST  |        /member/join        |               -               |                  json { "name" : "이름", "email" : "이메일", "password" : "비밀번호" }                   |  201 Created   |                         json { "member" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, "token" : { "accessToken" : "엑세스 토큰", "refreshToken" : "리프레시 토큰" } }                          |
+|       로그인        |  POST  |       /member/logIn        |               -               |                          json { "email" : "이메일", "password" : "비밀번호" }                          |     200 OK     |                         json { "member" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, "token" : { "accessToken" : "엑세스 토큰", "refreshToken" : "리프레시 토큰" } }                          |
+|       로그아웃       |  POST  |       /member/logOut       | Authorization : Refresh Token |                                                -                                                | 204 No Content |                                                                                                                  -                                                                                                                  |
+|      회원 조회       |  GET   |          /member           | Authorization : Access Token  |                                                -                                                |     200 OK     |                                                                   json { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }                                                                   |
+|     회원 목록 조회     |  GET   |  /member/search-condition  | Authorization : Access Token  |                                                -                                                |     200 OK     |                                                       json { "memberList" : { "id" : "유저 ID", "name" : "이름", "email" : "이메일", "createAt" : "등록일", "updateAt" : "수정일" }, ... }                                                       |
+|     회원 정보 수정     |  PUT   |          /member           | Authorization : Access Token  |                                     json { "name" : "이름" }                                      | 204 No Content |                                                                                                                  -                                                                                                                  |
+|      회원 삭제       | DELETE |          /member           | Authorization : Access Token  |                                                -                                                | 204 No Content |                                                                                                                  -                                                                                                                  |
+|      일정 생성       |  POST  |         /schedule          | Authorization : Access Token  | json { "title" : "일정 제목", "body" : "일정 본문", "scheduleManagers" : ["매니저 이름1", "매니저 이름2", ... ] } |  201 Created   |                           json { "id" : "일정 ID", "authorName" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "weather" : "날씨", "createAt" : "일정 생성일", "updateAt" : "일정 수정일", "commentCount" : "댓글 개수" }                           |
+|      일정 조회       |  GET   |   /schedule/{scheduleId}   | Authorization : Access Token  |                                                -                                                |     200 OK     |                           json { "id" : "일정 ID", "authorName" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "weather" : "날씨", "createAt" : "일정 생성일", "updateAt" : "일정 수정일", "commentCount" : "댓글 개수" }                           |
+|     일정 목록 조회     |  GET   | /schedule/search-condition | Authorization : Access Token  |                                                -                                                |     200 OK     | json { "scheduleList" : [ { "id" : "일정 ID", "authorName" : "작성자 이름", "title" : "일정 제목", "body" : "일정 본문", "weather" : "날씨", "createAt" : "일정 생성일", "updateAt" : "일정 수정일", "commentCount" : "댓글 개수" }, ... ], "pageable" : { ... } } |
+|      일정 수정       |  PUT   |   /schedule/{scheduleId}   | Authorization : Access Token  |                          json { "title" : "일정 제목", "body" : "일정 본문" }                           | 204 No Content |                                                                                                                  -                                                                                                                  |
+|      일정 삭제       | DELETE |   /schedule/{scheduleId}   | Authorization : Access Token  |                                                -                                                | 204 No Content |                                                                                                                  -                                                                                                                  |
+|      댓글 생성       |  POST  |   /comment/{scheduleId}    | Authorization : Access Token  |                                    json { body" : "댓글 본문" }                                     |  201 Created   |                                                json { "id" : "댓글 ID", "body" : "댓글 본문", "author" : "작성자 이름", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "scheduleId" : "일정 ID" }                                                 |
+|      댓글 조회       |  GET   |    /comment/{commentId}    | Authorization : Access Token  |                                                -                                                |     200 OK     |                                                json { "id" : "댓글 ID", "body" : "댓글 본문", "author" : "작성자 이름", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "scheduleId" : "일정 ID" }                                                 |
+|     댓글 목록 조회     |  GET   | /comment/search-condition  | Authorization : Access Token  |                                                -                                                |     200 OK     |                                  json { "commentList" : [ { "id" : "댓글 ID", "body" : "댓글 본문", "author" : "작성자 이름", "createAt" : "댓글 작성일", "updateAt" : "댓글 수정일", "scheduleId" : "일정 ID" }, ... ] }                                  |
+|      댓글 수정       |  PUT   |    /comment/{commentId}    | Authorization : Access Token  |                                    json { "body" : "댓글 본문" }                                    | 204 No Content |                                                                                                                  -                                                                                                                  |
+|      댓글 삭제       | DELETE |    /comment/{commentId}    | Authorization : Access Token  |                                                -                                                | 204 No Content |                                                                                                                  -                                                                                                                  |
+| Access Token 재발급 |  POST  |       /token/reissue       | Authorization : Refresh Token |                                                -                                                |     200 OK     |                                                                                            json { "accessToken" : "재발급한 Access Token" }                                                                                             |
 <br/><br/>
 
 # ERD
@@ -277,7 +312,7 @@ CREATE TABLE schedule (
 CREATE TABLE comment (
     id bigint not null auto_increment,
     body varChar(150) not null,
-    author_name varChar(20) not null,
+    author_id bigint not null,
     create_at timestamp not null,
     update_at timestamp not null,
     schedule_id bigint not null,
