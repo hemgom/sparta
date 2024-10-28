@@ -16,7 +16,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,8 +98,7 @@ public class MemberService {
     public ResponseMemberList findAll(String name, PageRequest pageRequest) {
         Slice<Member> foundMembers = memberRepository.findAllByName(name, pageRequest);
 
-        List<ResponseMember> responseMembers = new ArrayList<>();
-        foundMembers.getContent().stream().map(ResponseMember::makeResponse).forEach(responseMembers::add);
+        List<ResponseMember> responseMembers = foundMembers.getContent().stream().map(ResponseMember::makeResponse).toList();
 
         return ResponseMemberList.builder()
                 .members(responseMembers)

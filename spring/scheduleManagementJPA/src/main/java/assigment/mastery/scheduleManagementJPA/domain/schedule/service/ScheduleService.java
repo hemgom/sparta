@@ -15,13 +15,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.*;
@@ -47,8 +46,7 @@ public class ScheduleService {
 
             if (managers.isEmpty()) throw new NotFoundEntityException(NOT_FOUND_MEMBER);
 
-            List<ScheduleManager> scheduleManagers = new ArrayList<>();
-            managers.forEach(m -> scheduleManagers.add(ScheduleManager.create(saved, m)));
+            List<ScheduleManager> scheduleManagers = managers.stream().map(manager -> ScheduleManager.create(saved, manager)).toList();
 
             scheduleManagerRepository.saveAll(scheduleManagers);
         }
@@ -68,13 +66,11 @@ public class ScheduleService {
     public ResponseScheduleList findAll(String author, String title, PageRequest pageRequest) {
         Slice<Schedule> foundSchedules = scheduleRepository.findAllByAuthorAndTitle(author, title, pageRequest);
 
-        List<Long> scheduleIds = new ArrayList<>();
-        foundSchedules.getContent().forEach(s -> scheduleIds.add(s.getId()));
+        List<Long> scheduleIds = foundSchedules.getContent().stream().map(Schedule::getId).toList();
 
         List<Schedule> finish = scheduleRepository.findAllByScheduleIdIn(scheduleIds);
 
-        List<ResponseSchedule> responseScheduleList = new ArrayList<>();
-        finish.stream().map(ResponseSchedule::makeResponse).forEach(responseScheduleList::add);
+        List<ResponseSchedule> responseScheduleList = finish.stream().map(ResponseSchedule::makeResponse).toList();
 
         return ResponseScheduleList.builder()
                 .schedules(responseScheduleList)
@@ -114,17 +110,11 @@ public class ScheduleService {
 
         String today = LocalDateTime.now().toString().substring(5,10);
 
-        String todayWeather = "";
-        for (WeatherDTO w : responseWeather) {
-            if (w.getDate().equals(today)) {
-                todayWeather = w.getWeather();
-                break;
-            }
-        }
+        WeatherDTO todayWeather = Arrays.stream(responseWeather)
+                .filter(w -> w.getDate().equals(today))
+                .findFirst()
+                .orElseThrow(() -> new OpenApiException(NOT_FOUND_WEATHER));
 
-        if (!StringUtils.hasText(todayWeather))
-            throw new OpenApiException(NOT_FOUND_WEATHER);
-
-        return todayWeather;
+        return todayWeather.getWeather();
     }
 }

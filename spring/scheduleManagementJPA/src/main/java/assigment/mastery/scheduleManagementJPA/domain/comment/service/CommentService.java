@@ -16,7 +16,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.*;
 
@@ -53,14 +56,14 @@ public class CommentService {
     public ResponseCommentList findAll(String author) {
         List<Member> foundMembers = memberRepository.findAllByName(author);
 
-        Map<Long, String> authorsIdAndName = new HashMap<>();
-        foundMembers.forEach(member -> authorsIdAndName.put(member.getId(), member.getName()));
+        Map<Long, String> authorsIdAndName = foundMembers.stream().collect(Collectors.toMap(Member::getId, Member::getName));
         Set<Long> authorIds = authorsIdAndName.keySet();
 
         List<Comment> foundComments = commentRepository.findAllByAuthor(authorIds);
 
-        List<ResponseComment> responseComments = new ArrayList<>();
-        foundComments.forEach(comment -> responseComments.add(ResponseComment.makeResponse(comment, authorsIdAndName.get(comment.getAuthorId()))));
+        List<ResponseComment> responseComments = foundComments.stream()
+                .map(comment -> ResponseComment.makeResponse(comment, authorsIdAndName.get(comment.getAuthorId())))
+                .toList();
 
         return ResponseCommentList.builder()
                 .comments(responseComments)
