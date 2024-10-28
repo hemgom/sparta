@@ -4,8 +4,8 @@ import assigment.mastery.scheduleManagementJPA.domain.member.Member;
 import assigment.mastery.scheduleManagementJPA.domain.member.repository.MemberRepository;
 import assigment.mastery.scheduleManagementJPA.exception.customException.HasNotPermissionException;
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotFoundEntityException;
+import assigment.mastery.scheduleManagementJPA.security.dto.TokenInfo;
 import assigment.mastery.scheduleManagementJPA.security.jwt.JwtUtil;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.HAS_NOT_PERMISSION;
 import static assigment.mastery.scheduleManagementJPA.exception.enums.ExceptionCode.NOT_FOUND_MEMBER;
-import static assigment.mastery.scheduleManagementJPA.security.enums.AuthenticationConstant.AUTH;
 import static assigment.mastery.scheduleManagementJPA.security.enums.MemberRole.ADMIN;
 
 @Slf4j
@@ -41,27 +40,22 @@ public class AuthFilter implements Filter {
 
             } else if (url.startsWith("/schedule") &&
                     (httpMethod.matches("PUT") || httpMethod.matches("DELETE"))) {
-                Claims claims = getClaimsFromRequest(httpServletRequest);
+                TokenInfo tokenInfo = getTokenInfoFromRequest(httpServletRequest);
 
-                Long memberId = Long.parseLong(claims.getSubject());
-                String auth = claims.get(AUTH.getKey(), String.class);
-
-                if (!auth.matches(ADMIN.getRole())) {
+                if (!tokenInfo.getAuth().matches(ADMIN.getRole())) {
                     throw new HasNotPermissionException(HAS_NOT_PERMISSION);
                 }
 
-                Member member = memberRepository.findById(memberId)
+                Member member = memberRepository.findById(tokenInfo.getMemberId())
                         .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_MEMBER));
 
                 request.setAttribute("member", member);
                 chain.doFilter(request, response);
 
             } else {
-                Claims claims = getClaimsFromRequest(httpServletRequest);
+                TokenInfo tokenInfo = getTokenInfoFromRequest(httpServletRequest);
 
-                Long memberId = Long.parseLong(claims.getSubject());
-
-                Member member = memberRepository.findById(memberId)
+                Member member = memberRepository.findById(tokenInfo.getMemberId())
                         .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_MEMBER));
 
                 request.setAttribute("member", member);
@@ -70,7 +64,7 @@ public class AuthFilter implements Filter {
         }
     }
 
-    private Claims getClaimsFromRequest(HttpServletRequest httpServletRequest) {
+    private TokenInfo getTokenInfoFromRequest(HttpServletRequest httpServletRequest) {
         String token = jwtUtil.getTokenFromRequest(httpServletRequest);
 
         jwtUtil.checkTokenValidity(token);

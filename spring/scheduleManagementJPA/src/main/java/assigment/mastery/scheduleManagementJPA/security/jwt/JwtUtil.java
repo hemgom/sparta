@@ -1,6 +1,7 @@
 package assigment.mastery.scheduleManagementJPA.security.jwt;
 
 import assigment.mastery.scheduleManagementJPA.exception.customException.NotValidTokenException;
+import assigment.mastery.scheduleManagementJPA.security.dto.TokenInfo;
 import assigment.mastery.scheduleManagementJPA.security.enums.MemberRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -87,8 +88,13 @@ public class JwtUtil {
         }
     }
 
-    public Claims getPayload(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    public TokenInfo getPayload(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+
+        return TokenInfo.builder()
+                .memberId(Long.parseLong(claims.getSubject()))
+                .auth(claims.get(AUTH.getKey(), String.class))
+                .build();
     }
 
     public String getTokenFromRequest(HttpServletRequest request) {
