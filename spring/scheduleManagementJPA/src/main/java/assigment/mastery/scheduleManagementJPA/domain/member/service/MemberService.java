@@ -47,7 +47,7 @@ public class MemberService {
         RefreshTokenRepository.save(createdRefreshTokenEntity);
 
         return ResponseMemberAndToken.builder()
-                .member(Member.makeResponse(savedMember))
+                .member(ResponseMember.makeResponse(savedMember))
                 .token(ResponseToken.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
@@ -71,7 +71,7 @@ public class MemberService {
         RefreshTokenRepository.save(createdRefreshTokenEntity);
 
         return ResponseMemberAndToken.builder()
-                .member(Member.makeResponse(foundMember))
+                .member(ResponseMember.makeResponse(foundMember))
                 .token(ResponseToken.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
@@ -92,7 +92,7 @@ public class MemberService {
         Member found = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_MEMBER));
 
-        return Member.makeResponse(found);
+        return ResponseMember.makeResponse(found);
     }
 
     @Transactional(readOnly = true)
@@ -100,7 +100,7 @@ public class MemberService {
         Slice<Member> foundMembers = memberRepository.findAllByName(name, pageRequest);
 
         List<ResponseMember> responseMembers = new ArrayList<>();
-        foundMembers.getContent().stream().map(Member::makeResponse).forEach(responseMembers::add);
+        foundMembers.getContent().stream().map(ResponseMember::makeResponse).forEach(responseMembers::add);
 
         return ResponseMemberList.builder()
                 .members(responseMembers)

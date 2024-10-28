@@ -1,8 +1,6 @@
 package assigment.mastery.scheduleManagementJPA.domain.comment;
 
-import assigment.mastery.scheduleManagementJPA.converter.DateTimeFormatConverter;
 import assigment.mastery.scheduleManagementJPA.domain.comment.dto.AddComment;
-import assigment.mastery.scheduleManagementJPA.domain.comment.dto.ResponseComment;
 import assigment.mastery.scheduleManagementJPA.domain.comment.dto.UpdateComment;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.Schedule;
 import jakarta.persistence.*;
@@ -48,17 +46,6 @@ public class Comment {
                 .body(request.getBody())
                 .authorId(authorId)
                 .schedule(schedule)
-                .build();
-    }
-
-    public static ResponseComment makeResponse(Comment comment, String authorName) {
-        return ResponseComment.builder()
-                .id(comment.getId())
-                .body(comment.getBody())
-                .author(authorName)
-                .createAt(DateTimeFormatConverter.convertDateTimeFormat(comment.getCreateAt()))
-                .updateAt(DateTimeFormatConverter.convertDateTimeFormat(comment.getUpdateAt()))
-                .scheduleId(comment.getSchedule().getId())
                 .build();
     }
 

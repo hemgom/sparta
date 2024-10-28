@@ -53,7 +53,7 @@ public class ScheduleService {
             scheduleManagerRepository.saveAll(scheduleManagers);
         }
 
-        return Schedule.makeResponse(saved);
+        return ResponseSchedule.makeResponse(saved);
     }
 
     @Transactional(readOnly = true)
@@ -61,7 +61,7 @@ public class ScheduleService {
         Schedule found = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_SCHEDULE));
 
-        return Schedule.makeResponse(found);
+        return ResponseSchedule.makeResponse(found);
     }
 
     @Transactional(readOnly = true)
@@ -74,7 +74,7 @@ public class ScheduleService {
         List<Schedule> finish = scheduleRepository.findAllByScheduleIdIn(scheduleIds);
 
         List<ResponseSchedule> responseScheduleList = new ArrayList<>();
-        finish.stream().map(Schedule::makeResponse).forEach(responseScheduleList::add);
+        finish.stream().map(ResponseSchedule::makeResponse).forEach(responseScheduleList::add);
 
         return ResponseScheduleList.builder()
                 .schedules(responseScheduleList)

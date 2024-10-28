@@ -35,7 +35,7 @@ public class CommentService {
         Comment created = Comment.create(found, member.getId(), request);
         Comment saved = commentRepository.save(created);
 
-        return Comment.makeResponse(saved, member.getName());
+        return ResponseComment.makeResponse(saved, member.getName());
     }
 
     @Transactional(readOnly = true)
@@ -46,7 +46,7 @@ public class CommentService {
         Member author = memberRepository.findById(found.getAuthorId())
                 .orElseThrow(() -> new NotFoundEntityException(NOT_FOUND_MEMBER));
 
-        return Comment.makeResponse(found, author.getName());
+        return ResponseComment.makeResponse(found, author.getName());
     }
 
     @Transactional(readOnly = true)
@@ -60,7 +60,7 @@ public class CommentService {
         List<Comment> foundComments = commentRepository.findAllByAuthor(authorIds);
 
         List<ResponseComment> responseComments = new ArrayList<>();
-        foundComments.forEach(comment -> responseComments.add(Comment.makeResponse(comment, authorsIdAndName.get(comment.getAuthorId()))));
+        foundComments.forEach(comment -> responseComments.add(ResponseComment.makeResponse(comment, authorsIdAndName.get(comment.getAuthorId()))));
 
         return ResponseCommentList.builder()
                 .comments(responseComments)

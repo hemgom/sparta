@@ -1,7 +1,6 @@
 package assigment.mastery.scheduleManagementJPA.domain.member;
 
 import assigment.mastery.scheduleManagementJPA.domain.member.dto.RequestJoin;
-import assigment.mastery.scheduleManagementJPA.domain.member.dto.ResponseMember;
 import assigment.mastery.scheduleManagementJPA.domain.member.dto.RequestUpdate;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.Schedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.ScheduleManager;
@@ -15,8 +14,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static assigment.mastery.scheduleManagementJPA.converter.DateTimeFormatConverter.convertDateTimeFormat;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -63,16 +60,6 @@ public class Member {
                 .email(request.getEmail())
                 .password(encodedPassword)
                 .role(role)
-                .build();
-    }
-
-    public static ResponseMember makeResponse(Member member) {
-        return ResponseMember.builder()
-                .id(member.getId())
-                .name(member.getName())
-                .email(member.getEmail())
-                .createAt(convertDateTimeFormat(member.getCreateAt()))
-                .updateAt(convertDateTimeFormat(member.getUpdateAt()))
                 .build();
     }
 

@@ -1,10 +1,8 @@
 package assigment.mastery.scheduleManagementJPA.domain.schedule;
 
-import assigment.mastery.scheduleManagementJPA.converter.DateTimeFormatConverter;
 import assigment.mastery.scheduleManagementJPA.domain.comment.Comment;
 import assigment.mastery.scheduleManagementJPA.domain.member.Member;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.AddSchedule;
-import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.ResponseSchedule;
 import assigment.mastery.scheduleManagementJPA.domain.schedule.dto.UpdateSchedule;
 import jakarta.persistence.*;
 import lombok.*;
@@ -66,25 +64,8 @@ public class Schedule {
                 .build();
     }
 
-    public static ResponseSchedule makeResponse(Schedule schedule) {
-        return ResponseSchedule.builder()
-                .id(schedule.getId())
-                .authorName(schedule.getMember().getName())
-                .title(schedule.getTitle())
-                .body(schedule.getBody())
-                .weather(schedule.getWeather())
-                .createAt(DateTimeFormatConverter.convertDateTimeFormat(schedule.getCreateAt()))
-                .updateAt(DateTimeFormatConverter.convertDateTimeFormat(schedule.getUpdateAt()))
-                .commentCount(schedule.getComments().size())
-                .build();
-    }
-
     public void update(UpdateSchedule request) {
         this.title = request.getTitle();
         this.body = request.getBody();
-    }
-
-    public void addWeather(String weather) {
-        this.weather = weather;
     }
 }
